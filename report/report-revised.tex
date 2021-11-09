@@ -1,0 +1,73 @@
+\documentclass[12pt]{article}
+
+\usepackage{geometry}
+\usepackage{hyperref}
+\usepackage{titling}
+\usepackage{titlesec}
+\usepackage{fontspec}
+\usepackage{xeCJK}
+\usepackage{setspace}
+\usepackage{booktabs}
+\usepackage{float}
+\usepackage{graphicx}
+\usepackage{geometry}
+
+\setmainfont{Source Serif Pro}
+\setCJKmainfont[BoldFont=SimHei]{SimSun}
+\setCJKmonofont{SimSun}
+\geometry{a4paper, left = 2.5cm, right = 2.5cm, top = 2.5cm, bottom = 1.5cm, includefoot}
+
+\renewcommand{\baselinestretch}{1.5}
+\renewcommand\tablename{表}
+\renewcommand{\contentsname}{\begin{center}
+\Large		目\phantom{空格}录
+\end{center}}
+
+\hypersetup{
+	colorlinks = true,
+	linkcolor = blue,
+	filecolor = magenta,
+	citecolor = magenta
+}
+
+\begin{document}
+\thispagestyle{empty}
+\begin{center}
+	\includegraphics[width = 13cm]{fudan-title.png}
+\end{center}
+\vspace{0.3cm}
+\begin{center}
+	\includegraphics[width = 5cm]{fudan-logo.jpg}
+\end{center}
+\vspace{0.5cm}
+\begin{center}
+\Huge \textbf{小组项目报告}
+\end{center}
+\begin{center}
+\Huge \textbf{(项目名称)}
+\end{center}
+\vspace{1cm}
+\begin{center}
+\begin{minipage}{0.57\linewidth}
+\begin{flushleft}
+\Large 课程名称：数据库与企业数据管理 \\
+指导老师：张成洪\phantom{空}教授 \\
+\vspace{0.5cm}
+\phantom{空格空格空格}第三组 \\
+\phantom{空}丁语欣\phantom{空格}高\phantom{空}畅\phantom{空格}李舒沛\\  
+\phantom{空}张高阳\phantom{空格}张秋岑\\
+\phantom{空格空}(按姓名首字母排序)
+\end{flushleft}
+\end{minipage}
+\end{center}
+\newpage
+\tableofcontents
+\newpage
+\section{选题}
+\section{需求分析}
+\section{概念结构设计}
+\section{逻辑结构设计}
+\section{数据库实施}
+\section{相关程序演示}
+\section{总结}
+\end{document}
