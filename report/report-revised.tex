@@ -382,17 +382,17 @@
 	6 &	Sno &	卖方编号 &	Integer &	4 	& 非空，卖方用户信 \\ &&&&& 息表主码 \\
 	7 &	Saddress &	卖方仓储位置 &	Char &	30 	& 非空 \\
 	8 &	Pname &	配送人员姓名 &	Char &	30 &	非空 \\
-	9 &	Pno &	配送人员编号 &	Integer &	4 &	非空\\
-	10 &	Phealth &	配送人员健康状况 &	Tinyint &	1 &	非空，0异常； \\ &&&&& 1正常\\
+	9 &	Pno &	配送人员编号 &	Integer &	4 &	非空 \\
+	10 &	Pcity &	人员今日途经城市 &	Char &	30 & 非空 \\
 	11  &	Ptemp &	配送人员体温 &	Float &	4 &	非空 \\
-	12 &	Pupdate &	人员体温更新时间 &	Date &	3 &	非空 \\
+	12 &	Pupdate &	健康信息更新时间 &	Date &	3 &	非空 \\
 	13 &	Ono &	商品订单编号 &	Integer &	4 &	非空，商品订单信 \\ &&&&& 息表主码\\
 	14 &	Otime &	商品订单时间 &	Date &	3 &	非空 \\
 	15 &	Iname 	& 货品名称 &	Char &	30 &	非空 \\
 	16 &	Ino &	货品编号 &	Integer &	4 &	非空 \\
 	17 &	Inum &	订单货品数额 &	Integer &	4 &	非空 \\
-	18 &	Tname &	货运公司名称 &	Char &	30 	& 非空 \\
-	19 &	Tno &	货运公司编号 &	 Integer &	4 &	非空 \\
+	18 &	Tname &	物流公司名称 &	Char &	30 	& 非空 \\
+	19 &	Tno &	物流公司编号 &	 Integer &	4 &	非空 \\
 	20 &	Ovalue 	& 商品订单金额 	& Float &	4 &	非空 \\
 	21 & Dno &	物流单号 &	Integer &	4 &	非空，物流订单信 \\ &&&&& 息表主码 \\
 	22 &	Dtrans &	物流运送方式 &	Char &	30 &	非空 \\
@@ -404,9 +404,13 @@
 	28 &	Cstate &	城市疫情状况 &	Tinyint &	1 &	 非空，0、1、2分\\ &&&&& 别代表低中高风险 \\
 	29 &	Cloc &	城市坐标 &	Float &	4 &	非空 \\
 	30 &	Cupdate &	城市疫情更新时间 &	Date &	3 &	非空 \\
+	31 &	Dvalue 	& 物流订单金额 	& Float &	4 &	非空 \\
+	32 &	Zpeople & 配送人员风险评分 & Integer & 4 & 非空 \\
+	33 &	Zloc & 配送路线风险评分 & Integer & 4 & 非空 \\
 \end{supertabular}
 \end{center}
 
+\newpage
 \subsubsection{数据结构}
 
 注：\underline{下划线}表示主码，\textit{斜体}表示外码。
@@ -423,13 +427,13 @@
 2 &	Seller User &	卖方用户信息表 & Sname &	\underline{Sno} &	Saddress \\ & Information &&&& \\
 3 &	Order  & 商品订单信息表 &	\underline{Ono} &	Otime &	Ovalue  \\
 & Information &&	Otrans & \textit{Uno} &	\textit{Sno}  \\
-4 &	Delivery &	物流订单信息表 &	\underline{Dno} &	Dvalue &	Dtrans  \\ & Information && Dloc & Tno &	Pno \\&&& \textit{Sno} &&	  \\ 	
-5 &	Staff Health &	员工健康信息表 &	Pname &	\underline{Pno} &	Phealth  \\ 
-& Information &&	Ptemp & Pupdate & \\
+4 &	Delivery &	物流订单信息表 &	\underline{Dno} &	Dvalue &	Dtrans  \\ & Information && Tno &	Pno & \textit{Sno} \\
+5 &	Staff Health &	员工健康信息表 &	\underline{Pno} &	Pcity & Ptemp \\ 
+& Information && \underline{Pupdate} && \\
 6 &	Pandemic &	疫情情况信息表 &	Cname &	\underline{Cno} &	Cstate \\	& Information &&  Cloc & \underline{Cupdate}	& \\
 7 &Staff  &	物流人员信息表 &	Pname &	\underline{Pno} &	Tname \\ & Information	& & Tno && \\
 8 &	Geographic  &	物流位置信息表 &	\underline{Dno} &	Dloc &	\underline{Dupdate} \\& Information&&&& \\
-9 & Summary & 物流订单总表 & \underline{Ono} & \textit{Dno} & \\ & Information &&&& \\
+9 & Summary & 物流订单总表 & \underline{Ono} & \textit{Dno} & Zpeople \\ & Information && Zloc && \\
 \end{supertabular}
 \end{center}
 
@@ -533,7 +537,83 @@
 
 \subsection{局部分 E-R 图 }
 
+\subsubsection{提交物流订单}
+
+\begin{center}
+	\includegraphics[height = 16cm]{e-r-part-1.png}
+\end{center}
+
+\subsubsection{安排配送}
+
+\begin{center}
+	\includegraphics[height = 15.5cm]{e-r-part-2.png}
+\end{center}
+
+\subsubsection{识别物流风险}
+
+\begin{center}
+	\includegraphics[height = 17cm]{e-r-part-3.png}
+\end{center}
+
 \subsection{全局 E-R 图 }
+
+\subsubsection{不包含属性的 E-R 图}
+
+\begin{center}
+	\includegraphics[height = 16cm]{e-r-total.png}
+\end{center}
+
+\subsubsection{每个实体和联系的属性描述}
+
+\noindent \textbf{(1) 卖方}
+
+\begin{center}
+	\includegraphics[height = 3cm]{e-r-e1.png}
+\end{center}
+
+\noindent \textbf{(2) 物流公司}
+
+\begin{center}
+	\includegraphics[height = 2.3cm]{e-r-e2.png}
+\end{center}
+
+\noindent \textbf{(3) 物流订单}
+
+\begin{center}
+	\includegraphics[height = 10cm]{e-r-e3.png}
+\end{center}
+
+\noindent \textbf{(4) 物流人员}
+
+\begin{center}
+	\includegraphics[height = 2.5cm]{e-r-e4.png}
+\end{center}
+
+
+\noindent \textbf{(5) 物流位置}
+
+\begin{center}
+	\includegraphics[height = 2.5cm]{e-r-e5.png}
+\end{center}
+
+\newpage
+\noindent \textbf{(6) 疫情情况}
+
+\begin{center}
+	\includegraphics[height = 7cm]{e-r-e6.png}
+\end{center}
+
+\noindent \textbf{(7) 联系：匹配1}
+
+\begin{center}
+	\includegraphics[height = 1.5cm]{e-r-r1.png}
+\end{center}
+
+\noindent \textbf{(8) 联系：匹配2}
+
+\begin{center}
+	\includegraphics[height = 1.5cm]{e-r-r2.png}
+\end{center}
 
 \section{逻辑结构设计}
 
