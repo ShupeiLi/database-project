@@ -17,6 +17,7 @@
 \usepackage{fancyhdr} 
 \usepackage{longtable}
 \usepackage{supertabular}
+\usepackage[normalem]{ulem}
 
 \pagestyle{fancy}
 
@@ -424,18 +425,18 @@
 
 \begin{center}
 \begin{supertabular}{llllll}
-1 &	Buyer User &	买方用户信息表 & Uname &	\underline{Uno} &	Uaddress  \\ & Information &&	Uphone && \\
-2 &	Seller User &	卖方用户信息表 & Sname &	\underline{Sno} &	Saddress \\ & Information &&&& \\
-3 &	Order  & 商品订单信息表 &	\underline{Ono} &	Otime &	Ovalue  \\
+1 &	Buyer User &	买方用户信息表 & Uname &	\uline{Uno} &	Uaddress  \\ & Information &&	Uphone && \\
+2 &	Seller User &	卖方用户信息表 & Sname &	\uline{Sno} &	Saddress \\ & Information &&&& \\
+3 &	Order  & 商品订单信息表 &	\uline{Ono} &	Otime &	Ovalue  \\
 & Information &&	Otrans & \textit{Uno} &	\textit{Sno}  \\
-4 &	Delivery &	物流订单信息表 &	\underline{Dno} &	Dvalue &	Dtrans  \\ & Information && Tno &	\textit{Sno} & \\
-5 &	Staff Health &	员工健康信息表 &	\underline{Pno} &	Pcity & Ptemp \\ 
-& Information && \underline{Pupdate} && \\
-6 &	Pandemic &	疫情情况信息表 &	Cname &	\underline{Cno} &	Cstate \\	& Information &&  Cloc & \underline{Cupdate}	& \\
-7 &Staff  &	物流人员信息表 &	Pname &	\underline{Pno} &	Tname \\ & Information	& & Tno && \\
-8 &	Geographic  &	物流位置信息表 &	\underline{Dno} &	Dloc &	\underline{Dupdate} \\& Information&&&& \\
-9 & Summary & 物流订单总表 & \underline{Ono} & \textit{Dno} & Zpeople \\ & Information && Zloc && \\
-10 & Delivery & 物流订单分配表 & \underline{Dpno} & \textit{Dno} & \textit{Pno}\\ & Distribution &&&& \\
+4 &	Delivery &	物流订单信息表 &	\uline{Dno} &	Dvalue &	Dtrans  \\ & Information && Tno &	\textit{Sno} & \\
+5 &	Staff Health &	员工健康信息表 &	\uline{Pno} &	Pcity & Ptemp \\ 
+& Information && \uline{Pupdate} && \\
+6 &	Pandemic &	疫情情况信息表 &	Cname &	\uline{Cno} &	Cstate \\	& Information &&  Cloc & \uline{Cupdate}	& \\
+7 &Staff  &	物流人员信息表 &	Pname &	\uline{Pno} &	Tname \\ & Information	& & Tno && \\
+8 &	Geographic  &	物流位置信息表 &	\uline{Dno} &	Dloc &	\uline{Dupdate} \\& Information&&&& \\
+9 & Summary & 物流订单总表 & \uline{Ono} & \textit{Dno} & Zpeople \\ & Information && Zloc && \\
+10 & Delivery & 物流订单分配表 & \uline{Dpno} & \textit{Dno} & \textit{Pno}\\ & Distribution &&&& \\
 \end{supertabular}
 \end{center}
 
@@ -637,7 +638,7 @@
 
 \noindent \textbf{(1) 卖方} \par 
 Sno $\rightarrow$ Sname, Sno $\rightarrow$ Saddress \par 
-候选码：Seller (\underline{Sno}, Sname, Saddress) 
+候选码：Seller (\uline{Sno}, Sname, Saddress) 
 
 \begin{center}
 	\includegraphics[height = 3cm]{relation-model-1.png}
@@ -645,7 +646,7 @@ Sno $\rightarrow$ Sname, Sno $\rightarrow$ Saddress \par
 
 \noindent \textbf{(2) 物流订单} \par 
 Dno $\rightarrow$ Dvalue, Dno $\rightarrow$ Dtrans, Dno $\rightarrow$ Tno, Dno $\rightarrow$ Pno, Dno $\rightarrow$ Sno \par 
-候选码：Delivery (\underline{Dno}, Dvalue, Dtrans, Tno, Pno, Sno)
+候选码：Delivery (\uline{Dno}, Dvalue, Dtrans, Tno, Pno, Sno)
 
 \begin{center}
 	\includegraphics[height = 7cm]{relation-model-2.png}
@@ -653,7 +654,7 @@ Dno $\rightarrow$ Dvalue, Dno $\rightarrow$ Dtrans, Dno $\rightarrow$ Tno, Dno $
 
 \noindent \textbf{(3) 物流公司} \par 
 Tno $\rightarrow$ Tname \par 
-候选码：Transportation Company (\underline{Tno}, Tname)
+候选码：Transportation Company (\uline{Tno}, Tname)
 
 \begin{center}
 	\includegraphics[height = 1.1cm]{relation-model-3.png}
@@ -665,7 +666,7 @@ Tno $\rightarrow$ Tname \par
 
 \noindent \textbf{(2) 分配} \par 
 (Tno, Pno) $\rightarrow$ Dpno \par
-候选码：Acceptance (\underline{Tno}, \underline{Pno}, Dpno)
+候选码：Acceptance (\uline{Tno}, \uline{Pno}, Dpno)
 
 \begin{center}
 	\includegraphics[height = 3cm]{relation-model-4.png}
@@ -673,7 +674,7 @@ Tno $\rightarrow$ Tname \par
 
 \noindent \textbf{(3) 物流人员} \par 
 Pno $\rightarrow$ Pname, Pno $\rightarrow$ Tno \par
-候选码：Staff (\underline{Pno}, Pname, Tno)
+候选码：Staff (\uline{Pno}, Pname, Tno)
 
 \begin{center}
 	\includegraphics[height = 3cm]{relation-model-5.png}
@@ -681,7 +682,7 @@ Pno $\rightarrow$ Pname, Pno $\rightarrow$ Tno \par
 
 \noindent \textbf{(4) 物流位置} \par 
 (Dno, Dupdate) $\rightarrow$ Dloc, (Dno, Dupdate) $\rightarrow$ Pno \par
-候选码：Geography (\underline{Dno}, \underline{Dupdate}, Dloc, Pno)
+候选码：Geography (\uline{Dno}, \uline{Dupdate}, Dloc, Pno)
 
 \begin{center}
 	\includegraphics[height = 3cm]{relation-model-6.png}
@@ -692,7 +693,7 @@ Pno $\rightarrow$ Pname, Pno $\rightarrow$ Tno \par
 \noindent \textbf{(1) 物流位置} \par 
 (Dno, Dupdate) $\rightarrow$ Dloc, (Dno, Dupdate) $\rightarrow$ Zloc,\\ 
 (Dno, Dupdate) $\rightarrow$ Cno, (Dno, Dupdate) $\rightarrow$ Cupdate \par
-候选码：Geography (\underline{Dno}, \underline{Dupdate}, Dloc, Zloc, Cno, Cupdate)
+候选码：Geography (\uline{Dno}, \uline{Dupdate}, Dloc, Zloc, Cno, Cupdate)
 
 \begin{center}
 	\includegraphics[height = 5.5cm]{relation-model-7.png}
@@ -700,7 +701,7 @@ Pno $\rightarrow$ Pname, Pno $\rightarrow$ Tno \par
 
 \noindent \textbf{(2) 疫情情况} \par 
 (Cno, Cupdate) $\rightarrow$ Cname, (Cno, Cupdate) $\rightarrow$ Cstate,\\ (Cno, Cupdate) $\rightarrow$ Cloc \par
-候选码：Pandemic (\underline{Cno}, \underline{Cupdate}, Cname, Cstate, Cloc)
+候选码：Pandemic (\uline{Cno}, \uline{Cupdate}, Cname, Cstate, Cloc)
 
 \begin{center}
 	\includegraphics[height = 5.5cm]{relation-model-8.png}
@@ -708,7 +709,7 @@ Pno $\rightarrow$ Pname, Pno $\rightarrow$ Tno \par
 
 \noindent \textbf{(3) 匹配2} \par 
 (Cno, Cupdate, Pno, Pupdate) $\rightarrow$ Zpeople \par
-候选码：Match2 (\underline{Cno}, \underline{Cupdate}, \underline{Pno}, \underline{Pupdate}, Zpeople)
+候选码：Match2 (\uline{Cno}, \uline{Cupdate}, \uline{Pno}, \uline{Pupdate}, Zpeople)
 
 \begin{center}
 	\includegraphics[height = 6cm]{relation-model-9.png}
@@ -716,7 +717,7 @@ Pno $\rightarrow$ Pname, Pno $\rightarrow$ Tno \par
 
 \noindent \textbf{(4) 员工健康信息} \par 
 (Pno, Pupdate) $\rightarrow$ Pcity, (Pno, Pupdate) $\rightarrow$ Ptemp \par
-候选码：Staff Health (\underline{Pno}, \underline{Pupdate}, Pcity, Ptemp)
+候选码：Staff Health (\uline{Pno}, \uline{Pupdate}, Pcity, Ptemp)
 
 \begin{center}
 	\includegraphics[height = 3cm]{relation-model-10.png}
