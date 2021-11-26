@@ -633,6 +633,96 @@
 
 \subsection{E-R 图向关系模型的转换过程}
 
+\subsubsection{提交物流订单}
+
+\noindent \textbf{(1) 卖方} \par 
+Sno $\rightarrow$ Sname, Sno $\rightarrow$ Saddress \par 
+候选码：Seller (\underline{Sno}, Sname, Saddress) 
+
+\begin{center}
+	\includegraphics[height = 3cm]{relation-model-1.png}
+\end{center}
+
+\noindent \textbf{(2) 物流订单} \par 
+Dno $\rightarrow$ Dvalue, Dno $\rightarrow$ Dtrans, Dno $\rightarrow$ Tno, Dno $\rightarrow$ Pno, Dno $\rightarrow$ Sno \par 
+候选码：Delivery (\underline{Dno}, Dvalue, Dtrans, Tno, Pno, Sno)
+
+\begin{center}
+	\includegraphics[height = 7cm]{relation-model-2.png}
+\end{center}
+
+\noindent \textbf{(3) 物流公司} \par 
+Tno $\rightarrow$ Tname \par 
+候选码：Transportation Company (\underline{Tno}, Tname)
+
+\begin{center}
+	\includegraphics[height = 1.1cm]{relation-model-3.png}
+\end{center}
+
+\subsubsection{安排配送}
+
+\noindent \textbf{(1) 物流订单 (略)} \par 
+
+\noindent \textbf{(2) 分配} \par 
+(Tno, Pno) $\rightarrow$ Dpno \par
+候选码：Acceptance (\underline{Tno}, \underline{Pno}, Dpno)
+
+\begin{center}
+	\includegraphics[height = 3cm]{relation-model-4.png}
+\end{center}
+
+\noindent \textbf{(3) 物流人员} \par 
+Pno $\rightarrow$ Pname, Pno $\rightarrow$ Tno \par
+候选码：Staff (\underline{Pno}, Pname, Tno)
+
+\begin{center}
+	\includegraphics[height = 3cm]{relation-model-5.png}
+\end{center}
+
+\noindent \textbf{(4) 物流位置} \par 
+(Dno, Dupdate) $\rightarrow$ Dloc, (Dno, Dupdate) $\rightarrow$ Pno \par
+候选码：Geography (\underline{Dno}, \underline{Dupdate}, Dloc, Pno)
+
+\begin{center}
+	\includegraphics[height = 3cm]{relation-model-6.png}
+\end{center}
+
+\subsubsection{识别物流风险}
+
+\noindent \textbf{(1) 物流位置} \par 
+(Dno, Dupdate) $\rightarrow$ Dloc, (Dno, Dupdate) $\rightarrow$ Zloc,\\ 
+(Dno, Dupdate) $\rightarrow$ Cno, (Dno, Dupdate) $\rightarrow$ Cupdate \par
+候选码：Geography (\underline{Dno}, \underline{Dupdate}, Dloc, Zloc, Cno, Cupdate)
+
+\begin{center}
+	\includegraphics[height = 5.5cm]{relation-model-7.png}
+\end{center}
+
+\noindent \textbf{(2) 疫情情况} \par 
+(Cno, Cupdate) $\rightarrow$ Cname, (Cno, Cupdate) $\rightarrow$ Cstate,\\ (Cno, Cupdate) $\rightarrow$ Cloc \par
+候选码：Pandemic (\underline{Cno}, \underline{Cupdate}, Cname, Cstate, Cloc)
+
+\begin{center}
+	\includegraphics[height = 5.5cm]{relation-model-8.png}
+\end{center}
+
+\noindent \textbf{(3) 匹配2} \par 
+(Cno, Cupdate, Pno, Pupdate) $\rightarrow$ Zpeople \par
+候选码：Match2 (\underline{Cno}, \underline{Cupdate}, \underline{Pno}, \underline{Pupdate}, Zpeople)
+
+\begin{center}
+	\includegraphics[height = 6cm]{relation-model-9.png}
+\end{center}
+
+\noindent \textbf{(4) 员工健康信息} \par 
+(Pno, Pupdate) $\rightarrow$ Pcity, (Pno, Pupdate) $\rightarrow$ Ptemp \par
+候选码：Staff Health (\underline{Pno}, \underline{Pupdate}, Pcity, Ptemp)
+
+\begin{center}
+	\includegraphics[height = 3cm]{relation-model-10.png}
+\end{center}
+
+
 \subsection{关系模型的优化过程}
 
 \subsection{最终的关系模式}
