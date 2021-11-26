@@ -407,6 +407,7 @@
 	31 &	Dvalue 	& 物流订单金额 	& Float &	4 &	非空 \\
 	32 &	Zpeople & 配送人员风险评分 & Integer & 4 & 非空 \\
 	33 &	Zloc & 配送路线风险评分 & Integer & 4 & 非空 \\
+	34 &	Dpno & 订单分配编号 & Integer & 4 & 非空 \\
 \end{supertabular}
 \end{center}
 
@@ -427,13 +428,14 @@
 2 &	Seller User &	卖方用户信息表 & Sname &	\underline{Sno} &	Saddress \\ & Information &&&& \\
 3 &	Order  & 商品订单信息表 &	\underline{Ono} &	Otime &	Ovalue  \\
 & Information &&	Otrans & \textit{Uno} &	\textit{Sno}  \\
-4 &	Delivery &	物流订单信息表 &	\underline{Dno} &	Dvalue &	Dtrans  \\ & Information && Tno &	Pno & \textit{Sno} \\
+4 &	Delivery &	物流订单信息表 &	\underline{Dno} &	Dvalue &	Dtrans  \\ & Information && Tno &	\textit{Sno} & \\
 5 &	Staff Health &	员工健康信息表 &	\underline{Pno} &	Pcity & Ptemp \\ 
 & Information && \underline{Pupdate} && \\
 6 &	Pandemic &	疫情情况信息表 &	Cname &	\underline{Cno} &	Cstate \\	& Information &&  Cloc & \underline{Cupdate}	& \\
 7 &Staff  &	物流人员信息表 &	Pname &	\underline{Pno} &	Tname \\ & Information	& & Tno && \\
 8 &	Geographic  &	物流位置信息表 &	\underline{Dno} &	Dloc &	\underline{Dupdate} \\& Information&&&& \\
 9 & Summary & 物流订单总表 & \underline{Ono} & \textit{Dno} & Zpeople \\ & Information && Zloc && \\
+10 & Delivery & 物流订单分配表 & \underline{Dpno} & \textit{Dno} & \textit{Pno}\\ & Distribution &&&& \\
 \end{supertabular}
 \end{center}
 
@@ -494,8 +496,8 @@
 	1 &	买方上传信息 &	买方用户信息	& 买方信息查询 &	由买方授权，从电商 \\ &&&& 平台接口进行导入 \\
 	2 &	卖方上传信息 &	卖方用户信息 &	卖方信息查询 & 由卖方授权，从电商 \\ &&&& 平台接口进行导入 \\
 	3 &	电商平台上传 &	商品订单信息 &	订单查询 &	由电商平台上传订单 \\ & 信息 &&& 信息与买卖关系 \\
-	4 & 物流公司上传 & 物流订单信息  &	物流查询  &	由物流公司上传物流 \\ & 信息1 &&& 信息及卖方信息 \\
-	5 &	物流公司上传 &	物流人员信息 &	物流查询、物 &	由物流公司进行统计 \\ & 信息2 & & 流人员查询 & 上传 \\
+	4 & 卖方提交订单 & 物流订单信息  &	物流查询  &	由卖方提交物流信息 \\
+	5 &	物流公司上传 &	物流人员信息 &	物流查询、物 &	由物流公司进行统计 \\ & 信息 & & 流人员查询 & 上传 \\
 	6 &	配送人员上传 &	每日健康状况 &	配送人员健康 &	由配送人员每日上传 \\ & 信息 & 信息 & 信息 & 当日健康状况信息 \\
 	7 &	配送人员健康 &	申请查询配送 &	配送人员健康 &	根据配送人员每日健 \\ & 状况查询 & 人员健康信息 & 信息 & 康状况的统计数据，\\ &&&& 进行查询，检查配送 \\ &&&& 人员健康自检是否满 \\ &&&& 足要求 \\
 	8 &	疫情统计 &	爬取城市地区 &	疫情统计可视 &	爬取官方发布的疫情 \\ && 疫情分布情况 & 化结果 & 分布情况，分析地理 \\ && 及坐标 && 位置坐标标注 \\
@@ -580,7 +582,7 @@
 \noindent \textbf{(3) 物流订单}
 
 \begin{center}
-	\includegraphics[height = 10cm]{e-r-e3.png}
+	\includegraphics[height = 8cm]{e-r-e3.png}
 \end{center}
 
 \noindent \textbf{(4) 物流人员}
@@ -603,13 +605,25 @@
 	\includegraphics[height = 7cm]{e-r-e6.png}
 \end{center}
 
-\noindent \textbf{(7) 联系：匹配1}
+\noindent \textbf{(7) 员工健康信息}
+
+\begin{center}
+	\includegraphics[height = 7cm]{e-r-e7.png}
+\end{center}
+
+\noindent \textbf{(8) 联系：分配}
+
+\begin{center}
+	\includegraphics[height = 1.4cm]{e-r-r3.png}
+\end{center}
+
+\noindent \textbf{(9) 联系：匹配1}
 
 \begin{center}
 	\includegraphics[height = 1.5cm]{e-r-r1.png}
 \end{center}
 
-\noindent \textbf{(8) 联系：匹配2}
+\noindent \textbf{(10) 联系：匹配2}
 
 \begin{center}
 	\includegraphics[height = 1.5cm]{e-r-r2.png}
