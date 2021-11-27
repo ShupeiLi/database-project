@@ -29,7 +29,7 @@
 \setmainfont{Source Serif Pro}
 \setCJKmainfont[BoldFont=SimHei]{SimSun}
 \setCJKmonofont{SimSun}
-\geometry{a4paper, left = 2.9cm, right = 3cm, top = 2cm, bottom = 2cm, includehead}
+\geometry{a4paper, left = 2.9cm, right = 3cm, top = 2cm, bottom = 2.3cm, includehead}
 \setlength{\parindent}{2em} 
 
 \renewcommand{\baselinestretch}{1.5}
@@ -123,7 +123,7 @@
 
 \subsection{选题意义}
 
-本题将搭建疫情防控下的物流监测系统，能够一站式查询潜在的物流相关疫情风险。除此之外，基于疫情防控需求搭建起的中台能力（不同来源数据之间的关联、数据统计和可视化）可以应用到更多疫情之外的分析场景。\par 
+本题将搭建疫情防控下的物流监测系统，能够一站式查询潜在的物流相关疫情风险。除此之外，基于疫情防控需求搭建起的中台能力（不同来源数据之间的关联、数据统计和可视化）可以应用到更多疫情之外的分析场景。
 
 \subsubsection{对电商平台}
 
@@ -262,12 +262,12 @@
 
 \noindent \textbf{电商平台组织机构}
 \begin{center}
-	\includegraphics[height=8cm]{e-cormmerce_organization.png}
+	\includegraphics[height=7.8cm]{e-cormmerce_organization.png}
 \end{center}
 
 \noindent \textbf{物流公司组织机构}
 \begin{center}
-	\includegraphics[height=12cm]{logistics_organization.png}
+	\includegraphics[height=11.9cm]{logistics_organization.png}
 \end{center}
 
 \subsubsection{用户分类}
@@ -314,12 +314,12 @@
 
 \noindent \textbf{(1) 物流订单数据管理服务}
 \begin{center}
-	\includegraphics[height = 8cm]{logistics_order_mag.png}
+	\includegraphics[height = 7cm]{logistics_order_mag.png}
 \end{center}
 
 \noindent \textbf{(2) 查询特定信息服务}
 \begin{center}
-	\includegraphics[height = 6cm]{query_info.png}
+	\includegraphics[height = 6.2cm]{query_info.png}
 \end{center}
 
 \noindent \textbf{(3) 查看特定分析报告服务}
@@ -329,7 +329,7 @@
 
 \noindent \textbf{(4) 查看中高风险地区地图及相关信息服务}
 \begin{center}
-	\includegraphics[height = 4cm]{cov_map.png}
+	\includegraphics[height = 3.5cm]{cov_map.png}
 \end{center}
 
 \noindent \textbf{(5) 数据统计与可视化流程}
@@ -343,7 +343,7 @@
 \subsubsection{第一层数据流图}
 
 \begin{center}
-	\includegraphics[height = 20cm]{level-1.png}
+	\includegraphics[height = 20.5cm]{level-1.png}
 \end{center}
 
 \subsubsection{第二层数据流图}
@@ -355,7 +355,7 @@
 
 \noindent \textbf{(2) 安排配送}
 \begin{center}
-	\includegraphics[height = 13cm]{level-2.2.png}
+	\includegraphics[height = 12.5cm]{level-2.2.png}
 \end{center}
 
 \noindent \textbf{(3) 识别物流风险}
@@ -563,7 +563,7 @@
 \subsubsection{不包含属性的 E-R 图}
 
 \begin{center}
-	\includegraphics[height = 16cm]{e-r-total.png}
+	\includegraphics[height = 15.8cm]{e-r-total.png}
 \end{center}
 
 \subsubsection{每个实体和联系的属性描述}
@@ -621,13 +621,13 @@
 \noindent \textbf{(9) 联系：匹配1}
 
 \begin{center}
-	\includegraphics[height = 1.5cm]{e-r-r1.png}
+	\includegraphics[height = 1.4cm]{e-r-r1.png}
 \end{center}
 
 \noindent \textbf{(10) 联系：匹配2}
 
 \begin{center}
-	\includegraphics[height = 1.5cm]{e-r-r2.png}
+	\includegraphics[height = 1.4cm]{e-r-r2.png}
 \end{center}
 
 \section{逻辑结构设计}
@@ -637,24 +637,24 @@
 \subsubsection{提交物流订单}
 
 \noindent \textbf{(1) 卖方} \par 
-Sno $\rightarrow$ Sname, Sno $\rightarrow$ Saddress \par 
-候选码：Seller (\uline{Sno}, Sname, Saddress) 
+\noindent Sno $\rightarrow$ Sname, Sno $\rightarrow$ Saddress \par 
+\noindent 候选码：Seller (\uline{Sno}, Sname, Saddress) 
 
 \begin{center}
 	\includegraphics[height = 3cm]{relation-model-1.png}
 \end{center}
 
 \noindent \textbf{(2) 物流订单} \par 
-Dno $\rightarrow$ Dvalue, Dno $\rightarrow$ Dtrans, Dno $\rightarrow$ Tno, Dno $\rightarrow$ Pno, Dno $\rightarrow$ Sno \par 
-候选码：Delivery (\uline{Dno}, Dvalue, Dtrans, Tno, Pno, Sno)
+\noindent Dno $\rightarrow$ Dvalue, Dno $\rightarrow$ Dtrans, Dno $\rightarrow$ Tno, Dno $\rightarrow$ Pno, Dno $\rightarrow$ Sno \par 
+\noindent 候选码：Delivery (\uline{Dno}, Dvalue, Dtrans, Tno, Pno, Sno)
 
 \begin{center}
 	\includegraphics[height = 7cm]{relation-model-2.png}
 \end{center}
 
 \noindent \textbf{(3) 物流公司} \par 
-Tno $\rightarrow$ Tname \par 
-候选码：Transportation Company (\uline{Tno}, Tname)
+\noindent Tno $\rightarrow$ Tname \par 
+\noindent 候选码：Transportation Company (\uline{Tno}, Tname)
 
 \begin{center}
 	\includegraphics[height = 1.1cm]{relation-model-3.png}
@@ -665,24 +665,24 @@ Tno $\rightarrow$ Tname \par
 \noindent \textbf{(1) 物流订单 (略)} \par 
 
 \noindent \textbf{(2) 分配} \par 
-(Tno, Pno) $\rightarrow$ Dpno \par
-候选码：Acceptance (\uline{Tno}, \uline{Pno}, Dpno)
+\noindent (Tno, Pno) $\rightarrow$ Dpno \par
+\noindent 候选码：Acceptance (\uline{Tno}, \uline{Pno}, Dpno)
 
 \begin{center}
 	\includegraphics[height = 3cm]{relation-model-4.png}
 \end{center}
 
 \noindent \textbf{(3) 物流人员} \par 
-Pno $\rightarrow$ Pname, Pno $\rightarrow$ Tno \par
-候选码：Staff (\uline{Pno}, Pname, Tno)
+\noindent Pno $\rightarrow$ Pname, Pno $\rightarrow$ Tno \par
+\noindent 候选码：Staff (\uline{Pno}, Pname, Tno)
 
 \begin{center}
 	\includegraphics[height = 3cm]{relation-model-5.png}
 \end{center}
 
 \noindent \textbf{(4) 物流位置} \par 
-(Dno, Dupdate) $\rightarrow$ Dloc, (Dno, Dupdate) $\rightarrow$ Pno \par
-候选码：Geography (\uline{Dno}, \uline{Dupdate}, Dloc, Pno)
+\noindent (Dno, Dupdate) $\rightarrow$ Dloc, (Dno, Dupdate) $\rightarrow$ Pno \par
+\noindent 候选码：Geography (\uline{Dno}, \uline{Dupdate}, Dloc, Pno)
 
 \begin{center}
 	\includegraphics[height = 3cm]{relation-model-6.png}
@@ -691,33 +691,33 @@ Pno $\rightarrow$ Pname, Pno $\rightarrow$ Tno \par
 \subsubsection{识别物流风险}
 
 \noindent \textbf{(1) 物流位置} \par 
-(Dno, Dupdate) $\rightarrow$ Dloc, (Dno, Dupdate) $\rightarrow$ Zloc,\\ 
-(Dno, Dupdate) $\rightarrow$ Cno, (Dno, Dupdate) $\rightarrow$ Cupdate \par
-候选码：Geography (\uline{Dno}, \uline{Dupdate}, Dloc, Zloc, Cno, Cupdate)
+\noindent (Dno, Dupdate) $\rightarrow$ Dloc, (Dno, Dupdate) $\rightarrow$ Zloc,\\ 
+\noindent (Dno, Dupdate) $\rightarrow$ Cno, (Dno, Dupdate) $\rightarrow$ Cupdate \par
+\noindent 候选码：Geography (\uline{Dno}, \uline{Dupdate}, Dloc, Zloc, Cno, Cupdate)
 
 \begin{center}
 	\includegraphics[height = 5.5cm]{relation-model-7.png}
 \end{center}
 
 \noindent \textbf{(2) 疫情情况} \par 
-(Cno, Cupdate) $\rightarrow$ Cname, (Cno, Cupdate) $\rightarrow$ Cstate,\\ (Cno, Cupdate) $\rightarrow$ Cloc \par
-候选码：Pandemic (\uline{Cno}, \uline{Cupdate}, Cname, Cstate, Cloc)
+\noindent (Cno, Cupdate) $\rightarrow$ Cname, (Cno, Cupdate) $\rightarrow$ Cstate,\\ \noindent (Cno, Cupdate) $\rightarrow$ Cloc \par
+\noindent 候选码：Pandemic (\uline{Cno}, \uline{Cupdate}, Cname, Cstate, Cloc)
 
 \begin{center}
 	\includegraphics[height = 5.5cm]{relation-model-8.png}
 \end{center}
 
 \noindent \textbf{(3) 匹配2} \par 
-(Cno, Cupdate, Pno, Pupdate) $\rightarrow$ Zpeople \par
-候选码：Match2 (\uline{Cno}, \uline{Cupdate}, \uline{Pno}, \uline{Pupdate}, Zpeople)
+\noindent (Cno, Cupdate, Pno, Pupdate) $\rightarrow$ Zpeople \par
+\noindent 候选码：Match2 (\uline{Cno}, \uline{Cupdate}, \uline{Pno}, \uline{Pupdate}, Zpeople)
 
 \begin{center}
 	\includegraphics[height = 6cm]{relation-model-9.png}
 \end{center}
 
 \noindent \textbf{(4) 员工健康信息} \par 
-(Pno, Pupdate) $\rightarrow$ Pcity, (Pno, Pupdate) $\rightarrow$ Ptemp \par
-候选码：Staff Health (\uline{Pno}, \uline{Pupdate}, Pcity, Ptemp)
+\noindent (Pno, Pupdate) $\rightarrow$ Pcity, (Pno, Pupdate) $\rightarrow$ Ptemp \par
+\noindent 候选码：Staff Health (\uline{Pno}, \uline{Pupdate}, Pcity, Ptemp)
 
 \begin{center}
 	\includegraphics[height = 3cm]{relation-model-10.png}
@@ -725,6 +725,117 @@ Pno $\rightarrow$ Pname, Pno $\rightarrow$ Tno \par
 
 
 \subsection{关系模型的优化过程}
+
+\subsubsection{提交物流订单}
+
+\noindent \textbf{(1) 卖方} \par 
+\noindent \textbf{关系模式：} Seller(\uline{Sno}, Sname, Saddress) \par 
+\noindent \textbf{范式：} Seller $\in$ BCNF \par 
+\begin{itemize}
+	\item 关系模式Seller(\uline{Sno}, Sname, Saddress)只有一个码Sno，没有任何属性对Sno部分依赖或传递依赖，所以Seller $\in$ 3NF
+	\item 同时Seller中Sno是唯一决定因素，所以Seller $\in$ BCNF
+\end{itemize}
+\textbf{函数依赖：} Sno $\rightarrow$ Sname, Sno $\rightarrow$ Saddress
+
+\vspace{0.3cm}
+\noindent \textbf{(2) 物流订单} \par 
+\noindent \textbf{关系模式：} Delivery(\uline{Dno}, Dvalue, Dtrans, Tno, Pno, Sno) \par 
+\noindent \textbf{范式：} Delivery $\in$ BCNF \par 
+\begin{itemize}
+	\item 关系模式Delivery(\uline{Dno}, Dvalue, Dtrans, Tno, Pno, Sno)只有一个码Dno，没有任何属性对Dno部分依赖或传递依赖，所以Delivery $\in$ 3NF
+	\item 同时Delivery中Dno是唯一决定因素，所以Delivery $\in$ BCNF
+\end{itemize}
+\textbf{函数依赖：} Dno $\rightarrow$ Dvalue, Dno $\rightarrow$ Dtrans, Dno $\rightarrow$ Tno, Dno $\rightarrow$ Pno, Dno $\rightarrow$ Sno
+
+\vspace{0.3cm}
+\noindent \textbf{(3) 物流公司} \par 
+\noindent \textbf{关系模式：} Transportation Company(\uline{Tno}, Tname) \par 
+\noindent \textbf{范式：} Transportation Company $\in$ BCNF \par 
+\begin{itemize}
+	\item 关系模式Transportation Company(\uline{Tno}, Tname)只有一个码Tno，没有任何属性对Tno部分依赖或传递依赖，所以Transportation Company $\in$ 3NF
+	\item 同时Transportation Company中Tno是唯一决定因素，所以Transportation Company $\in$ BCNF
+\end{itemize}
+\textbf{函数依赖：} Tno $\rightarrow$ Tname
+
+\subsubsection{安排配送}
+\noindent \textbf{(1) 物流订单 (略)} 
+
+\vspace{0.3cm}
+\noindent \textbf{(2) 分配} \par 
+\noindent \textbf{关系模式：} Acceptance(\uline{Tno}, \uline{Pno}, Dpno) \par 
+\noindent \textbf{范式：} Acceptance $\in$ BCNF \par 
+\begin{itemize}
+	\item 关系模式Acceptance(\uline{Tno}, \uline{Pno}, Dpno)有Tno和Pno两个码，这两个码都由单个属性组成，彼此不相交
+	\item 其他属性不存在对码的部分依赖或传递依赖，所以Acceptance $\in$ 3NF
+	\item 同时Acceptance中除Tno, Pno外没有其他决定因素，所以Acceptance $\in$ BCNF
+\end{itemize}
+\textbf{函数依赖：} (Tno, Pno) $\rightarrow$ Dpno
+
+\vspace{0.3cm}
+\noindent \textbf{(3) 物流人员} \par 
+\noindent \textbf{关系模式：} Staff(\uline{Pno}, Pname, Tno) \par 
+\noindent \textbf{范式：} Staff $\in$ BCNF \par 
+\begin{itemize}
+	\item 关系模式Staff(\uline{Pno}, Pname, Tno)只有一个码Pno，没有任何属性对Pno部分依赖或传递依赖，所以Staff $\in$ 3NF
+	\item 同时Staff中Pno是唯一决定因素，所以Staff $\in$ BCNF
+\end{itemize}
+\textbf{函数依赖：} Pno $\rightarrow$ Pname, Pno $\rightarrow$ Tno
+
+\vspace{0.3cm}
+\noindent \textbf{(4) 物流位置} \par 
+\noindent \textbf{关系模式：} Geography(\uline{Dno}, \uline{Dupdate}, Dloc, Pno) \par 
+\noindent \textbf{范式：} Geography $\in$ BCNF \par 
+\begin{itemize}
+	\item 关系模式Geography(\uline{Dno}, \uline{Dupdate}, Dloc, Pno)有Dno和Dupdate两个码，这两个码都由单个属性组成，彼此不相交
+	\item 其他属性不存在对码的部分依赖或传递依赖，所以Geography $\in$ 3NF
+	\item 同时Geography中除Dno, Dupdate外没有其他决定因素，所以Geography $\in$ BCNF
+\end{itemize}
+\textbf{函数依赖：} (Dno, Dupdate) $\rightarrow$ Dloc, (Dno, Dupdate) $\rightarrow$ Pno
+
+\subsubsection{识别物流风险}
+
+\noindent \textbf{(1) 物流位置} \par 
+\noindent \textbf{关系模式：} Geography(\uline{Dno}, \uline{Dupdate}, Dloc, Zloc, Cno, Cupdate) \par 
+\noindent \textbf{范式：} Geography $\in$ BCNF \par
+\begin{itemize}
+	\item 关系模式Geography(\uline{Dno}, \uline{Dupdate}, Dloc, Zloc, Cno, Cupdate)有Dno和Dupdate两个码，这两个码都由单个属性组成，彼此不相交
+	\item 其他属性不存在对码的部分依赖或传递依赖，所以Geography $\in$ 3NF
+	\item 同时Geography中除Dno, Dupdate外没有其他决定因素，所以Geography $\in$ BCNF
+\end{itemize} 
+\textbf{函数依赖：} (Dno, Dupdate) $\rightarrow$ Dloc, (Dno, Dupdate) $\rightarrow$ Zloc, (Dno, Dupdate) $\rightarrow$ Cno, (Dno, Dupdate) $\rightarrow$ Cupdate
+
+\vspace{0.3cm}
+\noindent \textbf{(2) 疫情情况} \par 
+\noindent \textbf{关系模式：} Pandemic(\uline{Cno}, \uline{Cupdate}, Cname, Cstate, Cloc) \par 
+\noindent \textbf{范式：} Pandemic $\in$ BCNF \par 
+\begin{itemize}
+	\item 关系模式Pandemic(\uline{Cno}, \uline{Cupdate}, Cname, Cstate, Cloc)有Cno和Cupdate两个码，这两个码都由单个属性组成，彼此不相交
+	\item 其他属性不存在对码的部分依赖或传递依赖，所以Pandemic $\in$ 3NF
+	\item 同时Pandemic中除Cno, Cupdate外没有其他决定因素，所以Pandemic $\in$ BCNF
+\end{itemize}
+\textbf{函数依赖：} (Cno, Cupdate) $\rightarrow$ Cname, (Cno, Cupdate) $\rightarrow$ Cstate, (Cno, Cupdate) $\rightarrow$ Cloc
+
+\vspace{0.3cm}
+\noindent \textbf{(3) 匹配2} \par 
+\noindent \textbf{关系模式：} Match2(\uline{Cno}, \uline{Cupdate}, \uline{Pno}, \uline{Pupdate}, Zpeople) \par 
+\noindent \textbf{范式：} Match2 $\in$ BCNF \par 
+\begin{itemize}
+	\item 关系模式Match2(\uline{Cno}, \uline{Cupdate}, \uline{Pno}, \uline{Pupdate}, Zpeople)有Cno, Cupdate, Pno, Pupdate四个码，这四个码都由单个属性组成，彼此不相交
+	\item 其他属性不存在对码的部分依赖或传递依赖，所以Match2 $\in$ 3NF
+	\item 同时Match2中除Cno, Cupdate, Pno, Pupdate外没有其他决定因素，所以Match2 $\in$ BCNF
+\end{itemize}
+\textbf{函数依赖：} (Cno, Cupdate, Pno, Pupdate) $\rightarrow$ Zpeople
+
+\vspace{0.3cm}
+\noindent \textbf{(4) 员工健康信息} \par 
+\noindent \textbf{关系模式：} Staff Health(\uline{Pno}, \uline{Pupdate}, Pcity, Ptemp) \par 
+\noindent \textbf{范式：} Staff Health $\in$ BCNF \par
+\begin{itemize}
+	\item 关系模式Staff Health(\uline{Pno}, \uline{Pupdate}, Pcity, Ptemp)有Pno和Pupdate两个码，这两个码都由单个属性组成，彼此不相交
+	\item 其他属性不存在对码的部分依赖或传递依赖，所以Staff Health $\in$ 3NF
+	\item 同时Staff Health中除Pno, Pupdate外没有其他决定因素，所以Staff Health $\in$ BCNF
+\end{itemize} 
+\textbf{函数依赖：} (Pno, Pupdate) $\rightarrow$ Pcity, (Pno, Pupdate) $\rightarrow$ Ptemp
 
 \subsection{最终的关系模式}
 
