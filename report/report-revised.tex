@@ -839,6 +839,146 @@
 
 \subsection{最终的关系模式}
 
+\noindent \textbf{(1)} Seller(\uline{Sno}, Sname, Saddress)
+
+\begin{center}
+	\begin{tabular}{lllll}
+		\toprule
+		Sno &	卖方编号 &	Integer &	4 &	非空，卖方信息表主码 \\
+		Sname &	卖方名称 &	Char &	30 &	非空 \\
+		Saddress &	卖方仓储位置 &	Char &	30 &	非空 \\
+		\bottomrule
+	\end{tabular}
+\end{center}
+
+\vspace{0.5cm}
+\noindent \textbf{(2)} Delivery(\uline{Dno}, Dvalue, Dtrans, Tno, Pno, Sno)
+
+\begin{center}
+	\begin{tabular}{lllll}
+		\toprule
+		Dno &	物流单号 &	Integer &	4 &	非空 \\
+		Dvalue &	物流订单金额 &	Float &	4 &	非空 \\
+		Dtrans &	物流运送方式 &	Char &	30 &	非空 \\
+		Tno &	货运公司编号 &	Integer &	4 &	非空 \\
+		Pno &	配送人员编号 &	Integer &	4 &	非空 \\
+		Sno &	卖方编号 &	Integer &	4 &	非空 \\
+		\bottomrule
+	\end{tabular}
+\end{center}
+
+\vspace{0.5cm}
+\noindent \textbf{(3)} Transportation Company(\uline{Tno}, Tname)
+
+\begin{center}
+	\begin{tabular}{lllll}
+		\toprule
+		Tno &	货运公司编号 &	Integer &	4 &	非空 \\
+		Tname &	货运公司名称 &	Char &	30 &	非空 \\
+		\bottomrule
+	\end{tabular}
+\end{center}
+
+\vspace{0.5cm}
+\noindent \textbf{(4)} Acceptance(\uline{Tno}, \uline{Pno}, Dpno)
+
+\begin{center}
+	\begin{tabular}{lllll}
+		\toprule
+		Tno &	货运公司编号 &	Integer &	4 &	非空 \\
+		Pno &	配送人员编号 &	Integer &	4 &	非空 \\
+		Dpno &	配送订单号 &	Integer &	4 &	非空 \\
+		\bottomrule
+	\end{tabular}
+\end{center}
+
+\vspace{0.5cm}
+\noindent \textbf{(5)} Staff(\uline{Pno}, Pname, Tno)
+
+\begin{center}
+	\begin{tabular}{lllll}
+		\toprule
+		Pno &	配送人员编号 &	Integer &	4 &	非空 \\
+		Pname &	配送人员姓名 &	Char &	30 &	非空 \\
+		Tno &	货运公司编号 &	Integer &	4 &	非空 \\
+		\bottomrule
+	\end{tabular}
+\end{center}
+
+\vspace{0.5cm}
+\noindent \textbf{(6)} Geography(\uline{Dno}, \uline{Dupdate}, Dloc, Pno)
+
+\begin{center}
+	\begin{tabular}{lllll}
+		\toprule
+		Dno &	物流单号 &	Integer &	4 &	非空 \\
+		Dupdate &	物流更新时间 &	Date &	3 &	非空 \\
+		Dloc &	物流所在位置 &	Integer &	4 &	非空 \\
+		Pno &	配送人员编号 &	Integer &	4 &	非空 \\
+		\bottomrule
+	\end{tabular}
+\end{center}
+
+\vspace{0.5cm}
+\noindent \textbf{(7)} Geography(\uline{Dno}, \uline{Dupdate}, Dloc, Zloc, Cno, Cupdate)
+
+\begin{center}
+	\begin{tabular}{lllll}
+		\toprule
+		Dno &	物流单号 &	Integer &	4 &	非空 \\
+		Dupdate &	物流更新时间 &	Date &	3 &	非空 \\
+		Dloc &	物流所在位置 &	Integer &	4 &	非空 \\
+		Zloc &	配送路线风险评分 &	Integer &	4 &	非空 \\
+		Cno &	城市编号 &	Integer &	4 &	非空 \\
+		Cupdate &	城市疫情更新时间 &	Date &	3 &	非空 \\
+		\bottomrule
+	\end{tabular}
+\end{center}
+
+\vspace{0.5cm}
+\noindent \textbf{(8)} Pandemic(\uline{Cno}, \uline{Cupdate}, Cname, Cstate, Cloc)
+
+\begin{center}
+	\begin{tabular}{lllll}
+		\toprule
+		Cno &	城市编号 &	Integer &	4 &	非空 \\
+		Cupdate &	城市疫情更新时间 &	Date &	3 &	非空 \\
+		Cname &	城市名称 &	Char &	30 &	非空 \\
+		Cstate &	城市疫情状况 &	Tinyint &	1 &	非空，0、1、2分别代表 \\ &&&& 低中高风险 \\
+		Cloc &	城市坐标 &	Float &	4 &	非空 \\
+		\bottomrule
+	\end{tabular}
+\end{center}
+
+\vspace{0.5cm}
+\noindent \textbf{(9)} Match2(\uline{Cno}, \uline{Cupdate}, \uline{Pno}, \uline{Pupdate}, Zpeople)
+
+\begin{center}
+	\begin{tabular}{lllll}
+		\toprule
+		Cno &	城市编号 &	Integer &	4 &	非空 \\
+		Cupdate &	城市疫情更新时间 &	Date &	3 &	非空 \\
+		Pno &	配送人员编号 &	Integer &	4 &	非空 \\
+		Pupdate &	人员体温更新时间 &	Date &	3 &	非空 \\
+		Zpeople &	配送人员风险评分 &	Integer &	4 &	非空 \\
+		\bottomrule
+	\end{tabular}
+\end{center}
+
+\vspace{0.5cm}
+\noindent \textbf{(10)} Staff Health(\uline{Pno}, \uline{Pupdate}, Pcity, Ptemp)
+
+\begin{center}
+	\begin{tabular}{lllll}
+		\toprule
+		Pno &	配送人员编号 &	Integer &	4 &	非空 \\
+		Pupdate &	人员体温更新时间 &	Date &	3 &	非空 \\
+		Pcity &	配送人员今日途经城市 &	Char &	30 &	非空 \\
+		Ptemp &	配送人员体温 &	Float &	4 &	非空 \\
+		\bottomrule
+	\end{tabular}
+\end{center}
+
 \subsection{设计用户的子模式}
 
 \section{数据库实施}
