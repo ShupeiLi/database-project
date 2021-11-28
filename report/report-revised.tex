@@ -1,7 +1,8 @@
 \documentclass[12pt]{article}
 
 \usepackage{geometry}
-\usepackage{hyperref}
+\usepackage[hidelinks, bookmarks = true]{hyperref}
+\usepackage[numbered]{bookmark}
 \usepackage{titling}
 \usepackage{titlesec}
 \usepackage{fontspec}
@@ -38,24 +39,18 @@
 		目\phantom{空格}录
 }
 
-\hypersetup{
-	linktocpage,
-	colorlinks = true,
-	linkcolor = black,
-	filecolor = magenta,
-	citecolor = magenta
-}
-
 \titlecontents{section}[2.3em]
 {}
 {\bfseries\contentslabel[\thecontentslabel]{1.5em}\MakeUppercase}
 {\hspace*{-2.3em}\bfseries\MakeUppercase}
 {\titlerule*[1pc]{.}\contentspage}
+
 \titlecontents{subsection}[4.6em]
 {}
 {\bfseries\contentslabel{2em}}
 {\hspace*{-2.3em}\bfseries}
 {\titlerule*[1pc]{.}\contentspage}
+
 \titlecontents{subsubsection}[6.9em]
 {}
 {\bfseries\contentslabel{2.5em}\itshape\space}
@@ -981,10 +976,44 @@
 
 \subsection{设计用户的子模式}
 
+\subsubsection{电商平台的查询视图：商品订单-疫情相关信息报表}
+
+\noindent \textbf{(1)商品订单的基本信息} \par 
+\noindent Application-Ecommerce1(卖方编号，卖方名称，卖方仓储位置，物流单号，物流订单金额，物流运送方式，货运公司名称，物流更新时间，物流所在位置，配送人员姓名，配送人员体温)
+
+\subsubsection{物流公司的查询视图：物流运输-疫情相关信息报表}
+
+\noindent \textbf{(1)物流订单的基本信息} \par 
+\noindent Application-Delivery1(卖方编号，卖方名称，卖方仓储位置，物流单号，物流订单金额，物流运送方式，货运公司编号，货运公司名称，配送订单号，配送人员编号，配送人员姓名，物流更新时间，物流所在位置，配送路线风险评分)
+
+\vspace{0.3cm}
+\noindent \textbf{(2)城市的疫情相关信息} \par 
+\noindent Application-Delivery2(城市编号，城市名称，城市疫情状况，城市疫情更新时间，经过该城市的配送人员编号，经过该城市的配送人员编号，配送人员经过该城市的时间，经过该城市的物流单号，物流订单经过该城市的时间)
+
+\vspace{0.3cm}
+\noindent \textbf{(3)配送人员的基本信息} \par 
+\noindent Application-Delivery3(配送人员编号，配送人员姓名，配送人员体温，人员体温更新时间，配送人员途经城市，配送人员途经城市疫情情况，途径城市疫情更新时间，配送人员配送过/正在配送的物流订单号)
+
+\subsubsection{卖家的查询视图：卖家订单-物流相关信息报表}
+
+\noindent \textbf{(1)卖家订单的基本信息} \par 
+\noindent Application-Seller1(卖方编号，卖方名称，卖方仓储位置，物流单号，物流订单金额，物流运送方式，货运公司名称，物流更新时间，物流所在位置)
+
+\vspace{0.3cm}
+\noindent \textbf{(2)卖家订单的疫情相关信息} \par 
+\noindent Application-Seller2(物流单号，物流运送方式，货运公司名称，配送人员名称，配送人员体温，人员体温更新时间，配送人员途经城市，途径城市疫情更新时间)
+
+\subsubsection{买家的查询视图：买家订单-物流相关疫情信息报表}
+
+\noindent \textbf{(1)买家订单的基本信息} \par 
+\noindent Application-Buyer1(卖方名称，卖方仓储位置，物流单号，物流订单金额，物流运送方式，货运公司名称，物流更新时间，物流所在位置，配送人员姓名，配送人员体温)
+
+\vspace{0.3cm}
+\noindent \textbf{(2)买家订单的疫情相关信息} \par 
+\noindent Application-Buyer2(卖方名称，卖方仓储位置，物流单号，物流订单金额，物流运送方式，货运公司名称，物流更新时间，物流所在位置，配送人员姓名，配送人员体温，配送人员经过的城市，配送人员经过该城市的时间，配送人员经过城市的疫情状况)
+
 \section{数据库实施}
-
-\subsection{环境和配置}
-
+%\subsection{环境和配置}
 \section{相关程序演示}
 \section{总结}
 
