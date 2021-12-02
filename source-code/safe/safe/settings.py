@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 
 from pathlib import Path
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -37,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'DBUser',
 ]
 
 MIDDLEWARE = [
@@ -54,7 +56,7 @@ ROOT_URLCONF = 'safe.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -78,7 +80,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'safe', # 需要先在电脑上创建名为 safe 的 MySQL 数据库
         'USER': 'root', # 改为自己电脑上的 MySQL 用户名
-        'PASSWORD': 'ShupeiLi', # 改为自己电脑上的 MySQL 密码
+        'PASSWORD': '123456', # 改为自己电脑上的 MySQL 密码
         'HOST': 'localhost',
         'PORT': '3306',
         'OPTION': {'default-character-set': "utf8"},

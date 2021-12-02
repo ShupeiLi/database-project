@@ -1,4 +1,5 @@
 import hashlib
+from DBUser.models import DBUser
 from django.shortcuts import render
 from django.shortcuts import HttpResponseRedirect
 
@@ -20,14 +21,16 @@ def login(request):
         userType = request.POST.get("userType")
         username = request.POST.get("username")
         password = request.POST.get("password")
-        # e = OAUser.objects.filter(email=email).first()
+        e = DBUser.objects.filter().first()
         if e:
             now_password = setPassword(password)
             db_password = e.password
-            if now_password == db_password:
-                response = HttpResponseRedirect('/index/')
-                response.set_cookie("username", e.username)
+            if now_password == db_password:  # 密码正确
+                response = HttpResponseRedirect('/index/')  # 跳转至新的页面
+                response.set_cookie("username", e.username)  #
                 return response
+            else:  # 密码错误
+                pass
 
     return render(request, "login.html")
 
