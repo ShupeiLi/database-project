@@ -18,7 +18,7 @@
             <h1 class="text-center">please login here</h1>
             <form class="form-horizontal" action="/login/" method="post">
                 <div class="form-group">
-                    <select name="userType">
+                    <select name="usertype">
                     	<option value="buyer">买方</option>
                     	<option value="seller">卖方</option>
                     	<option value="tfcompany">物流公司</option>
@@ -44,8 +44,7 @@
                         <button type="submit" class="btn btn-primary btn-block">登录</button>
                     </div>
                 </div>
-                <p class="text-danger text-center">{{ error }}</p>
-
+                <p>{{ rlt }}</p>
             </form>
 
         </div>

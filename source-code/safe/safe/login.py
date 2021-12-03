@@ -17,21 +17,22 @@ def setPassword(password):
 
 
 def login(request):
+    ctx = {}
     if request.method == 'POST' and request.POST:
-        userType = request.POST.get("userType")
+        usertype = request.POST.get("usertype")
         username = request.POST.get("username")
         password = request.POST.get("password")
-        e = DBUser.objects.filter().first()
-        if e:
-            now_password = setPassword(password)
-            db_password = e.password
-            if now_password == db_password:  # 密码正确
-                response = HttpResponseRedirect('/index/')  # 跳转至新的页面
-                response.set_cookie("username", e.username)  #
+        user = DBUser.objects.get(usertype=usertype, username=username)
+        if user:  # username == "18307100100"
+            # now_password = setPassword(password)
+            db_password = user.password
+            if password == db_password:  # 密码正确
+                response = HttpResponseRedirect('/buyer_main/')  # 跳转至新的页面
+                response.set_cookie("username", username)  #
                 return response
             else:  # 密码错误
-                pass
+                ctx['rlt'] = "用户或密码错误！"
 
-    return render(request, "login.html")
+    return render(request, "login.html", ctx)
 
 
