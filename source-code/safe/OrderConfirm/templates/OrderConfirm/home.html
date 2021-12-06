@@ -1,0 +1,132 @@
+{% extends 'OrderConfirm/index.html' %}
+
+{% block title %}首页{% endblock %}
+
+{% block content %}
+
+    <div style="height: 30px;"></div>
+    <div class="container-fluid">
+{#        卡片#}
+        <div style="height: 100px;"></div>
+        <div class="row">
+            <div class="col-md-3">
+                <div class="card bg-light shadow text-center">
+                    <div class="card-header">
+                        <h3 class="card-title">订单总数</h3>
+                    </div>
+                    <div class="card-body">
+                        <h3>{{ order_count }}</h3>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card bg-light shadow text-center">
+                    <div class="card-header">
+                        <h3 class="card-title">已确认订单</h3>
+                    </div>
+                    <div class="card-body">
+                        <h3>{{ order_c_count }}</h3>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card bg-light shadow text-center">
+                    <div class="card-header">
+                        <h3 class="card-title">未确认订单</h3>
+                    </div>
+                    <div class="card-body">
+                        <h3>{{ order_p_count }}</h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div style="height: 10px;"></div>
+    <hr>
+    <div style="height: 10px;"></div>
+
+
+    <div style="height: 10px;"></div>
+    <hr>
+    <div style="height: 10px;"></div>
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-6 text-center">
+                <h4>订单详情</h4>
+                <table class="table">
+                    <thead class="thead-light">
+                        <tr>
+                            <th scope="col">物流单号</th>
+                            <th scope="col">物流订单金额</th>
+                            <th scope="col">物流运送方式</th>
+                            <th scope="col">物流公司编号</th>
+                            <th scope="col">卖方编号</th>
+                            <th scope="col">购买时间</th>
+                            <th scope="col">订单状态</th>
+                            <th scope="col">更新</th>
+                            <th scope="col">删除</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for j in order %}
+                            <tr>
+                                <td>{{ j.Dno }}</td>
+                                <td>{{ j.Dvalue }}</td>
+                                <td>{{ j.Dtrans }}</td>
+                                <td>{{ j.Tno }}</td>
+                                <td>{{ j.Sno }}</td>
+                                <td>{{ j.time_created }}</td>
+                                <td>{{ j.status }}</td>
+                                <td>
+                                    <a href="{% url 'updateorder' j.id %}" class="btn btn-sm btn-warning">更新</a>
+                                </td>
+                                <td>
+                                    <!--<a href="{% url 'deleteorder' j.id %}" class="btn btn-sm btn-danger">remove</a>-->
+                                    <button type="button" id="{{ j.id }}-del" class="btn btn-sm btn-danger">删除</button>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block javascript %}
+
+    <script>
+        {% for j in order %}
+            $(document).ready(function(){
+                $('#{{ j.id }}-del').click(function(){
+                    var r = confirm("你确定要删除这个订单吗？")
+                    if(r){
+                        $.ajaxSetup({
+                            data: {
+                                csrfmiddlewaretoken: '{{ csrf_token }}'
+                            }
+                        })
+                        $.ajax({
+                            type: 'POST',
+                            url: "{% url 'homepage' %}",
+                            data: {
+                                'order_del': {{ j.id }}
+                            },
+                            dataType: 'text',
+                            success: function(){
+                                window.location.reload()
+                            },
+                            error: function(){
+                                console.log("Somewhere is wrong!")
+                            }
+                        })
+                    }
+                })
+            })
+        {% endfor %}
+    </script>
+
+{% endblock %}
