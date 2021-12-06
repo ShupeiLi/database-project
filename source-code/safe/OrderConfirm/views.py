@@ -4,6 +4,7 @@ from django.shortcuts import render, redirect
 from .models import Order
 from .forms import OrderForm
 
+
 def homepage(request):
     """
     Show the number and details of the orders
@@ -14,11 +15,18 @@ def homepage(request):
     order_p_count = Order.objects.filter(status='Pending').count()
     order_c_count = Order.objects.filter(status='Confirmed').count()
 
+    if request.is_ajax and request.POST.get('order_del'):
+        del_order_id = request.POST.get('order_del')
+        del_order = Order.objects.get(id = del_order_id)
+        del_order.delete()
+
     context = {
         'order_count': order_count,
         'order_p_count': order_p_count,
         'order_c_count': order_c_count,
+        'order': order,
     }
+    
     return render(request, 'OrderConfirm/home.html', context)
 
 
