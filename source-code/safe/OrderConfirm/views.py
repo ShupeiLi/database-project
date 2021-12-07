@@ -7,13 +7,13 @@ from .forms import OrderForm
 
 def homepage(request):
     """
-    Show the number and details of the orders
+    Show the number of different orders and the details
     """
     order = Order.objects.all()
     order_count = order.count()
 
-    order_p_count = Order.objects.filter(status='Pending').count()
-    order_c_count = Order.objects.filter(status='Confirmed').count()
+    order_p_count = Order.objects.filter(status='pending').count()
+    order_c_count = Order.objects.filter(status='confirmed').count()
 
     if request.is_ajax and request.POST.get('order_del'):
         del_order_id = request.POST.get('order_del')
@@ -42,13 +42,12 @@ def update_order(request, pk):
         if order_form.is_valid():
             Dno_get = order_form.cleaned_data['Dno']
             Dvalue_get = order_form.cleaned_data['Dvalue']
-            Dtrans_get = order_form.cleaned_data['Dtrans']
             Tno_get = order_form.cleaned_data['Tno']
             Sno_get = order_form.cleaned_data['Sno']
             status_get = order_form.cleaned_data['status']
             order = Order.objects.filter(id=pk)
-            order.update(id=pk, Dno=Dno_get, Dvalue=Dvalue_get, Dtrans=Dtrans_get, Tno=Tno_get, Sno=Sno_get, status=status_get)
-            return redirect('homepage')
+            order.update(id=pk, Dno=Dno_get, Dvalue=Dvalue_get, Tno=Tno_get, Sno=Sno_get, status=status_get)
+            return redirect('orderconfirm')
 
     context = {
         'order': order,
@@ -59,13 +58,13 @@ def update_order(request, pk):
 
 def delete_order(request, pk):
     """
-    Post whether to delete this order
+    Post whether to delete the order
     """
     order = Order.objects.get(id=pk)
 
     if request.method == 'POST':
         order.delete()
-        return redirect('homepage')
+        return redirect('orderconfirm')
 
     context = {
         'order': order,

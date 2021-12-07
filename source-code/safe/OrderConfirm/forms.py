@@ -11,16 +11,11 @@ class OrderForm(ModelForm):
         labels = {
             'Dno': '物流单号',
             'Dvalue': '物流订单金额',
-            'Dtrans': '物流运送方式',
+            'Tno': '物流公司编号',
+            'Sno': '卖家编号',
             'status': '订单状态'
         }
         widgets = {
-            'customer': forms.Select(attrs={
-                'class': 'form-control',
-            }),
-            'product': forms.Select(attrs={
-                'class': 'form-control',
-            }),
             'status': forms.Select(attrs={
                 'class': 'form-control',
             })

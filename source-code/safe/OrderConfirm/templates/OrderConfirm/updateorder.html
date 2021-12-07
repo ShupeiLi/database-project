@@ -8,7 +8,7 @@
         <div class="row">
             <div class="col-md-4"></div>
             <div class="col-md-4">
-                <div style="height: 100px;"></div>
+                <div style="height: 50px;"></div>
                 <div class="card shadow">
                     <div class="card-header text-center text-light bg-dark">
                         <h3 class="card-title">Update Order</h3>
@@ -16,7 +16,7 @@
                     <div class="card-body">
                         <form action="{% url 'updateorder' order.id %}" method="post">
                             {% csrf_token %}
-                            {{ o_form.as_p }}
+                            {{ order_form.as_p }}
                             <div class="text-center">
                                 <button type="submit" class="btn btn-primary">提交</button>
                             </div>

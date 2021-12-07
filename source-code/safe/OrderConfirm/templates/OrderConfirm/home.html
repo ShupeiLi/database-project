@@ -4,12 +4,12 @@
 
 {% block content %}
 
-    <div style="height: 30px;"></div>
+    <div style="height: 10px;"></div>
     <div class="container-fluid">
 {#        卡片#}
-        <div style="height: 100px;"></div>
+        <div style="height: 10px;"></div>
         <div class="row">
-            <div class="col-md-3">
+            <div class="col-md-4">
                 <div class="card bg-light shadow text-center">
                     <div class="card-header">
                         <h3 class="card-title">订单总数</h3>
@@ -19,7 +19,17 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-3">
+            <div class="col-md-4">
+                <div class="card bg-light shadow text-center">
+                    <div class="card-header">
+                        <h3 class="card-title">待确认订单</h3>
+                    </div>
+                    <div class="card-body">
+                        <h3>{{ order_p_count }}</h3>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
                 <div class="card bg-light shadow text-center">
                     <div class="card-header">
                         <h3 class="card-title">已确认订单</h3>
@@ -29,22 +39,8 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-3">
-                <div class="card bg-light shadow text-center">
-                    <div class="card-header">
-                        <h3 class="card-title">未确认订单</h3>
-                    </div>
-                    <div class="card-body">
-                        <h3>{{ order_p_count }}</h3>
-                    </div>
-                </div>
-            </div>
         </div>
     </div>
-
-    <div style="height: 10px;"></div>
-    <hr>
-    <div style="height: 10px;"></div>
 
 
     <div style="height: 10px;"></div>
@@ -53,16 +49,15 @@
 
     <div class="container-fluid">
         <div class="row">
-            <div class="col-md-11 text-center">
+            <div class="col-md-12 text-center">
                 <h4>订单详情</h4>
                 <table class="table">
                     <thead class="thead-light">
                         <tr>
                             <th scope="col">物流单号</th>
                             <th scope="col">物流订单金额</th>
-                            <th scope="col">物流运送方式</th>
                             <th scope="col">物流公司编号</th>
-                            <th scope="col">卖方编号</th>
+                            <th scope="col">卖家编号</th>
                             <th scope="col">购买时间</th>
                             <th scope="col">订单状态</th>
                             <th scope="col">更新</th>
@@ -74,7 +69,6 @@
                             <tr>
                                 <td>{{ j.Dno }}</td>
                                 <td>{{ j.Dvalue }}</td>
-                                <td>{{ j.Dtrans }}</td>
                                 <td>{{ j.Tno }}</td>
                                 <td>{{ j.Sno }}</td>
                                 <td>{{ j.time_created }}</td>
