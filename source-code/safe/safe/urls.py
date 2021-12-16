@@ -15,9 +15,11 @@ Including another URLconf
 """
 from django.contrib import admin
 from . import login, buyer
-from django.urls import path
+from django.urls import path, include
 
 urlpatterns = [
+    path('safelogistics/register/', include('register.urls')),
+    path('safelogistics/', include('homepage.urls')),
     path('admin/', admin.site.urls),
     path('login/', login.login),
     path('buyer_main/', buyer.buyer)
