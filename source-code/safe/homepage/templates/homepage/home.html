@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<title>Safe Logistics</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<body>
+
+<!-- Navbar (sit on top) -->
+<div class="w3-top">
+  <div class="w3-bar w3-white w3-wide w3-padding w3-card">
+    <a class="w3-bar-item"><b>SL</b> 平安物流</a>
+    <!-- Float links to the right. Hide them on small screens -->
+    <div class="w3-right w3-hide-small">
+      <a href="{% url 'login' %}" class="w3-bar-item w3-button">登录</a>
+      <a href="{% url 'sign' %}" class="w3-bar-item w3-button">注册</a>
+    </div>
+  </div>
+</div>
+
+<!-- Header -->
+<header class="w3-display-container w3-content w3-wide" style="max-width:1500px;" id="home">
+  {% load static %}
+  <img class="w3-image" src="{% static 'homepage/home-production.jpg' %}" alt="Logistics" width="1500">
+  <div class="w3-display-left w3-margin-middle w3-left">
+    <h1 class="w3-xxxlarge w3-text-white"><span class="w3-padding w3-black w3-opacity-min"><b>平安物流，平安每一天</b></span> <br />
+	<span class="w3-padding w3-hide-small w3-text-light-grey"><b>Safe Logistics, Safe Every Day</b></span>
+  </div>
+</header>
+
+<!-- Page content -->
+<div class="w3-content w3-padding" style="max-width:1564px">
+
+  <!-- Project Section -->
+  <div class="w3-container w3-padding-32" id="projects">
+    <h3 class="w3-border-bottom w3-border-light-grey w3-padding-16">我们的业务</h3>
+  </div>
+
+  <!-- Photo Grid-->
+  <div class="w3-row-padding w3-center" id="business">
+    <div class="w3-quarter">
+	  {% load static %}
+      <img src="{% static 'homepage/home-order.jpg' %}" alt="Order" style="width:100%">
+      <h3>物流下单</h3>
+      <p>平安物流提供物流下单服务，商家一键发起物流订单，物流公司一键确认物流订单</p>
+    </div>
+    <div class="w3-quarter">
+	  {% load static %}
+      <img src="{% static 'homepage/home-risk.jpg' %}" alt="Risk" style="width:100%">
+      <h3>物流风险识别</h3>
+      <p>平安物流明星产品。综合评估地区风险及物流人员风险，智慧识别疫情风险，平安物流每一天</p>
+    </div>
+    <div class="w3-quarter">
+	  {% load static %}
+      <img src="{% static 'homepage/home-delivery.jpg' %}" alt="Delivery" style="width:100%">
+      <h3>配送查询</h3>
+      <p>便捷查询物流信息，满足买家、卖家、物流公司、电商平台的不同信息查询需求</p>
+    </div>
+    <div class="w3-quarter">
+	  {% load static %}
+      <img src="{% static 'homepage/home-chart.jpg' %}" alt="Chart" style="width:100%">
+      <h3>数据可视化</h3>
+      <p>简洁明了的统计分析报告及图表，轻松掌握物流状态</p>
+    </div>
+  </div>
+
+  <!-- About Section -->
+  <div class="w3-container w3-padding-32" id="about">
+    <h3 class="w3-border-bottom w3-border-light-grey w3-padding-16">关于我们</h3>
+    <p> 我们致力于搭建电商、物流与疫情信息的桥梁，整合多方信息，为不同用户提供一站式查询服务和解决方案。<br />
+	登录即可免费使用所有服务。
+    </p>
+	<p> 团队信息：第三组 <br />
+	团队成员：丁语欣、高畅、李舒沛、张高阳、张秋岑 </p>
+  </div>
+
+<!-- End page content -->
+</div>
+
+
+<!-- Footer -->
+<footer class="w3-center w3-black w3-padding-16">
+  <p>Safe Logistics, Fall 2021</p>
+</footer>
+
+</body>
+</html>
