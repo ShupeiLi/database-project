@@ -3,12 +3,11 @@
 from django.shortcuts import render, redirect, reverse, HttpResponseRedirect
 from django.contrib import messages
 from django.contrib.auth import get_user_model
-from django.http import HttpResponse
+from django.urls import reverse_lazy
+from django.contrib.auth.hashers import check_password
 
 
 User = get_user_model()
-# constants
-Location = {'buyer': '/buyer_main/'}
 
 # Register view function
 def register(request):
@@ -24,49 +23,53 @@ def register(request):
 		address = request.POST['address']
 		tel = request.POST['tel']
 		email = request.POST['email']
-
+        
+        # Individual company name
+		if utype == "buyer" or utype == "seller" or utype == "delivery":
+			companyname = "Individual"
+        
 		# check blank
 		if not username:
-			messages.info(request, 'You must provide a username')
-			return redirect(reverse("register:register"))
+			messages.info(request, '必须输入用户名')
+			return redirect(reverse("register:signup"))
 		if not password1:
-			messages.info(request, 'You must provide a valid password')
-			return redirect(reverse("register:register"))
+			messages.info(request, '必须输入有效密码')
+			return redirect(reverse("register:signup"))
 		if not password2:
-			messages.info(request, 'You must confirm your password')
-			return redirect(reverse("register:register"))
+			messages.info(request, '必须确认密码')
+			return redirect(reverse("register:signup"))
 		if not utype:
-			messages.info(request, 'You must provide a user type')
-			return redirect(reverse("register:register"))
+			messages.info(request, '必须填写用户类型')
+			return redirect(reverse("register:signup"))
 		if not companyname:
-			messages.info(request, 'You must provide a companyname')
-			return redirect(reverse("register:register"))
+			messages.info(request, '必须输入公司名')
+			return redirect(reverse("register:signup"))
 		if not registerid:
-			messages.info(request, 'You must provide a registerid')
-			return redirect(reverse("register:register"))
+			messages.info(request, '必须输入登录ID')
+			return redirect(reverse("register:signup"))
 		if not email:
-			messages.info(request, 'You must provide an email')
-			return redirect(reverse("register:register"))
+			messages.info(request, '必须提供邮箱')
+			return redirect(reverse("register:signup"))
 
 		# register criteria
 		if password1 == password2:
 			if User.objects.filter(username=username).exists():
-				messages.info(request, 'Username taken')
-				return redirect(reverse("register:register"))
+				messages.info(request, '用户名已存在')
+				return redirect(reverse("register:signup"))
 			elif User.objects.filter(email=email).exists():
-				messages.info(request, 'Email taken')
-				return redirect(reverse("register:register"))
+				messages.info(request, '邮箱已使用')
+				return redirect(reverse("register:signup"))
 			elif User.objects.filter(registerid=registerid).exists():
-				messages.info(request, 'Register ID taken')
-				return redirect(reverse("register:register"))
+				messages.info(request, '登录ID已使用')
+				return redirect(reverse("register:signup"))
 			else:
 				user = User.objects.create_user(username=username, password=password1, utype=utype, companyname=companyname, 
         										registerid=registerid, address=address, tel=tel, email=email)
 				user.save()
-				messages.info(request, 'Registration successful!')
+				messages.info(request, '注册成功!')
                 
 		else:
-			messages.info(request, 'Password not matching!')
+			messages.info(request, '密码不正确!')
 			return redirect(reverse("register:register"))
 	
 		return redirect(reverse("register:login"))
@@ -76,7 +79,6 @@ def register(request):
 
 # Login view function
 def login(request):
-    ctx = {}  # context
     if request.method == 'POST' and request.POST:
         # get content from request
         usertype = request.POST.get("usertype")
@@ -88,17 +90,20 @@ def login(request):
         except User.DoesNotExist:
             user = None
         if user:
-            db_password = user.password
-            if password == db_password:  # 密码正确
-                response = HttpResponseRedirect(Location[usertype])  # 跳转至新的页面
-                response.set_cookie("username", username)  # 设置cookie
-                return response
-            else:  # 密码错误显示提醒
-                ctx['rlt'] = "密码错误！"
+            if user.is_active:
+                if check_password(password, user.password):  # 密码正确
+                    response = HttpResponseRedirect(reverse_lazy("dashboard:boardhome"))  # 跳转至新的页面
+                    response.set_cookie("username", username)  # 设置cookie
+                    response.set_cookie("usertype", usertype)
+                    return response
+                else:  # 密码错误显示提醒
+                    messages.info(request, '密码不正确!')
+            else: # 账户未激活错误
+                messages.info(request, "账户未激活，请通过邮件链接激活账户！")
         else:  # 用户名或类别显示提醒
-            ctx['rlt'] = "用户名或类别错误！"
+            messages.info(request, "用户名或类别错误！")
 
-    return render(request, "login.html", ctx)
+    return render(request=request, template_name="login.html")
 
 
 # Home page view function
@@ -110,9 +115,3 @@ def home(request):
         home_page_view
     """
     return render(request, "home.html")
-
-
-# Buyer main page view
-def buyer(request):
-    return HttpResponse("Hello, buyer")
-

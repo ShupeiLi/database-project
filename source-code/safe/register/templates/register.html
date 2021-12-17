@@ -6,7 +6,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Registration</title>
 	{% load static %}
-    <link rel="stylesheet" type="text/css" media="screen" href="{% static 'css/rgststyles.css' %}">
+	<link href="https://cdn.bootcss.com/twitter-bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/static/login/css/login.css" rel="stylesheet"/>
+	<link rel="stylesheet" type="text/css" media="screen" href="{% static 'css/rgststyles.css' %}">
+	<link href="https://cdn.bootcss.com/twitter-bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/static/login/css/login.css" rel="stylesheet"/>
     <style>
       @import url('https://fonts.googleapis.com/css2?family=Lato&display=swap');
     
@@ -24,7 +28,6 @@
           display: flex;
           justify-content: center;
           align-items: center;
-          height: 100vh;
       }
       
       .form {
@@ -131,60 +134,78 @@
     <div class="registerForm">
         <form action="" class="form" method="post">
           {% csrf_token %}
-          <h1 class="title">Register</h1>
-
+          
           <div style='color:purple'>
-            {% for message in messages %}
-            <h3> {{message}} </h3>
-            {% endfor %}
+		  <h1>新用户注册</h1>
+          {% for message in messages %}
+          <h3> {{message}} </h3>
+          {% endfor %}
           </div>
-
+		  
+		    <div style='color:purple'>
+                <label for="input_user_type">注册为：</label>
+                <select name="utype" id="input_user_type" onchange="showDiv(this)">
+                    <option value="buyer">买方</option>
+                    <option value="seller">卖方</option>
+                    <option value="company">物流公司</option>
+                    <option value="platform">电商平台</option>
+                    <option value="delivery">配送人员</option>
+                </select>
+            </div>
+		  
           <div class="inputContainer">
             <input type="text" name='username' class="input" placeholder="Username">
-            <label for="" class="label">Username</label>
+            <label for="" class="label">请输入用户名</label>
           </div>
     
           <div class="inputContainer">
             <input type="password" name='password1' class="input" placeholder="Password">
-            <label for="" class="label">Password</label>
+            <label for="" class="label">请输入密码</label>
           </div>
 
           <div class="inputContainer">
             <input type="password" name='password2' class="input" placeholder="Confirm Password">
-            <label for="" class="label">Confirm Password</label>
+            <label for="" class="label">请确认密码</label>
           </div>
-
-          <div class="inputContainer">
-            <input type="text" name='utype' class="input" placeholder="User Type">
-            <label for="" class="label">User Type</label>
-          </div>
-
-          <div class="inputContainer">
+		
+		
+			<script type="text/javascript">
+			function showDiv(select){
+			   if(select.value=="company" || select.value=="platform"){
+				document.getElementById('hidden_div').style.display = "block";
+			   } else{
+				document.getElementById('hidden_div').style.display = "none";
+			   }
+			} 
+			</script>
+		
+		
+          <div class="inputContainer" style="display:none;" id="hidden_div">
             <input type="text" name='companyname' class="input" placeholder="Company Name">
-            <label for="" class="label">Company Name</label>
+            <label for="" class="label">请输入公司名称</label>
           </div>
     
           <div class="inputContainer">
             <input type="text" name='registerid' class="input" placeholder="Register ID">
-            <label for="" class="label">Register ID</label>
+            <label for="" class="label">请输入登录ID</label>
           </div>
 
           <div class="inputContainer">
             <input type="text" name='address' class="input" placeholder="Address">
-            <label for="" class="label">Address</label>
+            <label for="" class="label">请输入地址</label>
           </div>
 
           <div class="inputContainer">
             <input type="tel" name='tel' class="input" placeholder="Tel">
-            <label for="" class="label">Tel</label>
+            <label for="" class="label">请输入手机号码</label>
           </div>
 
           <div class="inputContainer">
             <input type="email" name='email' class="input" placeholder="Email">
-            <label for="" class="label">Email</label>
+            <label for="" class="label">请输入邮箱</label>
           </div>
     
-          <input type="submit" class="submitBtn" value="Submit">
+          <input type="submit" class="submitBtn" value="提交">
         </form>
       </div>
 
