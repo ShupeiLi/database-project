@@ -1,11 +1,16 @@
 # -*- coding: utf-8 -*-
 
-from django.shortcuts import render, redirect, reverse
+from django.shortcuts import render, redirect, reverse, HttpResponseRedirect
 from django.contrib import messages
 from django.contrib.auth import get_user_model
+from django.http import HttpResponse
+
 
 User = get_user_model()
+# constants
+Location = {'buyer': '/buyer_main/'}
 
+# Register view function
 def register(request):
 
 	if request.method == "POST":
@@ -64,6 +69,50 @@ def register(request):
 			messages.info(request, 'Password not matching!')
 			return redirect(reverse("register:register"))
 	
-		return redirect(reverse("homepage:home"))
+		return redirect(reverse("register:login"))
 
 	return render(request=request, template_name='register.html')
+
+
+# Login view function
+def login(request):
+    ctx = {}  # context
+    if request.method == 'POST' and request.POST:
+        # get content from request
+        usertype = request.POST.get("usertype")
+        username = request.POST.get("username")
+        password = request.POST.get("password")
+        # define
+        try:
+            user = User.objects.get(utype=usertype, username=username)
+        except User.DoesNotExist:
+            user = None
+        if user:
+            db_password = user.password
+            if password == db_password:  # 密码正确
+                response = HttpResponseRedirect(Location[usertype])  # 跳转至新的页面
+                response.set_cookie("username", username)  # 设置cookie
+                return response
+            else:  # 密码错误显示提醒
+                ctx['rlt'] = "密码错误！"
+        else:  # 用户名或类别显示提醒
+            ctx['rlt'] = "用户名或类别错误！"
+
+    return render(request, "login.html", ctx)
+
+
+# Home page view function
+def home(request):
+    """
+    Define home page view. Template: home.html
+    
+    Returns:
+        home_page_view
+    """
+    return render(request, "home.html")
+
+
+# Buyer main page view
+def buyer(request):
+    return HttpResponse("Hello, buyer")
+

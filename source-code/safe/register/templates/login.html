@@ -37,10 +37,10 @@
             <div>
                 <div class="checkbox">
                     <label>
-                        <input type="checkbox">remember me
+                        <input type="checkbox"> remember me
                     </label>
                 </div>
-                <a href="/register/" class="text-success "><ins>新用户注册</ins></a>
+                <a href="{% url 'register:signup' %}" class="text-success "><ins>新用户注册</ins></a>
                 <button type="submit" class="btn btn-primary float-right">登录</button>
             </div>
             <p>{{ rlt }}</p>
