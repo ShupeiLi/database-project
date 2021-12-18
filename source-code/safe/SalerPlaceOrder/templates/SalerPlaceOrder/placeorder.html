@@ -1,0 +1,25 @@
+
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>InputData</title>
+    </head>
+    <body>
+        <div style="width: 210px; margin: 0 auto">
+            <form method="post">
+                <label>卖方id：</label>
+                <input type="text" name="salerid" style="width: 150px"><br><br>
+                <label>物流订单id：</label>
+                <input type="text" name="orderid" style="width: 150px"><br><br>
+                <label>请选择物流公司：</label>
+                {% for companyid in Company.companyid.all %}
+                    <input type="radio" name="company" id="Company{{ forloop.counter }}" value="{{ Company.companyid }}" />
+                    <label for="Company{{ forloop.counter }}">{{ Company.companyname }}</label><br />
+                {% endfor %}
+                &nbsp;&nbsp&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <input type="submit" >
+            </form>
+        </div>
+    </body>
+    </html>
