@@ -17,5 +17,6 @@ from django.contrib import admin
 from django.urls import path
 
 urlpatterns = [
+    path('placeorder/', include('SalerPlaceOrder.urls')),
     path('admin/', admin.site.urls),
 ]
