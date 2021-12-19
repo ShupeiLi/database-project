@@ -13,7 +13,6 @@
 \usepackage{graphicx}
 \usepackage{geometry}
 \usepackage{titletoc}
-\usepackage{titlesec}
 \usepackage{indentfirst}
 \usepackage{fancyhdr} 
 \usepackage{longtable}
@@ -389,29 +388,32 @@
 	17 &	Inum &	订单货品数额 &	Integer &	4 &	非空 \\
 	18 &	Tname &	物流公司名称 &	Char &	30 	& 非空 \\
 	19 &	Tno &	物流公司编号 &	 Integer &	4 &	非空 \\
-	20 &	Ovalue 	& 商品订单金额 	& Float &	4 &	非空 \\
-	21 & Dno &	物流单号 &	Integer &	4 &	非空，物流订单信 \\ &&&&& 息表主码 \\
-	22 &	Dtrans &	物流运送方式 &	Char &	30 &	非空 \\
-	23 &	Dloc &	物流所在位置 &	Integer &	4 &	非空 \\
-	24 &	Dupdate &	物流更新时间 &	Date &	3 &	非空 \\
-	25 &	Dstate &	物流风险信息 &	Tinyint &	1 &	非空，0异常； \\ &&&&& 1正常\\
-	26 &	Cname &	城市名称 &	Char &	30 	& 非空 \\
-	27 &	Cno &	城市编号 &	Integer &	4 &	非空 \\
-	28 &	Cstate &	城市疫情状况 &	Tinyint &	1 &	 非空，0、1、2分\\ &&&&& 别代表低中高风险 \\
-	29 &	Cloc &	城市坐标 &	Float &	4 &	非空 \\
-	30 &	Cupdate &	城市疫情更新时间 &	Date &	3 &	非空 \\
-	31 &	Dvalue 	& 物流订单金额 	& Float &	4 &	非空 \\
-	32 &	Zpeople & 配送人员风险评分 & Integer & 4 & 非空 \\
-	33 &	Zloc & 配送路线风险评分 & Integer & 4 & 非空 \\
-	34 &	Dpno & 订单分配编号 & Integer & 4 & 非空 \\
+	20 & Tscore & 物流公司评分 & Float &	4 &	非空 \\
+	21 & Tdate & 物流公司入驻平台 & Date & 3 & 非空 \\ && 时间 &&& \\
+	22 &	Ovalue 	& 商品订单金额 	& Float &	4 &	非空 \\
+	23 & Dno &	物流单号 &	Integer &	4 &	非空，物流订单信 \\ &&&&& 息表主码 \\
+	24 &	Dtrans &	物流运送方式 &	Char &	30 &	非空 \\
+	25 &	Dloc &	物流所在位置 &	Integer &	4 &	非空 \\
+	26 &	Dupdate &	物流更新时间 &	Date &	3 &	非空 \\
+	27 &	Dstate &	物流风险信息 &	Tinyint &	1 &	非空，0异常； \\ &&&&& 1正常\\
+	28 & Dsetime & 发货时间 & Date & 3 & 非空 \\
+	29 & Dretime & 收货时间 & Date & 3 & 非空 \\
+	30 &	Cname &	城市名称 &	Char &	30 	& 非空 \\
+	31 &	Cno &	城市编号 &	Integer &	4 &	非空 \\
+	32 &	Cstate &	城市疫情状况 &	Tinyint &	1 &	 非空，0、1、2分\\ &&&&& 别代表低中高风险 \\
+	33 &	Cloc &	城市坐标 &	Float &	4 &	非空 \\
+	34 &	Cupdate &	城市疫情更新时间 &	Date &	3 &	非空 \\
+	35 &	Dvalue 	& 物流订单金额 	& Float &	4 &	非空 \\
+	36 &	Zpeople & 配送人员风险评分 & Integer & 4 & 非空 \\
+	37 &	Zloc & 配送路线风险评分 & Integer & 4 & 非空 \\
+	38 &	Dpno & 订单分配编号 & Integer & 4 & 非空 \\
 \end{supertabular}
 \end{center}
 
-\newpage
 \subsubsection{数据结构}
 
 注：\underline{下划线}表示主码，\textit{斜体}表示外码。
-
+\vspace{0.2cm}
 \tablehead{
 	\toprule
 	\textbf{编号} & \textbf{数据结构} & \textbf{含义说明} & \multicolumn{3}{l}{\textbf{组成}} \\
@@ -424,11 +426,11 @@
 2 &	Seller User &	卖方用户信息表 & Sname &	\uline{Sno} &	Saddress \\ & Information &&&& \\
 3 &	Order  & 商品订单信息表 &	\uline{Ono} &	Otime &	Ovalue  \\
 & Information &&	Otrans & \textit{Uno} &	\textit{Sno}  \\
-4 &	Delivery &	物流订单信息表 &	\uline{Dno} &	Dvalue &	Dtrans  \\ & Information && Tno &	\textit{Sno} & \\
+4 &	Delivery &	物流订单信息表 &	\uline{Dno} &	Dvalue &	Dtrans  \\ & Information && Tno &	\textit{Sno} & Dsetime \\ &&& Dretime && \\
 5 &	Staff Health &	员工健康信息表 &	\uline{Pno} &	Pcity & Ptemp \\ 
 & Information && \uline{Pupdate} && \\
 6 &	Pandemic &	疫情情况信息表 &	Cname &	\uline{Cno} &	Cstate \\	& Information &&  Cloc & \uline{Cupdate}	& \\
-7 &Staff  &	物流人员信息表 &	Pname &	\uline{Pno} &	Tname \\ & Information	& & Tno && \\
+7 &Staff  &	物流人员信息表 &	Pname &	\uline{Pno} &	Tname \\ & Information	& & Tno & Tscore & Tdate \\
 8 &	Geographic  &	物流位置信息表 &	\uline{Dno} &	Dloc &	\uline{Dupdate} \\& Information&&&& \\
 9 & Summary & 物流订单总表 & \uline{Ono} & \textit{Dno} & Zpeople \\ & Information && Zloc && \\
 10 & Delivery & 物流订单分配表 & \uline{Dpno} & \textit{Dno} & \textit{Pno}\\ & Distribution &&&& \\
@@ -538,7 +540,7 @@
 \subsubsection{提交物流订单}
 
 \begin{center}
-	\includegraphics[height = 16cm]{e-r-part-1.png}
+	\includegraphics[height = 17cm]{e-r-part-1.png}
 \end{center}
 
 \subsubsection{安排配送}
@@ -572,13 +574,13 @@
 \noindent \textbf{(2) 物流公司}
 
 \begin{center}
-	\includegraphics[height = 2.3cm]{e-r-e2.png}
+	\includegraphics[height = 3.5cm]{e-r-e2.png}
 \end{center}
 
 \noindent \textbf{(3) 物流订单}
 
 \begin{center}
-	\includegraphics[height = 8cm]{e-r-e3.png}
+	\includegraphics[height = 9.5cm]{e-r-e3.png}
 \end{center}
 
 \noindent \textbf{(4) 物流人员}
@@ -640,19 +642,20 @@
 \end{center}
 
 \noindent \textbf{(2) 物流订单} \par 
-\noindent Dno $\rightarrow$ Dvalue, Dno $\rightarrow$ Dtrans, Dno $\rightarrow$ Tno, Dno $\rightarrow$ Pno, Dno $\rightarrow$ Sno \par 
-\noindent 候选码：Delivery (\uline{Dno}, Dvalue, Dtrans, Tno, Pno, Sno)
+\noindent Dno $\rightarrow$ Dvalue, Dno $\rightarrow$ Dtrans, Dno $\rightarrow$ Tno, Dno $\rightarrow$ Sno \\
+\noindent Dno $\rightarrow$ Dsetime, Dno $\rightarrow$ Dretime \par 
+\noindent 候选码：Delivery (\uline{Dno}, Dvalue, Dtrans, Tno, Sno, Dsetime, Dretime)
 
 \begin{center}
-	\includegraphics[height = 7cm]{relation-model-2.png}
+	\includegraphics[height = 8cm]{relation-model-2.jpg}
 \end{center}
 
 \noindent \textbf{(3) 物流公司} \par 
-\noindent Tno $\rightarrow$ Tname \par 
-\noindent 候选码：Transportation Company (\uline{Tno}, Tname)
+\noindent Tno $\rightarrow$ Tname, Tno $\rightarrow$ Tscore,Tno $\rightarrow$ Tdate \par 
+\noindent 候选码：Transportation Company (\uline{Tno}, Tname, Tscore, Tdate)
 
 \begin{center}
-	\includegraphics[height = 1.1cm]{relation-model-3.png}
+	\includegraphics[height = 4.5cm]{relation-model-3.png}
 \end{center}
 
 \subsubsection{安排配送}
@@ -734,23 +737,23 @@
 
 \vspace{0.3cm}
 \noindent \textbf{(2) 物流订单} \par 
-\noindent \textbf{关系模式：} Delivery(\uline{Dno}, Dvalue, Dtrans, Tno, Pno, Sno) \par 
+\noindent \textbf{关系模式：} Delivery(\uline{Dno}, Dvalue, Dtrans, Tno, Sno, Dsetime, Dretime) \par 
 \noindent \textbf{范式：} Delivery $\in$ BCNF \par 
 \begin{itemize}
-	\item 关系模式Delivery(\uline{Dno}, Dvalue, Dtrans, Tno, Pno, Sno)只有一个码Dno，没有任何属性对Dno部分依赖或传递依赖，所以Delivery $\in$ 3NF
+	\item 关系模式Delivery(\uline{Dno}, Dvalue, Dtrans, Tno, Sno, Dsetime, Dretime)只有一个码Dno，没有任何属性对Dno部分依赖或传递依赖，所以Delivery $\in$ 3NF
 	\item 同时Delivery中Dno是唯一决定因素，所以Delivery $\in$ BCNF
 \end{itemize}
-\textbf{函数依赖：} Dno $\rightarrow$ Dvalue, Dno $\rightarrow$ Dtrans, Dno $\rightarrow$ Tno, Dno $\rightarrow$ Pno, Dno $\rightarrow$ Sno
+\textbf{函数依赖：} Dno $\rightarrow$ Dvalue, Dno $\rightarrow$ Dtrans, Dno $\rightarrow$ Tno, Dno $\rightarrow$ Sno, Dno $\rightarrow$ Dsetime, Dno $\rightarrow$ Dretime
 
 \vspace{0.3cm}
 \noindent \textbf{(3) 物流公司} \par 
-\noindent \textbf{关系模式：} Transportation Company(\uline{Tno}, Tname) \par 
+\noindent \textbf{关系模式：} Transportation Company(\uline{Tno}, Tname,  Tscore, Tdate) \par 
 \noindent \textbf{范式：} Transportation Company $\in$ BCNF \par 
 \begin{itemize}
-	\item 关系模式Transportation Company(\uline{Tno}, Tname)只有一个码Tno，没有任何属性对Tno部分依赖或传递依赖，所以Transportation Company $\in$ 3NF
+	\item 关系模式Transportation Company(\uline{Tno}, Tname, Tscore, Tdate)只有一个码Tno，没有任何属性对Tno部分依赖或传递依赖，所以Transportation Company $\in$ 3NF
 	\item 同时Transportation Company中Tno是唯一决定因素，所以Transportation Company $\in$ BCNF
 \end{itemize}
-\textbf{函数依赖：} Tno $\rightarrow$ Tname
+\textbf{函数依赖：} Tno $\rightarrow$ Tname, Tno $\rightarrow$ Tscore, Tno $\rightarrow$ Tdate
 
 \subsubsection{安排配送}
 \noindent \textbf{(1) 物流订单 (略)} 
@@ -847,7 +850,7 @@
 \end{center}
 
 \vspace{0.5cm}
-\noindent \textbf{(2)} Delivery(\uline{Dno}, Dvalue, Dtrans, Tno, Pno, Sno)
+\noindent \textbf{(2)} Delivery(\uline{Dno}, Dvalue, Dtrans, Tno, Sno, Dsetime, Dretime)
 
 \begin{center}
 	\begin{tabular}{lllll}
@@ -856,20 +859,23 @@
 		Dvalue &	物流订单金额 &	Float &	4 &	非空 \\
 		Dtrans &	物流运送方式 &	Char &	30 &	非空 \\
 		Tno &	货运公司编号 &	Integer &	4 &	非空 \\
-		Pno &	配送人员编号 &	Integer &	4 &	非空 \\
 		Sno &	卖方编号 &	Integer &	4 &	非空 \\
+		Dsetime & 发货时间 & Date & 3  & 非空 \\
+		Dretime & 收货时间 & Date & 3  & 非空 \\
 		\bottomrule
 	\end{tabular}
 \end{center}
 
 \vspace{0.5cm}
-\noindent \textbf{(3)} Transportation Company(\uline{Tno}, Tname)
+\noindent \textbf{(3)} Transportation Company(\uline{Tno}, Tname, Tscore, Tdate)
 
 \begin{center}
 	\begin{tabular}{lllll}
 		\toprule
 		Tno &	货运公司编号 &	Integer &	4 &	非空 \\
 		Tname &	货运公司名称 &	Char &	30 &	非空 \\
+		Tscore & 货运公司评分 & Integer & 4 & 非空 \\
+		Tdate & 公司入驻日期 & Date  & 3 & 非空 \\
 		\bottomrule
 	\end{tabular}
 \end{center}
@@ -979,16 +985,16 @@
 \subsubsection{电商平台的查询视图：商品订单-疫情相关信息报表}
 
 \noindent \textbf{(1)商品订单的基本信息} \par 
-\noindent Application-Ecommerce1(卖方编号，卖方名称，卖方仓储位置，物流单号，物流订单金额，物流运送方式，货运公司名称，物流更新时间，物流所在位置，配送人员姓名，配送人员体温)
+\noindent Application-Ecommerce1(卖方编号，卖方名称，卖方仓储位置，物流单号，物流订单金额，物流运送方式，货运公司名称，发货时间，收货时间，物流更新时间，物流所在位置，配送人员姓名)
 
 \subsubsection{物流公司的查询视图：物流运输-疫情相关信息报表}
 
 \noindent \textbf{(1)物流订单的基本信息} \par 
-\noindent Application-Delivery1(卖方编号，卖方名称，卖方仓储位置，物流单号，物流订单金额，物流运送方式，货运公司编号，货运公司名称，配送订单号，配送人员编号，配送人员姓名，物流更新时间，物流所在位置，配送路线风险评分)
+\noindent Application-Delivery1(卖方编号，卖方名称，卖方仓储位置，物流单号，物流订单金额，物流运送方式，货运公司编号，货运公司名称，配送订单号，配送人员编号，配送人员姓名，发货时间，收货时间，物流更新时间，物流所在位置，配送路线风险评分)
 
 \vspace{0.3cm}
 \noindent \textbf{(2)城市的疫情相关信息} \par 
-\noindent Application-Delivery2(城市编号，城市名称，城市疫情状况，城市疫情更新时间，经过该城市的配送人员编号，经过该城市的配送人员编号，配送人员经过该城市的时间，经过该城市的物流单号，物流订单经过该城市的时间)
+\noindent Application-Delivery2(城市编号，城市名称，城市疫情状况，城市疫情更新时间，经过该城市的配送人员编号，配送人员经过该城市的时间，经过该城市的物流单号，物流订单经过该城市的时间)
 
 \vspace{0.3cm}
 \noindent \textbf{(3)配送人员的基本信息} \par 
@@ -997,7 +1003,7 @@
 \subsubsection{卖家的查询视图：卖家订单-物流相关信息报表}
 
 \noindent \textbf{(1)卖家订单的基本信息} \par 
-\noindent Application-Seller1(卖方编号，卖方名称，卖方仓储位置，物流单号，物流订单金额，物流运送方式，货运公司名称，物流更新时间，物流所在位置)
+\noindent Application-Seller1(卖方编号，卖方名称，卖方仓储位置，物流单号，物流订单金额，物流运送方式，货运公司名称，发货时间，收货时间，物流更新时间，物流所在位置)
 
 \vspace{0.3cm}
 \noindent \textbf{(2)卖家订单的疫情相关信息} \par 
@@ -1006,15 +1012,44 @@
 \subsubsection{买家的查询视图：买家订单-物流相关疫情信息报表}
 
 \noindent \textbf{(1)买家订单的基本信息} \par 
-\noindent Application-Buyer1(卖方名称，卖方仓储位置，物流单号，物流订单金额，物流运送方式，货运公司名称，物流更新时间，物流所在位置，配送人员姓名，配送人员体温)
+\noindent Application-Buyer1(卖方名称，卖方仓储位置，物流单号，物流订单金额，物流运送方式，货运公司名称，发货时间，收货时间，物流更新时间，物流所在位置，配送人员姓名，配送人员体温)
 
 \vspace{0.3cm}
 \noindent \textbf{(2)买家订单的疫情相关信息} \par 
-\noindent Application-Buyer2(卖方名称，卖方仓储位置，物流单号，物流订单金额，物流运送方式，货运公司名称，物流更新时间，物流所在位置，配送人员姓名，配送人员体温，配送人员经过的城市，配送人员经过该城市的时间，配送人员经过城市的疫情状况)
+\noindent Application-Buyer2(卖方名称，卖方仓储位置，物流单号，物流订单金额，物流运送方式，货运公司名称，发货时间，收货时间，物流更新时间，物流所在位置，配送人员姓名，配送人员体温，配送人员经过的城市，配送人员经过该城市的时间，配送人员经过城市的疫情状况)
 
-\section{数据库实施}
-%\subsection{环境和配置}
-\section{相关程序演示}
+\newpage
+\section{数据库实施及程序演示}
+\subsection{环境和配置}
+
+我们小组基于Python中的Django框架实现数据库管理系统。Django的backend采用MySQL，网页设计采用html + CSS + JavaScript。此外，我们小组通过Python中的Scrapy框架实现了能够定时收集疫情数据的网络爬虫。环境配置总结如下。
+
+\begin{center}
+	\begin{tabular}{lllll}
+	\toprule
+	Item & Python & MySQL & Django & Scrapy \\
+	\midrule
+	Version & 3.8 & 8.0 & 3.2 & 2.4\\
+	\bottomrule
+\end{tabular}
+\end{center}
+
+为了提高效率，我们小组通过Git + GitHub合作编写程序。项目源代码可直接在GitHub网站上查看：\url{https://github.com/ShupeiLi/database-project} 。
+
+\subsection{功能展示}
+
+\subsubsection{主页（未登录状态）}
+
+\begin{center}
+	\includegraphics[width = 14cm]{home.png}
+\end{center}
+
+\subsubsection{登录页面}
+
+\begin{center}
+	\includegraphics[width = 14cm]{login.png}
+\end{center}
+
 \section{总结}
 
 \end{document}
