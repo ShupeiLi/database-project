@@ -8,14 +8,15 @@
     <body>
         <div style="width: 210px; margin: 0 auto">
             <form method="post">
-                <label for="salerid">卖方id：</label>
+                <label>卖方id：</label>
                 <input type="text" name="salerid" style="width: 150px"><br><br>
-                <label for="orderid">物流订单id：</label>
+                <label>物流订单id：</label>
                 <input type="text" name="orderid" style="width: 150px"><br><br>
-                <label for="company">请选择物流公司：</label>
-                <select name="company">
-                    <option value="company">物流公司</option>
-                </select><br><br>
+                <label>请选择物流公司：</label>
+                {% for companyid in Company.companyid.all %}
+                    <input type="radio" name="company" id="Company{{ forloop.counter }}" value="{{ Company.companyid }}" />
+                    <label for="Company{{ forloop.counter }}">{{ Company.companyname }}</label><br />
+                {% endfor %}
                 &nbsp;&nbsp&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 <input type="submit" >
             </form>

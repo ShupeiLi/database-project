@@ -13,13 +13,13 @@ class MyAccountManager(BaseUserManager):
         if not password:
             raise ValueError('You must provide a valid password')
         if not utype:
-            return ValueError('You must provide a user type')
+            raise ValueError('You must provide a user type')
         if not companyname:
-            return ValueError('You must provide a companyname')
+            raise ValueError('You must provide a companyname')
         if not registerid:
-            return ValueError('You must provide a registerid')
+            raise ValueError('You must provide a registerid')
         if not email:
-            return ValueError('You must provide an email')
+            raise ValueError('You must provide an email')
 
         user = self.model(
             username=username, utype=utype, companyname=companyname, registerid=registerid, 

@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'register',
     'dashboard',
+    'SalerPlaceOrder',
 ]
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
