@@ -18,7 +18,34 @@
 \usepackage{longtable}
 \usepackage{supertabular}
 \usepackage[normalem]{ulem}
+\usepackage{listings}
+\usepackage{xcolor}
 
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+
+\lstdefinestyle{mystyle}{
+	backgroundcolor=\color{backcolour},   
+	commentstyle=\color{codegreen},
+	keywordstyle=\color{magenta},
+	numberstyle=\tiny\color{codegray},
+	stringstyle=\color{codepurple},
+	basicstyle=\ttfamily\footnotesize,
+	breakatwhitespace=false,         
+	breaklines=true,                 
+	captionpos=b,                    
+	keepspaces=true,                 
+	numbers=left,                    
+	numbersep=5pt,                  
+	showspaces=false,                
+	showstringspaces=false,
+	showtabs=false,                  
+	tabsize=2
+}
+
+\lstset{style=mystyle}
 \pagestyle{fancy}
 
 \fancyhead[R]{\thepage}
@@ -1036,18 +1063,156 @@
 
 为了提高效率，我们小组通过Git + GitHub合作编写程序。项目源代码可直接在GitHub网站上查看：\url{https://github.com/ShupeiLi/database-project} 。
 
+\subsection{数据库建立}
+由于Django采用对象关系映射（Object Relational Mapping，简称 ORM ）实现面向对象编程语言里不同类型系统的数据之间的转换。本小节展示建立数据库的相关 Python 语句。
+
+\subsubsection{账户信息}
+\begin{lstlisting}[language=Python]
+# -*- coding: utf-8 -*-
+
+from django.db import models
+from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
+
+
+class MyAccountManager(BaseUserManager):
+
+	def create_user(self, username, password, utype, companyname, 
+		registerid, address, tel, email):
+
+		if not username:
+			raise ValueError('You must provide a username')
+		if not password:
+			raise ValueError('You must provide a valid password')
+		if not utype:
+			raise ValueError('You must provide a user type')
+		if not companyname:
+			raise ValueError('You must provide a companyname')
+		if not registerid:
+			raise ValueError('You must provide a registerid')
+		if not email:
+			raise ValueError('You must provide an email')
+
+		user = self.model(
+			username=username, utype=utype, companyname=companyname, registerid=registerid, 
+			address=address, tel=tel, email=self.normalize_email(email)
+		)
+
+		user.set_password(password)
+		user.save(using=self._db)
+
+		return user
+
+	def create_superuser(self, username, password, email, utype="admin",
+		 companyname="admin", registerid="admin", address="admin", 
+		 tel="admin"):
+		# create superuser here
+		user = self.create_user(
+			username, password, utype, companyname, 
+			registerid, address, tel, email
+		)
+		user.is_staff = True
+		user.is_superuser = True
+		user.save(using=self._db)
+		return user
+
+
+class NewUser(AbstractBaseUser):
+	username = models.CharField(max_length=128, unique=True)
+	password = models.CharField(max_length=255)
+	utype = models.CharField(max_length=128)
+	companyname = models.CharField(max_length=255)
+	registerid = models.CharField(max_length=25)
+	address = models.CharField(max_length=255)
+	tel = models.CharField(max_length=11)
+	email = models.EmailField(max_length=25)
+	registerdate = models.DateField(auto_now_add=True)
+	is_staff = models.BooleanField(default=False)
+	is_superuser = models.BooleanField(default=False)
+	is_active = models.BooleanField(default=True)
+
+	objects = MyAccountManager()
+
+	USERNAME_FIELD = 'username'
+	REQUIRED_FIELDS = ['password', 'utype', 'registerid', 'email']
+
+	def has_perm(self, perm, obj=None):
+		return self.is_superuser
+
+	def has_module_perms(self, app_label):
+		return self.is_superuser
+
+	def __str__(self):
+		return self.username
+\end{lstlisting}
+
+\subsubsection{商品订单信息}
+\subsubsection{物流订单信息}
+\subsubsection{物流人员信息}
+\subsubsection{员工健康信息}
+\subsubsection{疫情信息：爬虫}
+\subsubsection{物流位置信息}
+\subsubsection{风险评估数据}
+
+\subsection{url 设计}
+\noindent \textbf{(1)} 登录系统 \par
+主页：\url{http://127.0.0.1:8000/safelogistics/} \par 
+注册页面：\url{http://127.0.0.1:8000/safelogistics/sign-up/} \par 
+登录页面：\url{http://127.0.0.1:8000/safelogistics/log-in/} \par 
+\noindent \textbf{(2)} 控制面板 \par
+根据cookie显示不同类型用户所对应的控制面板界面。\par 
+控制面板主页：\url{http://127.0.0.1:8000/safelogistics/dashboard/} \par 
+
+
+\newpage
 \subsection{功能展示}
 
-\subsubsection{主页（未登录状态）}
+\subsubsection{登录系统}
+\noindent \textbf{(1)} 主页（未登录状态）
 
 \begin{center}
-	\includegraphics[width = 14cm]{home.png}
+	\includegraphics[width = 13.5cm]{home.png}
 \end{center}
 
-\subsubsection{登录页面}
+\noindent \textbf{(2)} 注册页面
 
 \begin{center}
-	\includegraphics[width = 14cm]{login.png}
+	\includegraphics[width = 13.5cm]{signup.png}
+\end{center}
+
+\noindent \textbf{(3)} 登录页面
+
+\begin{center}
+	\includegraphics[width = 13.5cm]{login.png}
+\end{center}
+
+\subsubsection{控制面板：买方}
+\noindent \textbf{(1)} 主页
+\begin{center}
+	\includegraphics[width = 13.5cm]{buyer-main.png}
+\end{center}
+
+\subsubsection{控制面板：卖方}
+\noindent \textbf{(1)} 主页
+\begin{center}
+	\includegraphics[width = 13.5cm]{seller-main.png}
+\end{center}
+
+\subsubsection{控制面板：物流公司}
+\noindent \textbf{(1)} 主页
+\begin{center}
+	\includegraphics[width = 13.5cm]{company-main.png}
+\end{center}
+
+\subsubsection{控制面板：电商平台}
+\noindent \textbf{(1)} 主页
+\begin{center}
+	\includegraphics[width = 13.5cm]{platform-main.png}
+\end{center}
+
+\subsubsection{控制面板：物流人员}
+\noindent \textbf{(1)} 主页
+\begin{center}
+	\includegraphics[width = 13.5cm]{delivery-main.png}
 \end{center}
 
 \section{总结}
