@@ -5,6 +5,6 @@ from django.urls import include, path
 
 
 urlpatterns = [
-    path('placeorder/', include('SalerPlaceOrder.urls')),
+    path('placeorder/', include(('SalerPlaceOrder.urls', "SalerPlaceOrder"), namespace='SalerPlaceOrder')),
     path('admin/', admin.site.urls),
 ]

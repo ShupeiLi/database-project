@@ -20,10 +20,10 @@ def placeorder(request):
             selected_company = Company.companyname.get(pk=request.POST['company'])  # 获取前端选择的物流公司
             input_salerid = request.POST.get('salerid')  # 获取前端输入的卖方id
             input_orderid = request.POST.get('orderid')  # 获取前端输入的物流订单id
-        SalerInfo.objects.create(
-            orderid = input_orderid,
-            salerid = input_salerid,
-            company = selected_company
+            SalerInfo.objects.create(
+                orderid = input_orderid,
+                salerid = input_salerid,
+                company = selected_company
         )
     """
    跳转结果页
