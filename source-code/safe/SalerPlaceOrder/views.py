@@ -12,6 +12,7 @@ def placeorder(request):
         selected_company = Company.companyname.get(pk=request.POST['company'])  # 获取前端选择的物流公司
     except (KeyError, Company.DoesNotExist):
         # 未给出公司选项，重新展示表单
+
         return render(request, 'SalerPlaceOrder/placeorder.html', {
             'error_message': "You didn't select a company.",
         })
