@@ -5,8 +5,12 @@
 
 import scrapy
 
-
-class Covid19Item(scrapy.Item):
-    # define the fields for your item here like:
-    # name = scrapy.Field()
-    pass
+# url list
+class Covid19ListItem(scrapy.Item):
+    date = scrapy.Field()
+    href = scrapy.Field()
+    
+# article contents
+class Covid19TextItem(scrapy.Item):
+    href = scrapy.Field()
+    text = scrapy.Field()

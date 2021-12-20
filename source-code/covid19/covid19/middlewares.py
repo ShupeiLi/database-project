@@ -4,9 +4,19 @@
 # https://docs.scrapy.org/en/latest/topics/spider-middleware.html
 
 from scrapy import signals
+from random_user_agent.user_agent import UserAgent
 
 # useful for handling different item types with a single interface
 from itemadapter import is_item, ItemAdapter
+
+# Selenium
+from logging import getLogger
+from selenium import webdriver
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.common.exceptions import TimeoutException 
+from scrapy.http import HtmlResponse
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support import expected_conditions as EC 
 
 
 class Covid19SpiderMiddleware:
@@ -101,3 +111,44 @@ class Covid19DownloaderMiddleware:
 
     def spider_opened(self, spider):
         spider.logger.info('Spider opened: %s' % spider.name)
+
+
+class RandomUserAgentMiddleware():
+    def __init__(self):
+        self.user = UserAgent()
+    
+    def process_request(self, request, spider):
+        request.headers['User-Agent'] = self.user.get_random_user_agent()
+
+
+class SeleniumMiddleware():
+    
+    def __init__(self, timeout = 60, service_args = []):
+        self.logger = getLogger(__name__)
+        self.timeout = timeout
+        self.browser = webdriver.Firefox(executable_path = "D:/Installer/geckodriver", service_args = service_args)
+        self.browser.set_window_size(800, 500)
+        self.browser.set_page_load_timeout(self.timeout)
+        self.wait = WebDriverWait(self.browser, self.timeout)
+        
+    def  __del__(self): 
+        self.browser.close() 
+        
+    def process_request(self, request, spider):
+        """
+        用 Firefox 抓取页面
+        
+        request: Request 对象
+        spider: Spider 对象
+        return: HtmlResponse 
+        """
+        self.logger.debug("Firefox is starting ...")
+        try: 
+            self.browser.get(request.url)
+            self.wait.until(EC.presence_of_element_located((By.XPATH, '//div')))
+            return  HtmlResponse(url = request.url, body = self.browser.page_source, request = request, 
+                                 encoding = 'utf-8', status = 200)
+        except TimeoutException:
+            return HtmlResponse(url = request.url, status = 500, request = request)
+        except:
+            return HtmlResponse(url = request.url, status = 404, request = request)
