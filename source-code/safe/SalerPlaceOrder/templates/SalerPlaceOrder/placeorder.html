@@ -7,7 +7,7 @@
     </head>
     <body>
         <div style="width: 210px; margin: 0 auto">
-            <form method="post">
+            <form action="{% url 'SalerPlaceOrder:placeorder' %}" method="post">
                 <label>卖方id：</label>
                 <input type="text" name="salerid" style="width: 150px"><br><br>
                 <label>物流订单id：</label>
@@ -18,7 +18,7 @@
                     <label for="Company{{ forloop.counter }}">{{ Company.companyname }}</label><br />
                 {% endfor %}
                 &nbsp;&nbsp&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                <input type="submit" >
+                <input type="submit" value="Submit" />
             </form>
         </div>
     </body>
