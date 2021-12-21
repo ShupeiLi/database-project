@@ -9,7 +9,7 @@ from .models import SalerInfo, Company
 
 def placeorder(request):
     try:
-        selected_company = Company.companyname.get(pk=request.POST['company'])  # 获取前端选择的物流公司
+        selected_company = Company.objects.get(pk=request.POST['company'])  # 获取前端选择的物流公司
     except (KeyError, Company.DoesNotExist):
         # 未给出公司选项，重新展示表单
 
