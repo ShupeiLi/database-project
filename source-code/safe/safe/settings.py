@@ -38,15 +38,19 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'register',
+    'dashboard',
     'SalerPlaceOrder',
     'PathVisualization',
 ]
+
+CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
+    # 'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
@@ -81,7 +85,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'safe', # 需要先在电脑上创建名为 safe 的 MySQL 数据库
         'USER': 'root', # 改为自己电脑上的 MySQL 用户名
-        'PASSWORD': '123456789', # 改为自己电脑上的 MySQL 密码
+        'PASSWORD': 'ShupeiLi', # 改为自己电脑上的 MySQL 密码
         'HOST': 'localhost',
         'PORT': '3306',
         'OPTION': {'default-character-set': "utf8"},
@@ -126,6 +130,8 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
 STATIC_URL = '/static/'
+
+AUTH_USER_MODEL = 'register.NewUser'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field

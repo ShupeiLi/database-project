@@ -24,7 +24,6 @@ def placeorder(request):
         ctx['rlt'] = 'error'
         return render(request, "SalerPlaceOrder/placeorder.html", ctx)
 
-
 def result(request, orderid):
     orderid = get_object_or_404(SalerInfo, pk=orderid)
     '''
