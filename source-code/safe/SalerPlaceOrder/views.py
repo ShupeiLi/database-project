@@ -9,7 +9,7 @@ from .models import SalerInfo, Company
 
 def placeorder(request):
     try:
-        selected_company = Company.companyname.get(pk=request.POST['company'])  # 获取前端选择的物流公司
+        selected_company = Company.objects.get(pk=request.POST['company'])  # 获取前端选择的物流公司
     except (KeyError, Company.DoesNotExist):
         # 未给出公司选项，重新展示表单
         return render(request, 'SalerPlaceOrder/placeorder.html', {
@@ -17,7 +17,7 @@ def placeorder(request):
         })
     else:
         if request.method == 'POST':
-            selected_company = Company.companyname.get(pk=request.POST['company'])  # 获取前端选择的物流公司
+            selected_company = Company.objects.get(pk=request.POST['company'])  # 获取前端选择的物流公司
             input_salerid = request.POST.get('salerid')  # 获取前端输入的卖方id
             input_orderid = request.POST.get('orderid')  # 获取前端输入的物流订单id
             SalerInfo.objects.create(
