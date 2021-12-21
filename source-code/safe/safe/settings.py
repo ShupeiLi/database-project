@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'register',
     'dashboard',
     'SalerPlaceOrder',
+    'PathVisualization',
 ]
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
