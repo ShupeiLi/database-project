@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>轨迹地图</title>
+    <style>
+        html,body,#parent{height: 100%; overflow: hidden;}
+        #top{position: absolute; top: 0; left: 0; right: 0; height: 0; background-color: #F3F3FA; height:130px;}
+        #left{position: absolute; top: 130px; left: 0; bottom: 50px; width: 75%; background-color: #E0E0E0; overflow:auto;}
+        #right{position: absolute; top: 130px; left: 75%; right: 0; bottom: 50px; background-color: #FFFFCE; overflow:auto; line-height:22px}
+        #bottom{position: absolute; left: 0; right: 0; bottom: 0; height: 50px; background-color: #F3F3FA}
+        #container {width:1200px; height: 720px; }
+    </style>
+    <script type="text/javascript" src="http://webapi.amap.com/maps?v=1.4.11&key=dfa6a5aec1c42d53d2af3380e195f6c6"></script>
+</head>
+
+<body>
+    <div id="parent">
+        <div id="top"></div>
+        <div id="left"></div>
+        <div id="right"></div>
+        <div id="bottom"></div>
+    </div>
+    <script>
+        var map = new AMap.Map('parent')
+        // 折线的节点坐标数组，每个元素为 AMap.LngLat 对象
+
+        var path = [];
+        {% for i in path_dot %}
+            path.push(new AMap.LngLat({{ i.1 }},{{ i.0 }}))
+        {% endfor %}
+
+        var polyline = new AMap.Polyline({
+            path:path, //设置线覆盖物路径
+            strokeColor:"#3366FF", //线颜色
+            strokeOpacity:1, //线透明度
+            strokeWeight:5, //线宽
+            strokeStyle:"solid", //线样式
+            strokeDasharray:[10,5] //补充线样式
+            });
+
+        //  将折线添加至地图实例
+        map.add(polyline);
+    </script>
+</body>
+</html>
