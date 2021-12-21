@@ -19,7 +19,6 @@ def register(request):
 		password2 = request.POST['password2']
 		utype = request.POST['utype']
 		companyname = request.POST['companyname']
-		registerid = request.POST['registerid'] # 自动生成
 		address = request.POST['address']
 		tel = request.POST['tel']
 		email = request.POST['email']
@@ -44,9 +43,6 @@ def register(request):
 		if not companyname:
 			messages.info(request, '必须输入公司名')
 			return redirect(reverse("register:signup"))
-		if not registerid:
-			messages.info(request, '必须输入登录ID')
-			return redirect(reverse("register:signup"))
 		if not email:
 			messages.info(request, '必须提供邮箱')
 			return redirect(reverse("register:signup"))
@@ -60,8 +56,8 @@ def register(request):
 				messages.info(request, '邮箱已使用')
 				return redirect(reverse("register:signup"))
 			else:
-				user = User.objects.create_user(username=username, password=password1, utype=utype, companyname=companyname, 
-        										registerid=registerid, address=address, tel=tel, email=email)
+				user = User.objects.create_user(username=username, password=password1, utype=utype, 
+                                                companyname=companyname, address=address, tel=tel, email=email)					
 				user.save()
 				messages.info(request, '注册成功!')
                 
