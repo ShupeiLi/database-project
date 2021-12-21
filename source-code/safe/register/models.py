@@ -48,10 +48,10 @@ class NewUser(AbstractBaseUser):
     password = models.CharField(max_length=255)
     utype = models.CharField(max_length=128)
     companyname = models.CharField(max_length=255)
-    registerid = models.CharField(max_length=25)
+    registerid = models.CharField(max_length=25, unique=True)
     address = models.CharField(max_length=255)
     tel = models.CharField(max_length=11)
-    email = models.EmailField(max_length=25)
+    email = models.EmailField(max_length=25, unique=True)
     registerdate = models.DateField(auto_now_add=True)
     is_staff = models.BooleanField(default=False)
     is_superuser = models.BooleanField(default=False)
@@ -59,8 +59,8 @@ class NewUser(AbstractBaseUser):
 
     objects = MyAccountManager()
 
-    USERNAME_FIELD = 'username'
-    REQUIRED_FIELDS = ['password', 'utype', 'registerid', 'email']
+    USERNAME_FIELD = 'registerid'
+    REQUIRED_FIELDS = ['username', 'password', 'utype', 'email']
     
     def has_perm(self, perm, obj=None):
         return self.is_superuser
