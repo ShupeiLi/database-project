@@ -4,7 +4,6 @@ from django.shortcuts import render, redirect, reverse, HttpResponseRedirect
 from django.contrib import messages
 from django.contrib.auth import get_user_model
 from django.urls import reverse_lazy
-from django.contrib.auth.hashers import check_password
 
 
 User = get_user_model()
@@ -84,7 +83,7 @@ def login(request):
             user = None
         if user:
             if user.is_active:
-                if check_password(password, user.password):  # 密码正确
+                if password == user.password:  # 密码正确
                     response = HttpResponseRedirect(reverse_lazy("dashboard:boardhome"))  # 跳转至新的页面
                     response.set_cookie("username", username)  # 设置cookie
                     response.set_cookie("usertype", usertype)

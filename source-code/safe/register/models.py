@@ -20,11 +20,9 @@ class MyAccountManager(BaseUserManager):
             raise ValueError('You must provide an email')
 
         user = self.model(
-            username=username, utype=utype, companyname=companyname,
-            address=address, tel=tel, email=self.normalize_email(email)
+            username=username, password=password, utype=utype, companyname=companyname,
+            address=address, tel=tel, email=email
             )
-
-        user.set_password(password)
         user.save(using=self._db)
     
         return user
@@ -40,7 +38,7 @@ class MyAccountManager(BaseUserManager):
 
 
 class NewUser(AbstractBaseUser):
-    username = models.CharField(max_length=128, unique=True)
+    username = models.CharField(primary_key=True, max_length=128, unique=True)
     password = models.CharField(max_length=255)
     utype = models.CharField(max_length=128)
     companyname = models.CharField(max_length=255)
