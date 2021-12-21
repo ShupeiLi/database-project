@@ -8,15 +8,16 @@
     <body>
         <div style="width: 210px; margin: 0 auto">
             <form action="{% url 'SalerPlaceOrder:placeorder' %}" method="post">
+                {%csrf_token%}
                 <label>卖方id：</label>
                 <input type="text" name="salerid" style="width: 150px"><br><br>
                 <label>物流订单id：</label>
                 <input type="text" name="orderid" style="width: 150px"><br><br>
                 <label>请选择物流公司：</label>
-                {% for companyid in Company.companyid.all %}
-                    <input type="radio" name="company" id="Company{{ forloop.counter }}" value="{{ Company.companyid }}" />
-                    <label for="Company{{ forloop.counter }}">{{ Company.companyname }}</label><br />
-                {% endfor %}
+                <select name="company">
+                    <option value="1">物流公司1</option>
+                    <option value="2">物流公司2</option>
+                </select><br><br>
                 &nbsp;&nbsp&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 <input type="submit" value="Submit" />
             </form>
