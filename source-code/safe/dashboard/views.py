@@ -29,10 +29,10 @@ def seller_order_submitted(request):
             dno = encrypt(ono)
             if not DeliveryInformation.objects.filter(dno=dno).exists():
                 ono = OrderInformation.objects.get(ono=request.POST.get('ono')).ono
-                selected_company = get_object_or_404(User, username=request.POST.get('tno'))
-                tno = selected_company.username
+                tno = get_object_or_404(User, username=request.POST.get('tno'))
+                sno_instance = get_object_or_404(User, username=sno)
                 dtrans = request.POST.get('dtrans')
-                new_delivery = DeliveryInformation.objects.create_deliveryinfo_seller(ono, dtrans, tno, sno)
+                new_delivery = DeliveryInformation.objects.create_deliveryinfo_seller(ono, dtrans, tno, sno_instance)
                 new_delivery.save()
                 messages.info(request, "提交成功")
                 return HttpResponseRedirect(reverse_lazy("dashboard:submitorder"))
