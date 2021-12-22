@@ -17,3 +17,8 @@ def showpath(request, orderid):
         lon = latlon[1]
         path_dot.append((float(lat), float(lon)))
     return render(request, 'PathVisualization/path.html', {"path_dot": path_dot})
+
+def showdata(request):
+    heatmap = request.GET.get('heatmapdata')
+    print('heatmapdata1=', heatmapdata)
+    return render(request, 'path.html',{'heatmapdata': json.dumps(heatmapdata)} )
