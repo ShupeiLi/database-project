@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- 上述meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.bootcss.com/twitter-bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/static/login/css/login.css" rel="stylesheet"/>
+    <title>login page</title>
+</head>
+<!--container col-md-4 col-md-offset-4  form-group class="form-horizontal"-->
+<body>
+    <div class="login-box">
+        <h3 class="text-center">登录</h3>
+        <form action="" method="post">
+		{% csrf_token %}
+		
+            <div class="login-field">
+                <label for="input_user_type">我是：</label>
+                <select name="usertype" id="input_user_type">
+                    <option value="buyer">买方</option>
+                    <option value="seller">卖方</option>
+                    <option value="company">物流公司</option>
+                    <option value="platform">电商平台</option>
+                    <option value="delivery">配送人员</option>
+                </select>
+            </div>
+            <div class="login-field">
+                <label for="input_username">用户名：</label>
+                <input type="text" name="username" class="form-control" id="input_username" placeholder="Username">
+            </div>
+            <div class="login-field">
+                <label for="input_password">密码：</label>
+                <input type="password" name="password" class="form-control" id="input_password" placeholder="Password">
+            </div>
+
+            <div>
+                <div class="checkbox">
+                    <label>
+                        <input type="checkbox"> remember me
+                    </label>
+                </div>
+                <a href="{% url 'register:signup' %}" class="text-success "><ins>新用户注册</ins></a>
+				{% if request.GET.next %}
+					<input type="hidden" name="next" value="{{ request.GET.next }}">
+				{% endif %}
+                <button type="submit" class="btn btn-primary float-right">登录</button>
+            </div>
+          {% for message in messages %}
+		  {% if forloop.last %}
+			<p style="color:white;"> {{message}} </p>
+		  {% endif %}
+		  {% endfor %}
+        </form>
+
+    </div>
+
+
+<!-- Optional JavaScript -->
+<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.js"></script>
+<script src="https://cdn.bootcss.com/popper.js/1.15.0/umd/popper.js"></script>
+<script src="https://cdn.bootcss.com/twitter-bootstrap/4.3.1/js/bootstrap.min.js"></script>
+</body>
+
+</html>
