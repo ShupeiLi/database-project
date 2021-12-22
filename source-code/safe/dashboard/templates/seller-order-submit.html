@@ -6,6 +6,9 @@
 <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/siwalikm/quick-form-css@2.2.2/qfc-light.css">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
 <style>
 html,body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
 </style>
@@ -29,44 +32,12 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
   <div class="w3-container">
     <h5>控制面板</h5>
   </div>
-  {%if usertype == "buyer" %}
   <div class="w3-bar-block">
-    <a href="#" class="w3-bar-item w3-button w3-padding"><i class="fa fa-eye fa-fw"></i>  订单总览</a>
-    <a href="#" class="w3-bar-item w3-button w3-padding"><i class="fa fa-bullseye fa-fw"></i>  统计报表</a>
-	<a href="#" class="w3-bar-item w3-button w3-padding"><i class="fa fa-cog fa-fw"></i>  设置</a><br><br>
-  </div>
-  {%endif%}
-  {%if usertype == "seller" %}
-  <div class="w3-bar-block">
-    <a href="{% url 'dashboard:submitorder' %}" class="w3-bar-item w3-button w3-padding"><i class="fa fa-users fa-fw"></i> 提交订单 </a>
+    <a href="#" class="w3-bar-item w3-button w3-padding"><i class="fa fa-users fa-fw"></i> 提交订单 </a>
 	<a href="#" class="w3-bar-item w3-button w3-padding"><i class="fa fa-eye fa-fw"></i>  订单总览</a>
     <a href="#" class="w3-bar-item w3-button w3-padding"><i class="fa fa-bullseye fa-fw"></i>  统计报表</a>
 	<a href="#" class="w3-bar-item w3-button w3-padding"><i class="fa fa-cog fa-fw"></i>  设置</a><br><br>
   </div>
-  {%endif%}
-  {%if usertype == "company" %}
-  <div class="w3-bar-block">
-	<a href="#" class="w3-bar-item w3-button w3-padding"><i class="fa fa-bell fa-fw"></i> 确认订单 </a>
-	<a href="#" class="w3-bar-item w3-button w3-padding"><i class="fa fa-eye fa-fw"></i>  订单总览</a>
-    <a href="#" class="w3-bar-item w3-button w3-padding"><i class="fa fa-bullseye fa-fw"></i>  统计报表</a>
-	<a href="#" class="w3-bar-item w3-button w3-padding"><i class="fa fa-cog fa-fw"></i>  设置</a><br><br>
-  </div>
-  {%endif%}
-  {%if usertype == "platform" %}
-  <div class="w3-bar-block">
-	<a href="#" class="w3-bar-item w3-button w3-padding"><i class="fa fa-eye fa-fw"></i>  订单总览</a>
-    <a href="#" class="w3-bar-item w3-button w3-padding"><i class="fa fa-bullseye fa-fw"></i>  统计报表</a>
-	<a href="#" class="w3-bar-item w3-button w3-padding"><i class="fa fa-cog fa-fw"></i>  设置</a><br><br>
-  </div>
-  {%endif%}
-  {%if usertype == "delivery" %}
-  <div class="w3-bar-block">
-    <a href="#" class="w3-bar-item w3-button w3-padding"><i class="fa fa-bell fa-fw"></i> 确认订单 </a>
-  	<a href="#" class="w3-bar-item w3-button w3-padding"><i class="fa fa-users fa-fw"></i> 每日填报 </a>
-	<a href="#" class="w3-bar-item w3-button w3-padding"><i class="fa fa-history fa-fw"></i>  填报历史</a>
-    <a href="#" class="w3-bar-item w3-button w3-padding"><i class="fa fa-cog fa-fw"></i>  设置</a><br><br>
-  </div>
-  {%endif%}
 </nav>
 
 
@@ -74,14 +45,45 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
 <div class="w3-overlay w3-hide-large w3-animate-opacity" onclick="w3_close()" style="cursor:pointer" title="close side menu" id="myOverlay"></div>
 
 <!-- !PAGE CONTENT! -->
-<div class="w3-main" style="margin-left:300px;margin-top:43px;">
+<div class="w3-main qfc-container" style="margin-left:430px;margin-top:43px;">
 
-  <!-- Header -->
-  <header class="w3-container" style="padding-top:22px">
-    <h5><b><i class="fa fa-dashboard"></i> My Dashboard</b></h5>
-  </header>
-  
-  
+<h6>物流订单填写</h6>
+
+<form action="/">
+	{% csrf_token %}
+	
+	<label>商品订单号：</label>
+	<br>
+    <input type="text" value="" name="ono" />
+	
+	<br>
+	<br>
+ 
+    <label>物流运输方式：</label>
+	<br>
+    <select name="dtrans" size="1">
+        <option value="plane">航空运输</option>
+        <option value="train">铁道运输</option>
+		<option value="truck">公路运输</option>
+    </select>
+
+	<br>
+	<br>
+	
+	<label>选择物流公司：</label>
+	<br>
+	<select name="tno" size="1">
+	{% for company in companys %}
+		<option value="{{ company.username }}">{{ company.companyname }}</option>
+	{% endfor %}
+	</select>
+	<br>
+	<br>
+	
+    <input type="submit" value="提交" />
+
+</form>
+
 </div>
 
   <!-- End page content -->

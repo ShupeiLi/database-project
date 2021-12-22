@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
-from django.shortcuts import render, redirect, reverse, HttpResponseRedirect
+from django.shortcuts import render, redirect, reverse
 from django.contrib import messages
-from django.contrib.auth import get_user_model
+from django.contrib.auth import get_user_model, login
 from django.urls import reverse_lazy
 
 
@@ -62,7 +62,7 @@ def register(request):
                 
 		else:
 			messages.info(request, '密码不正确!')
-			return redirect(reverse("register:register"))
+			return redirect(reverse("register:signup"))
 	
 		return redirect(reverse("register:login"))
 
@@ -70,7 +70,7 @@ def register(request):
 
 
 # Login view function
-def login(request):
+def login_view(request):
     if request.method == 'POST' and request.POST:
         # get content from request
         usertype = request.POST.get("usertype")
@@ -84,7 +84,8 @@ def login(request):
         if user:
             if user.is_active:
                 if password == user.password:  # 密码正确
-                    response = HttpResponseRedirect(reverse_lazy("dashboard:boardhome"))  # 跳转至新的页面
+                    login(request, user)
+                    response = redirect(reverse_lazy("dashboard:boardhome"))  # 跳转至新的页面
                     response.set_cookie("username", username)  # 设置cookie
                     response.set_cookie("usertype", usertype)
                     return response

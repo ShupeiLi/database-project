@@ -7,4 +7,5 @@ app_name = 'dashboard'
 
 urlpatterns = [
     path('', views.board_home, name = "boardhome"),
+    path('submit-order/', views.seller_order_submitted, name="submitorder")
 ]
