@@ -1,3 +1,4 @@
+{% load staticfiles %}
 <!DOCTYPE html>
 
 <html>
@@ -31,7 +32,7 @@
         </div>
     </div>
     <script src="//webapi.amap.com/maps?v=1.4.15&key=您申请的key值"></script>
-    <script src="//a.amap.com/jsapi_demos/static/resource/heatmapData.js"></script>
+    <script src="{% static "js/heatmapdata.js" %}" type="text/javascript"></script>
     <script>
         var map = new AMap.Map('container', {
             resizeEnable: true,
