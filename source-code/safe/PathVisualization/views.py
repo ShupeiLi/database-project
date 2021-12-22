@@ -2,7 +2,7 @@ from django.shortcuts import render
 
 # Create your views here.
 
-from PathVisualization.models import Logistics_Location
+from PathVisualization.models import Logistics_Location, covid19
 
 
 # Create your views here.
@@ -16,7 +16,7 @@ def showpath(request, orderid):
         lat = latlon[0]
         lon = latlon[1]
         path_dot.append((float(lat), float(lon)))
-    return render(request, 'PathVisualization/path.html', {"path_dot": path_dot})
+    return render(request, 'PathVisualization/path.html', {"path_dot": path_dot},{'heatmapdata': json.dumps(heatmapdata)})
 
 def showdata(request):
     heatmap = request.GET.get('heatmapdata')
