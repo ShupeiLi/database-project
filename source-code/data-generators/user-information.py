@@ -42,6 +42,7 @@ class UserGenerator():
         cursor = self.db.cursor()
         cursor.executemany(sql, val)
         self.db.commit()
+        cursor.close()
         
     def check_valid(self, val):
         """
@@ -59,6 +60,7 @@ class UserGenerator():
                OR username = '{}'
                """.format(val[4], val[1]))
         records = cursor.fetchall()
+        cursor.close()
         if len(records) > 0:
             return False
         else:
@@ -78,14 +80,14 @@ class UserGenerator():
         
         while i < self.n:
             one_value = []
-            date = datetime.fromtimestamp(random.randint(1, int(time.time()))).strftime('%Y-%m-%d')
+            date = datetime.fromtimestamp(random.randint(1200000000, int(time.time()))).strftime('%Y-%m-%d')
             name = fake.name()
             one_value.append(date)
             one_value.append(name)
             one_value.append("123")
             one_value.append(self.utype)
             one_value.append(self.random_char(7)+"@gmail.com")
-            one_value.append(phone.get_number(full=False))
+            one_value.append(phone.get_number(full=True))
             if self.utype == 'company' or self.utype == 'platform':
                 one_value.append(name + " Company")
             else:
@@ -104,5 +106,5 @@ class UserGenerator():
     
     
 if __name__ == '__main__':
-    user_gen = UserGenerator(5, 0)
+    user_gen = UserGenerator(5, 1)
     user_gen.insert_values()

@@ -43,7 +43,7 @@ class NewUser(AbstractBaseUser):
     utype = models.CharField(max_length=128)
     companyname = models.CharField(max_length=255)
     address = models.CharField(max_length=255)
-    tel = models.CharField(max_length=11)
+    tel = models.CharField(max_length=128)
     email = models.EmailField(max_length=25, unique=True)
     registerdate = models.DateField(auto_now_add=True)
     is_staff = models.BooleanField(default=False)

@@ -1,7 +1,6 @@
 from django.db import models
 from register.models import NewUser
-import base64
-
+from .tools import encrypt
 
 # Create your models here.
 class OrderInformation(models.Model):
@@ -17,13 +16,12 @@ class OrderInformation(models.Model):
         return self.ono
 
 
-class DeliveryInformationManager(models.Model):
+class DeliveryInformationManager(models.Manager):
 
     def create_deliveryinfo_seller(self, ono, dtrans, tno, sno):
 
         # encrypt
-        dno = str(base64.b64decode(ono.encode('UTF-8')))
-        # decode: ono = base64.b64decode(dno).decode('utf-8')
+        dno = encrypt(ono)
 
         if not ono:
             raise ValueError('必须提供有效订单号')
@@ -60,8 +58,8 @@ class DeliveryInformationManager(models.Model):
 
 
 class DeliveryInformation(models.Model):
-
-    dno = models.CharField(primary_key=True, max_length=128, null=False, unique=True)    # one to one
+    objects = DeliveryInformationManager()
+    dno = models.IntegerField(primary_key=True, null=False, unique=True)    # one to one
     dvalue = models.DecimalField(max_digits=25, decimal_places=10, null=True)
     dtrans = models.CharField(max_length=128)
     tno = models.ForeignKey(NewUser, related_name='DeliveryInformation_NewUser_log', on_delete=models.CASCADE)    # one to one
