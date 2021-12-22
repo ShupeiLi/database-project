@@ -19,7 +19,7 @@ class OrderGenerator():
         self.db = mysql.connector.connect(
                     host = 'localhost',
                     user = 'root',
-                    password = 'ShupeiLi',
+                    password = '123456',
                     database = 'safe'
                     )
         
@@ -127,5 +127,5 @@ class OrderGenerator():
     
         
 if __name__ == '__main__':
-    order_gen = OrderGenerator(5)
+    order_gen = OrderGenerator(50)
     order_gen.insert_values_order()

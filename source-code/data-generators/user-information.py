@@ -25,7 +25,7 @@ class UserGenerator():
         self.db = mysql.connector.connect(
                     host = 'localhost',
                     user = 'root',
-                    password = 'ShupeiLi',
+                    password = '123456',
                     database = 'safe'
                     )
     
@@ -106,5 +106,6 @@ class UserGenerator():
     
     
 if __name__ == '__main__':
-    user_gen = UserGenerator(5, 1)
-    user_gen.insert_values()
+    for i in range(5):
+        user_gen = UserGenerator(5, i)
+        user_gen.insert_values()
