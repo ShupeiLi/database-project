@@ -1,0 +1,55 @@
+{% extends 'deliveryman/index.html' %}
+
+{% block title %}首页{% endblock %}
+
+{% block content %}
+
+
+    <div style="height: 10px;"></div>
+    <hr>
+    <div style="height: 10px;"></div>
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-6">
+                <a href="{% url 'createhealth' %}" class="btn btn-lg btn-outline-primary">新建健康信息</a>
+            </div>
+        </div>
+    </div>
+
+    <div style="height: 10px;"></div>
+    <hr>
+    <div style="height: 10px;"></div>
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-6 text-center">
+                <h4>最近健康信息</h4>
+                <table class="table">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th scope="col">配送人员</th>
+                            <th scope="col">当日途经城市</th>
+                            <th scope="col">配送人员体温(℃)</th>
+                            <th scope="col">查看</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for i in health reversed %}
+                            <tr>
+                                <td>{{ i.username }}</td>
+                                <td>{{ i.pcity }}</td>
+                                <td>{{ i.ptemp }}</td>
+                                <td>
+                                    <a href="" class="btn btn-sm btn-success">查看</a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+

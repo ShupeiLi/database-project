@@ -1,0 +1,122 @@
+{% extends 'deliveryman/index.html' %}
+
+{% block title %}被分配订单{% endblock %}
+
+{% block content %}
+
+    <div style="height: 10px;"></div>
+    <div class="container-fluid">
+{#        卡片#}
+        <div style="height: 10px;"></div>
+        <div class="row">
+            <div class="col-md-4">
+                <div class="card bg-light shadow text-center">
+                    <div class="card-header">
+                        <h3 class="card-title">订单总数</h3>
+                    </div>
+                    <div class="card-body">
+                        <h3>{{ distribution_count }}</h3>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card bg-light shadow text-center">
+                    <div class="card-header">
+                        <h3 class="card-title">待确认订单</h3>
+                    </div>
+                    <div class="card-body">
+                        <h3>{{ distribution_p_count }}</h3>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card bg-light shadow text-center">
+                    <div class="card-header">
+                        <h3 class="card-title">已确认订单</h3>
+                    </div>
+                    <div class="card-body">
+                        <h3>{{ distribution_c_count }}</h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    
+    <div style="height: 10px;"></div>
+    <hr>
+    <div style="height: 10px;"></div>
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12 text-center">
+                <h4>订单详情</h4>
+                <table class="table">
+                    <thead class="thead-light">
+                        <tr>
+                            <th scope="col">订单分配编号</th>
+                            <th scope="col">物流单号</th>
+                            <th scope="col">配送人员</th>
+                            <th scope="col">订单状态</th>
+                            <th scope="col">更新</th>
+                            <th scope="col">删除</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for j in distribution %}
+                            <tr>
+                                <td>{{ j.dpno }}</td>
+                                <td>{{ j.dno }}</td>
+                                <td>{{ j.username }}</td>
+                                <td>{{ j.status }}</td>
+                                <td>
+                                    <a href="{% url 'confirmdistribution' j.id %}" class="btn btn-sm btn-warning">更新</a>
+                                </td>
+                                <td>
+                                    <!--<a href="{% url 'deletedistribution' j.id %}" class="btn btn-sm btn-danger">remove</a>-->
+                                    <button type="button" id="{{ j.id }}-del" class="btn btn-sm btn-danger">删除</button>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block javascript %}
+
+    <script>
+        {% for j in distribution %}
+            $(document).ready(function(){
+                $('#{{ j.id }}-del').click(function(){
+                    var r = confirm("你确定要删除这个订单吗？")
+                    if(r){
+                        $.ajaxSetup({
+                            data: {
+                                csrfmiddlewaretoken: '{{ csrf_token }}'
+                            }
+                        })
+                        $.ajax({
+                            type: 'POST',
+                            url: "{% url 'distribution' %}",
+                            data: {
+                                'distribution_del': {{ j.id }}
+                            },
+                            dataType: 'text',
+                            success: function(){
+                                window.location.reload()
+                            },
+                            error: function(){
+                                console.log("Somewhere is wrong!")
+                            }
+                        })
+                    }
+                })
+            })
+        {% endfor %}
+    </script>
+
+{% endblock %}

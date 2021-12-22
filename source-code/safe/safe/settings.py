@@ -38,7 +38,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'OrderConfirm.apps.OrderconfirmConfig'
+    'OrderConfirm.apps.OrderconfirmConfig',
+    'deliveryman.apps.DeliverymanConfig'
 ]
 
 MIDDLEWARE = [
