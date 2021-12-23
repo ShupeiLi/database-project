@@ -6,6 +6,7 @@
 <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/3.2.1/css/font-awesome.css">
 <style>
 html,body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
 </style>
@@ -33,37 +34,42 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
   <div class="w3-bar-block">
     <a href="#" class="w3-bar-item w3-button w3-padding"><i class="fa fa-eye fa-fw"></i>  订单总览</a>
     <a href="#" class="w3-bar-item w3-button w3-padding"><i class="fa fa-bullseye fa-fw"></i>  统计报表</a>
-	<a href="#" class="w3-bar-item w3-button w3-padding"><i class="fa fa-cog fa-fw"></i>  设置</a><br><br>
+    <a href="profile" class="w3-bar-item w3-button w3-padding"><i class="icon-user"></i>  账户信息</a>
+	  <a href="#" class="w3-bar-item w3-button w3-padding"><i class="fa fa-cog fa-fw"></i>  设置</a><br><br>
   </div>
   {%endif%}
   {%if usertype == "seller" %}
   <div class="w3-bar-block">
-    <a href="#" class="w3-bar-item w3-button w3-padding"><i class="fa fa-users fa-fw"></i> 提交订单 </a>
-	<a href="#" class="w3-bar-item w3-button w3-padding"><i class="fa fa-eye fa-fw"></i>  订单总览</a>
+    <a href="{% url 'dashboard:submitorder' %}" class="w3-bar-item w3-button w3-padding"><i class="fa fa-users fa-fw"></i> 提交订单 </a>
+	  <a href="#" class="w3-bar-item w3-button w3-padding"><i class="fa fa-eye fa-fw"></i>  订单总览</a>
     <a href="#" class="w3-bar-item w3-button w3-padding"><i class="fa fa-bullseye fa-fw"></i>  统计报表</a>
-	<a href="#" class="w3-bar-item w3-button w3-padding"><i class="fa fa-cog fa-fw"></i>  设置</a><br><br>
+    <a href="profile" class="w3-bar-item w3-button w3-padding"><i class="icon-user"></i>  账户信息</a>
+	  <a href="#" class="w3-bar-item w3-button w3-padding"><i class="fa fa-cog fa-fw"></i>  设置</a><br><br>
   </div>
   {%endif%}
   {%if usertype == "company" %}
   <div class="w3-bar-block">
-	<a href="#" class="w3-bar-item w3-button w3-padding"><i class="fa fa-bell fa-fw"></i> 确认订单 </a>
-	<a href="#" class="w3-bar-item w3-button w3-padding"><i class="fa fa-eye fa-fw"></i>  订单总览</a>
+	  <a href="#" class="w3-bar-item w3-button w3-padding"><i class="fa fa-bell fa-fw"></i> 确认订单 </a>
+	  <a href="#" class="w3-bar-item w3-button w3-padding"><i class="fa fa-eye fa-fw"></i>  订单总览</a>
     <a href="#" class="w3-bar-item w3-button w3-padding"><i class="fa fa-bullseye fa-fw"></i>  统计报表</a>
-	<a href="#" class="w3-bar-item w3-button w3-padding"><i class="fa fa-cog fa-fw"></i>  设置</a><br><br>
+    <a href="profile" class="w3-bar-item w3-button w3-padding"><i class="icon-user"></i>  账户信息</a>
+	  <a href="#" class="w3-bar-item w3-button w3-padding"><i class="fa fa-cog fa-fw"></i>  设置</a><br><br>
   </div>
   {%endif%}
   {%if usertype == "platform" %}
   <div class="w3-bar-block">
-	<a href="#" class="w3-bar-item w3-button w3-padding"><i class="fa fa-eye fa-fw"></i>  订单总览</a>
+  	<a href="#" class="w3-bar-item w3-button w3-padding"><i class="fa fa-eye fa-fw"></i>  订单总览</a>
     <a href="#" class="w3-bar-item w3-button w3-padding"><i class="fa fa-bullseye fa-fw"></i>  统计报表</a>
-	<a href="#" class="w3-bar-item w3-button w3-padding"><i class="fa fa-cog fa-fw"></i>  设置</a><br><br>
+    <a href="profile" class="w3-bar-item w3-button w3-padding"><i class="icon-user"></i>  账户信息</a>
+	  <a href="#" class="w3-bar-item w3-button w3-padding"><i class="fa fa-cog fa-fw"></i>  设置</a><br><br>
   </div>
   {%endif%}
   {%if usertype == "delivery" %}
   <div class="w3-bar-block">
     <a href="#" class="w3-bar-item w3-button w3-padding"><i class="fa fa-bell fa-fw"></i> 确认订单 </a>
   	<a href="#" class="w3-bar-item w3-button w3-padding"><i class="fa fa-users fa-fw"></i> 每日填报 </a>
-	<a href="#" class="w3-bar-item w3-button w3-padding"><i class="fa fa-history fa-fw"></i>  填报历史</a>
+	  <a href="#" class="w3-bar-item w3-button w3-padding"><i class="fa fa-history fa-fw"></i>  填报历史</a>
+    <a href="profile" class="w3-bar-item w3-button w3-padding"><i class="icon-user"></i>  账户信息</a>
     <a href="#" class="w3-bar-item w3-button w3-padding"><i class="fa fa-cog fa-fw"></i>  设置</a><br><br>
   </div>
   {%endif%}
@@ -83,12 +89,6 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
   
   
 </div>
-
-  <!-- Footer -->
-  <footer class="w3-container w3-padding-16 w3-light-grey">
-    <h4>FOOTER</h4>
-    <p>Powered by <a href="https://www.w3schools.com/w3css/default.asp" target="_blank">w3.css</a></p>
-  </footer>
 
   <!-- End page content -->
 </div>

@@ -28,6 +28,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+MESSAGE_STORAGE = "django.contrib.messages.storage.cookie.CookieStorage"
 
 # Application definition
 
@@ -40,7 +41,6 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'register',
     'dashboard',
-    'SalerPlaceOrder',
 ]
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'

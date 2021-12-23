@@ -132,15 +132,13 @@
     
 </head>
 <body>
+
     <div class="updateForm">
         <form action="" class="form" method="post">
           {% csrf_token %}
           
           <div style='color:purple'>
 		  <h1>修改用户信息</h1>
-          {% for message in messages %}
-          <h3> {{message}} </h3>
-          {% endfor %}
           </div>
 
           <div class="inputContainer">
@@ -166,6 +164,17 @@
           <input type="submit" class="submitBtn" value="确认">
         </form>
     </div>
+
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    
+    {% for message in messages %}
+    <script>
+        Swal.fire({
+            "title" : "{{message}}",
+            "icon" : "warning"
+        });
+    </script>
+    {% endfor %}
 
 </body>
 </html>

@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+
+{% block title %}Delivery Health{% endblock title %}
+
+{% block content %}
+  <div class="col-md-12">
+    <h4>填报历史</h4> <span><a href="/addnew" class="btn btn-primary">每日填报</a></span>
+    <div class="table-responsive">
+      <table id="deliveryhealth" class="table table-striped table-bordened" width="100%">
+        <thead>
+          <th><input type="checkbox" id="checkall" /></th>
+          <th>编号</th>
+          <th>途径城市</th>
+          <th>体温</th>
+          <th>更新时间</th>
+        </thead>
+
+        <tbody>
+          {% for dh in health %}
+            <tr>
+              <td><input type="checkbox" class="checkthis" /></td>
+              <td>{{ health.pno }}</td>
+              <td>{{ health.pcity }}</td>
+              <td>{{ health.ptemp }}</td>
+              <td>{{ health.pupdate }}</td> 
+            </tr>
+          {% endfor %}
+        </tbody>
+
+      </table>
+    </div>
+  </div>
+
+{% endblock content %}
