@@ -7,6 +7,8 @@
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+    <script src="https://cdn.bootcss.com/echart/4.4.0-rc.1/echarts.min.js"></script>
 </head>
 html,body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
 <body class="w3-light-grey">
@@ -73,82 +75,119 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
   </header>
 
   {%if usertype == "buyer" %}
-  <div class="">
-    <canvas id="OrderChart" width="400" height="400"></canvas>
-    <script>
-    const ctx = document.getElementById('OrderChart');
-    const myChart = new Chart(ctx, {
-        type: 'bar',
+  <div class="w3-container">
+    <div class="w3-container">
+      <canvas id="BuyerType"></canvas>
+      <script>
+    var ctx = document.getElementById('BuyerType');
+    var myChart = new Chart(ctx, {
+        type: 'pie',
         data: {
-            labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+            labels: ["food", "clothes", "daily use", "digital", "office supplies", "sports"],
             datasets: [{
-                label: '# of Votes',
-                data: ,
-                backgroundColor: [
-                    'rgba(255, 99, 132, 0.2)',
-                    'rgba(54, 162, 235, 0.2)',
-                    'rgba(255, 206, 86, 0.2)',
-                    'rgba(75, 192, 192, 0.2)',
-                    'rgba(153, 102, 255, 0.2)',
-                    'rgba(255, 159, 64, 0.2)'
-                ],
-                borderColor: [
-                    'rgba(255, 99, 132, 1)',
-                    'rgba(54, 162, 235, 1)',
-                    'rgba(255, 206, 86, 1)',
-                    'rgba(75, 192, 192, 1)',
-                    'rgba(153, 102, 255, 1)',
-                    'rgba(255, 159, 64, 1)'
-                ],
-                borderWidth: 1
+              label: "Buyer Preference for {{username}}",
+              data: {{type}},
+              backgroundColor: [
+                  'rgb(255, 99, 132)',
+                  'rgb(255, 159, 64)',
+                  'rgb(255, 205, 86)',
+                  'rgb(75, 192, 192)',
+                  'rgb(54, 162, 235)',
+                  'rgb(153, 102, 255)'
+              ],
+              hoverOffset: 4
             }]
-        },
-        options: {
-            scales: {
-                y: {
-                    beginAtZero: true
-                }
-            }
         }
     });
-    </script>
+    </script> <!-- settings for buyer pie -->
+    </div>
+    <div class="w3-container">
+      <canvas id="BuyerOrder"></canvas>
+      <script>
+        var ctx = document.getElementById("BuyerOrder")
+        var myChart = new Chart(ctx, {
+          type: 'line',
+          data: {
+              labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+              datasets: [{
+                label: 'Buying habit of {{username}}',
+                data: {{time}},
+                fill: false,
+                borderColor: 'rgb(75, 192, 192)',
+                tension: 0.1
+              }]
+          },
+        })
+      </script> <!-- settings for buyer order -->
+    </div>
   </div>
   {%endif%}
   {%if usertype == "seller" %}
-  <div class="">
-    <canvas id="RateSeller" width="100" height="100"></canvas>
-    <canvas id="SellerEarn" width="100" height="100"></canvas>
+  <div class="w3-container">
+    <div>
+      <canvas id="RateSeller"></canvas>
+      <script>
+    var ctx1 = document.getElementById('RateSeller');
+    var data1 = {
+        type: 'radar',
+        data: {
+            labels: ['quality','price','look','delivery','service'],
+            datasets: [{
+                label: "Rate scores for {{username}}",
+                data: {{rate}},
+                backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                borderColor: 'rgba(255, 99, 132, 1)',
+                pointBackgroundColor: 'rgb(255, 99, 132)',
+                pointBorderColor: '#fff',
+                pointHoverBackgroundColor: '#fff',
+                pointHoverBorderColor: 'rgb(255, 99, 132)'
+            }]
+        },
+        options: {
+            elements: {
+                line: {
+                    borderWidth: 3
+                }
+            }
+        }
+    }
+    var myChart1 = new Chart(ctx1, data1);
+    </script> <!-- settings for seller radar -->
+    </div>
+<!--    <div>-->
+<!--      <select name="year" id="sel"></select>-->
+<!--    </div>-->
+    <div>
+      <canvas id="SellerEarn"></canvas>
+      <script>
+        var ctx = document.getElementById("SellerEarn")
+        var myChart = new Chart(ctx, {
+          type: 'line',
+          data: {
+              labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+              datasets: [{
+                label: 'Monthly income of {{username}}',
+                data: {{income}},
+                fill: false,
+                borderColor: 'rgb(75, 192, 192)',
+                tension: 0.1
+              }]
+          },
+        })
+      </script> <!-- settings for seller income -->
+    </div>
   </div>
   {%endif%}
   {%if usertype == "company" %}
-  <div class="">
-    <canvas id="RateComp" width="400" height="400"></canvas>
-  </div>
-  {%endif%}
-  {%if usertype == "platform" %}
-  <div class="">
-
-  </div>
-  {%endif%}
-
-</div>
-
-  <!-- Footer -->
-  <footer class="w3-container w3-padding-16 w3-light-grey">
-    <h4>FOOTER</h4>
-    <p>Powered by <a href="https://www.w3schools.com/w3css/default.asp" target="_blank">w3.css</a></p>
-  </footer>
-
-  <!-- End page content -->
-</div>
-
-<script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script>
-<script>
-    const ctx = document.getElementById('RateSeller');
+  <div class="w3-container">
+    <div class="w3-container">
+      <canvas id="RateComp"></canvas>
+      <script>
+    const ctx = document.getElementById('RateComp');
     const myChart = new Chart(ctx, {
         type: 'radar',
         data: {
-            labels: ["quality","price","look","delivery","service"],
+            labels: ["speed","package","perfection","service","timely feedback"],
             datasets: [{
                 label: "Rate scores for {{username}}",
                 data: {{rate}},
@@ -168,7 +207,86 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
             }
         }
     });
-    </script>
+    </script> <!-- settings for delivery company radar -->
+    </div>
+    <div class="w3-container">
+      <canvas id="CompEarn"></canvas>
+      <script>
+        var ctx = document.getElementById("CompEarn")
+        var myChart = new Chart(ctx, {
+          type: 'line',
+          data: {
+              labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+              datasets: [{
+                label: 'Monthly income of {{username}}',
+                data: {{income}},
+                fill: false,
+                borderColor: 'rgb(75, 192, 192)',
+                tension: 0.1
+              }]
+          },
+        })
+      </script> <!-- settings for seller income -->
+    </div>
+  </div>
+  {%endif%}
+  {%if usertype == "platform" %}
+  <div class="w3-container">
+    <div class="w3-container">
+      <canvas id="PlatformType"></canvas>
+      <script>
+    var ctx = document.getElementById('PlatformType');
+    var myChart = new Chart(ctx, {
+        type: 'pie',
+        data: {
+            labels: ["food", "clothes", "daily use", "digital", "office supplies", "sports"],
+            datasets: [{
+              label: "Buyer Preference for {{username}}",
+              data: {{type}},
+              backgroundColor: [
+                  'rgb(255, 99, 132)',
+                  'rgb(255, 159, 64)',
+                  'rgb(255, 205, 86)',
+                  'rgb(75, 192, 192)',
+                  'rgb(54, 162, 235)',
+                  'rgb(153, 102, 255)'
+              ],
+              hoverOffset: 4
+            }]
+        }
+    });
+    </script> <!-- settings for Platform Type -->
+    </div>
+  </div>
+  {%endif%}
+
+</div>
+
+  <!-- Footer -->
+  <footer class="w3-container w3-padding-16 w3-light-grey">
+    <h4>FOOTER</h4>
+    <p>Powered by <a href="https://www.w3schools.com/w3css/default.asp" target="_blank">w3.css</a></p>
+  </footer>
+
+  <!-- End page content -->
+</div>
+
+<!-- select for year -->
+<script type="text/javascript">
+  onload = function ()
+  {
+  var sel = document.getElementById ('sel');
+  for ( var i = 2021; i > 2015; i--)
+  {
+  var option = document.createElement ('option');
+  option.value = i;
+  var txt = document.createTextNode (i);
+  option.appendChild (txt);
+  sel.appendChild (option);
+  }
+  }
+</script>
+
 <script>
 // Get the Sidebar
 var mySidebar = document.getElementById("mySidebar");

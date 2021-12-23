@@ -1,13 +1,11 @@
 from django.shortcuts import render, get_object_or_404, HttpResponseRedirect
 from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
-from .models import OrderInformation, DeliveryInformation
+from .models import OrderInformation, DeliveryInformation, RateSeller, RateDelivComp
 from django.urls import reverse_lazy
 from django.contrib import messages
 from .tools import encrypt
-from dashboard.models import OrderInformation
-from dashboard.models import RateSeller
-from dashboard.models import RateDelivComp
+from datetime import datetime
 
 
 User = get_user_model()
@@ -50,25 +48,40 @@ def seller_order_submitted(request):
 # Stat Page: calculate and send statistics data.
 @login_required
 def stat_func(request):
+    gen_type = ["food", "clothes", "daily use", "digital", "office supplies", "sports"]
     username = request.COOKIES.get("username")
     usertype = request.COOKIES.get("usertype")
+    # year = request.POST.get("year")
     if usertype == "buyer":
         order = OrderInformation.objects.filter(username = username)
         order_type = [o.otype for o in order]
-        order_date = [o.otime for o in order]
-        return render(request, "stat_page.html", {"username": username, "usertype": usertype, "type": order_type, "time": order_date})
+        type = [order_type.count(i) for i in gen_type]
+        order_date = [o.otime.month for o in order]
+        date = [order_date.count(i) for i in range(1,13)]
+        return render(request, "stat_page.html",
+                      {"username": username, "usertype": usertype, "type": type, "time": date})
     elif usertype == "seller":
-        order = OrderInformation.objects.filter(username = username)
+        order = OrderInformation.objects.filter(sellername = username)
         rate = RateSeller.objects.get(sellername = username)
         rateNum = [float(rate.quality), float(rate.price), float(rate.look), float(rate.delivery), float(rate.service)]
-        order_value = [o.ovalue for o in order]
-        return render(request, "stat_page.html", {"username": username, "usertype": usertype, "value": order_value, "rate": rateNum})
+        income = [0] * 12
+        for o in order:
+            income[o.otime.month - 1] += float(o.ovalue)
+        return render(request, "stat_page.html", {"username": username, "usertype": usertype, "rate": rateNum, "income": income})
     elif usertype == "platform":
         order = OrderInformation.objects.filter()
+        order_type = [o.otype for o in order]
+        type = [order_type.count(i) for i in gen_type]
+        return render(request, "stat_page.html",
+                      {"username": username, "usertype": usertype, "type": type})
     elif usertype == "company":
+        order = DeliveryInformation.objects.filter()
         rate = RateDelivComp.objects.get(compname = username)
-        rateNum = [rate.quality.doubleValue(), rate.price, rate.look, rate.delivery, rate.service]
-        return render(request, "stat_page.html", {"username": username, "usertype": usertype, "rate": rateNum})
+        rateNum = [float(rate.speed), float(rate.package), float(rate.perfection), float(rate.service), float(rate.timely_feedback)]
+        income = [0] * 12
+        for o in order:
+            income[o.dsetime.month - 1] += float(o.dvalue)
+        return render(request, "stat_page.html", {"username": username, "usertype": usertype, "rate": rateNum, "income": income})
     else:
         messages.info("错误用户类型！")
 
