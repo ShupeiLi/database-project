@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registration</title>
+	{% load static %}
+	<link href="https://cdn.bootcss.com/twitter-bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/static/login/css/login.css" rel="stylesheet"/>
+	<link rel="stylesheet" type="text/css" media="screen" href="{% static 'css/rgststyles.css' %}">
+	<link href="https://cdn.bootcss.com/twitter-bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/static/login/css/login.css" rel="stylesheet"/>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Lato&display=swap');
+    
+      /* Get rid of all default margins/paddings. Set typeface */
+      body {
+          box-sizing: border-box;
+          margin: 0;
+          padding: 0;
+          background-color: white;
+          font-family: "lato", sans-serif;
+      }
+      
+      /* Puts the form in the center both horizontally and vertically. Sets its height to 100% of the viewport's height */
+      .registerForm {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+      }
+      
+      .form {
+          background-color: white;
+          width: 400px;
+          border-radius: 8px;
+          padding: 20px 40px;
+          box-shadow: 0 10px 25px rgba(92, 99, 105, .2);
+      }
+      
+      .title {
+          font-size: 50px;
+          margin-bottom: 50px;
+      }
+      
+      .inputContainer {
+          position: relative;
+          height: 45px;
+          width: 90%;
+          margin-bottom: 17px;
+      }
+      
+      /* Style the inputs */
+      .input {
+          position: absolute;
+          top: 0px;
+          left: 0px;
+          height: 100%;
+          width: 100%;
+          border: 1px solid #DADCE0;
+          border-radius: 7px;
+          font-size: 16px;
+          padding: 0 20px;
+          outline: none;
+          background: none;
+          z-index: 1;
+      }
+      
+      /* Hide the placeholder texts (a) */
+      ::placeholder {
+          color: transparent;
+      }
+      
+      /* Styling text labels */
+      .label {
+          position: absolute;
+          top: 15px;
+          left: 15px;
+          padding: 0 4px;
+          background-color: white;
+          color: #DADCE0;
+          font-size: 16px;
+          transition: 0.5s;
+          z-index: 0;
+      }
+      
+      /* Hide the placeholder texts (a) */
+      ::placeholder {
+          color: transparent;
+      }
+      
+      .submitBtn {
+          display: block;
+          margin-left: auto;
+          padding: 15px 30px;
+          border: none;
+          background-color: purple;
+          color: white;
+          border-radius: 6px;
+          cursor: pointer;
+          font-size: 16px;
+          margin-top: 30px;
+      }
+      
+      .submitBtn:hover {
+          background-color: #9867C5;
+          transform: translateY(-2px);
+      }
+      
+      .input:focus + .label {
+          top: -7px;
+          left: 3px;
+          z-index: 10;
+          font-size: 14px;
+          font-weight: 600;
+          color: purple;
+      }
+      
+      .input:focus {
+          border: 2px solid purple;
+      }
+      
+      .input:not(:placeholder-shown)+ .label {
+          top: -7px;
+          left: 3px;
+          z-index: 10;
+          font-size: 14px;
+          font-weight: 600;
+      }
+    </style>
+    
+</head>
+<body>
+    <div class="registerForm">
+        <form action="" class="form" method="post">
+          {% csrf_token %}
+          
+          <div style='color:purple'>
+		  <h1>新用户注册</h1>
+          {% for message in messages %}
+          <h3> {{message}} </h3>
+          {% endfor %}
+          </div>
+		  
+		    <div style='color:purple'>
+                <label for="input_user_type">注册为：</label>
+                <select name="utype" id="input_user_type" onchange="showDiv(this)">
+                    <option value="buyer">买方</option>
+                    <option value="seller">卖方</option>
+                    <option value="company">物流公司</option>
+                    <option value="platform">电商平台</option>
+                    <option value="delivery">配送人员</option>
+                </select>
+            </div>
+		  
+          <div class="inputContainer">
+            <input type="text" name='username' class="input" placeholder="Username">
+            <label for="" class="label">请输入用户名</label>
+          </div>
+    
+          <div class="inputContainer">
+            <input type="password" name='password1' class="input" placeholder="Password">
+            <label for="" class="label">请输入密码</label>
+          </div>
+
+          <div class="inputContainer">
+            <input type="password" name='password2' class="input" placeholder="Confirm Password">
+            <label for="" class="label">请确认密码</label>
+          </div>
+		
+		
+			<script type="text/javascript">
+			function showDiv(select){
+			   if(select.value=="company" || select.value=="platform"){
+				document.getElementById('hidden_div').style.display = "block";
+			   } else{
+				document.getElementById('hidden_div').style.display = "none";
+			   }
+			} 
+			</script>
+		
+		
+          <div class="inputContainer" style="display:none;" id="hidden_div">
+            <input type="text" name='companyname' class="input" placeholder="Company Name">
+            <label for="" class="label">请输入公司名称</label>
+          </div>
+
+          <div class="inputContainer">
+            <input type="text" name='address' class="input" placeholder="Address">
+            <label for="" class="label">请输入地址</label>
+          </div>
+
+          <div class="inputContainer">
+            <input type="tel" name='tel' class="input" placeholder="Tel">
+            <label for="" class="label">请输入手机号码</label>
+          </div>
+
+          <div class="inputContainer">
+            <input type="email" name='email' class="input" placeholder="Email">
+            <label for="" class="label">请输入邮箱</label>
+          </div>
+    
+          <input type="submit" class="submitBtn" value="提交">
+        </form>
+      </div>
+
+
+</body>
+</html>
