@@ -26,7 +26,7 @@ def seller_order_submitted(request):
     companys = User.objects.filter(utype="company")
     if request.method == 'POST':
         ono = request.POST.get('ono')
-        if OrderInformation.objects.filter(ono=int(ono)).filter(sellername_id=sno).exists():
+        if OrderInformation.objects.filter(ono=ono).filter(sellername_id=sno).exists():
             dno = encrypt(ono)
             if not DeliveryInformation.objects.filter(dno=dno).exists():
                 ono = OrderInformation.objects.get(ono=request.POST.get('ono')).ono
@@ -53,11 +53,11 @@ def company_confirm_homepage(request):
     Show the number of different orders and the details.
     """
     username = request.COOKIES.get("username")
-    order = DeliveryInformation.objects.all()
+    order = DeliveryInformation.objects.filter(tno_id=username)
     order_count = order.count()
 
-    order_p_count = DeliveryInformation.objects.filter(is_checked=False).count()
-    order_c_count = DeliveryInformation.objects.filter(is_checked=True).count()
+    order_p_count = DeliveryInformation.objects.filter(tno_id=username).filter(is_checked=False).count()
+    order_c_count = DeliveryInformation.objects.filter(tno_id=username).filter(is_checked=True).count()
 
     if request.is_ajax and request.POST.get('order_del'):
         del_order_id = request.POST.get('order_del')

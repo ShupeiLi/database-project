@@ -11,26 +11,24 @@ def encrypt(ono):
     """
     ono -> dno
     """
-    ono_str = str(ono)
     dno = ""
     encrypt_dict = {"1":"5", "2":"3", "3":"7", "4":"9", "5":"0", 
                     "6":"1", "7":"8", "8":"2", "9":"4", "0":"6"}
-    for i in range(len(ono_str)):
-        dno = dno + encrypt_dict[ono_str[i]]
-    return int(dno)
+    for i in range(len(ono)):
+        dno = dno + encrypt_dict[ono[i]]
+    return dno
 
 
 def decrypt(dno):
     """
     dno -> ono
     """
-    dno_str = str(dno)
     ono = ""
     decrypt_dict = {"1":"6", "2":"8", "3":"2", "4":"9", "5":"1",
                     "6":"0", "7":"3", "8":"7", "9":"4", "0":"5"}
-    for i in range(len(dno_str)):
-        ono = ono + decrypt_dict[dno_str[i]]
-    return int(ono)
+    for i in range(len(dno)):
+        ono = ono + decrypt_dict[dno[i]]
+    return ono
 
 
 class DeliveryGenerator():
@@ -127,14 +125,14 @@ class DeliveryGenerator():
         """
         values = []
         dtrans_choices = ["plane", "train", "truck"]
-        order_list = self.select_order()
+        order_list = random.sample(self.select_order(), self.n)
         companys = self.select_company()
         
         if len(order_list) == 0:
             print("所有订单已提交")
         else:
             for i in range(self.n):
-                order = random.choice(order_list)
+                order = order_list[i]
                 dno = encrypt(order[0])
                 sno = order[1]
                 dtrans = random.choice(dtrans_choices)
@@ -197,10 +195,10 @@ class DeliveryGenerator():
     
 
 if __name__ == '__main__':
-    model = DeliveryGenerator(5)
+    model = DeliveryGenerator(50)
     
     # 模拟商家提交订单
-    model.simulate_order_submit()
+#    model.simulate_order_submit()
     
     # 模拟公司确认订单
-#    model.simulate_order_confirm()
+    model.simulate_order_confirm()

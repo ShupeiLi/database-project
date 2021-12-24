@@ -62,7 +62,7 @@
                             <th scope="col">卖家账户名</th>
                             <th scope="col">发货时间</th>
 							<th scope="col">收货时间</th>
-                            <th scope="col">确认</th>
+                            <th scope="col">状态</th>
                             <th scope="col">删除</th>
                         </tr>
                     </thead>
@@ -83,7 +83,11 @@
 								<td>{{ j.dsetime }}</td>
                                 <td>{{ j.dretime }}</td>
                                 <td>
-                                    <a href="{% url 'dashboard:confirm-order-update' j.dno %}" class="btn btn-sm btn-warning">确认</a>
+								{% if j.is_checked %}
+                                    <a href="{% url 'dashboard:confirm-order-update' j.dno %}" class="btn btn-sm btn-warning">更新</a>
+								{% else %}
+									<a href="{% url 'dashboard:confirm-order-update' j.dno %}" class="btn btn-sm btn-warning">确认</a>
+								{% endif %}
                                 </td>
                                 <td>
                                     <button type="button" id="{{ j.dno }}-del" class="btn btn-sm btn-danger">删除</button>

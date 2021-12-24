@@ -97,7 +97,7 @@ class OrderGenerator():
         types = ["food", "clothes", "daily use", "digital", "office supplies", "sports"]
         
         while i < self.n:
-            ono = random.randint(100000, 999999)
+            ono = str(random.randint(100000, 999999))
             uno = random.choice(buyers)[0]
             sno = random.choice(sellers)[0]
             platform_name = random.choice(platforms)[0]
@@ -129,5 +129,5 @@ class OrderGenerator():
     
         
 if __name__ == '__main__':
-    order_gen = OrderGenerator(20)
+    order_gen = OrderGenerator(100)
     order_gen.insert_values_order()
