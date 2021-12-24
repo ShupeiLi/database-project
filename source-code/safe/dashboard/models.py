@@ -4,7 +4,7 @@ from .tools import encrypt
 
 
 class OrderInformation(models.Model):
-    ono = models.IntegerField(primary_key=True, unique=True, null=False)
+    ono = models.CharField(primary_key=True, max_length=32, unique=True, null=False)
     otime = models.DateField(null=False)
     ovalue = models.DecimalField(max_digits=8, decimal_places=2, null=False)
     username = models.ForeignKey('register.NewUser', related_name='usernames', on_delete=models.CASCADE)  # Uno
@@ -60,7 +60,7 @@ class DeliveryInformationManager(models.Manager):
 
 class DeliveryInformation(models.Model):
     objects = DeliveryInformationManager()
-    dno = models.IntegerField(primary_key=True, null=False, unique=True) # one to one
+    dno = models.CharField(primary_key=True, max_length=32, null=False, unique=True) # one to one
     dvalue = models.DecimalField(max_digits=25, decimal_places=2, null=True)
     dtrans = models.CharField(max_length=128)
     tno = models.ForeignKey(NewUser, related_name='DeliveryInformation_NewUser_log', on_delete=models.CASCADE)    # one to one

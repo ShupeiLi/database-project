@@ -7,7 +7,11 @@
     <div class="w3-main qfc-container">
         <div class="center">
             <div class="col-md-11">
+			{% if order.is_checked %}
+			<h6>更新订单 {{order.dno}}</h6>
+			{% else %}
 			<h6>确认订单 {{order.dno}}</h6>
+			{% endif %}
 				<form action="{% url 'dashboard:confirm-order-update' order.dno %}" method="post">
 					{% csrf_token %}
 					
