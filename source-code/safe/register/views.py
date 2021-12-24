@@ -85,7 +85,7 @@ def login_view(request):
             if user.is_active:
                 if password == user.password:  # 密码正确
                     login(request, user)
-                    response = redirect(reverse_lazy("dashboard:boardhome"))  # 跳转至新的页面
+                    response = redirect(reverse_lazy("dashboard:board-home"))  # 跳转至新的页面
                     response.set_cookie("username", username)  # 设置cookie
                     response.set_cookie("usertype", usertype)
                     return response

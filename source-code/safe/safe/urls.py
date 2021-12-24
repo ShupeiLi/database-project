@@ -7,6 +7,4 @@ urlpatterns = [
     path('safelogistics/dashboard/', include('dashboard.urls')),
     path('safelogistics/', include('register.urls')),
     path('admin/', admin.site.urls),
-    path('', include('OrderConfirm.urls')),
-    path('', include('deliveryman.urls'))
 ]
