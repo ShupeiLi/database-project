@@ -1,37 +1,75 @@
-{% extends 'deliveryman/index.html' %}
+<!DOCTYPE html>
+<html>
+<title>Dashboard</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/siwalikm/quick-form-css@2.2.2/qfc-light.css">
+<meta name="viewport" content="width=device-width,initial-scale=1">
 
-{% block title %}首页{% endblock %}
+<style>
+html,body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
+</style>
+<body class="w3-light-grey">
 
-{% block content %}
+<!-- Top container -->
+<div class="w3-bar w3-top w3-black w3-large" style="z-index:4">
+  <button class="w3-bar-item w3-button w3-hide-large w3-hover-none w3-hover-text-light-grey" onclick="w3_open();"><i class="fa fa-bars"></i>  Menu</button>
+  <span class="w3-bar-item w3-right">Safe Logistics</span>
+</div>
+
+<!-- Sidebar/menu -->
+<nav class="w3-sidebar w3-collapse w3-white w3-animate-left" style="z-index:3;width:250px;" id="mySidebar"><br>
+  <div class="w3-container w3-row">
+    <div class="w3-col s8 w3-bar">
+      <span>欢迎使用平安物流，</span><br><br>
+	  <span><strong>{{username}}</strong></span><br>
+    </div>
+  </div>
+  <hr>
+  <div class="w3-container">
+    <h5>控制面板</h5>
+  </div>
+  <div class="w3-bar-block">
+    <a href="#" class="w3-bar-item w3-button w3-padding"><i class="fa fa-users fa-fw"></i> 提交订单 </a>
+	<a href="#" class="w3-bar-item w3-button w3-padding"><i class="fa fa-eye fa-fw"></i>  订单总览</a>
+    <a href="#" class="w3-bar-item w3-button w3-padding"><i class="fa fa-bullseye fa-fw"></i>  统计报表</a>
+	<a href="#" class="w3-bar-item w3-button w3-padding"><i class="fa fa-cog fa-fw"></i>  设置</a><br><br>
+  </div>
+</nav>
 
 
-    <div style="height: 10px;"></div>
-    <hr>
+<!-- Overlay effect when opening sidebar on small screens -->
+<div class="w3-overlay w3-hide-large w3-animate-opacity" onclick="w3_close()" style="cursor:pointer" title="close side menu" id="myOverlay"></div>
+
+<!-- !PAGE CONTENT! -->
+<div class="w3-main qfc-container" style="margin-left:430px;margin-top:43px;">
+
     <div style="height: 10px;"></div>
 
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-6">
-                <a href="{% url 'createhealth' %}" class="btn btn-lg btn-outline-primary">新建健康信息</a>
+                <a href="{% url 'createhealth' %}" class="btn btn-lg btn-outline-primary">填写今日健康信息</a>
             </div>
         </div>
     </div>
 
-    <div style="height: 10px;"></div>
-    <hr>
-    <div style="height: 10px;"></div>
+
 
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-6 text-center">
-                <h4>最近健康信息</h4>
+                <h6>员工健康信息</h6>
                 <table class="table">
                     <thead class="thead-dark">
                         <tr>
                             <th scope="col">配送人员</th>
                             <th scope="col">当日途经城市</th>
                             <th scope="col">配送人员体温(℃)</th>
-                            <th scope="col">查看</th>
+                            <th scope="col">填写时间</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -40,9 +78,7 @@
                                 <td>{{ i.username }}</td>
                                 <td>{{ i.pcity }}</td>
                                 <td>{{ i.ptemp }}</td>
-                                <td>
-                                    <a href="" class="btn btn-sm btn-success">查看</a>
-                                </td>
+                                <td>{{ i.pupdate }}</td>
                             </tr>
                         {% endfor %}
                     </tbody>
@@ -51,5 +87,34 @@
         </div>
     </div>
 
-{% endblock %}
 
+  <!-- End page content -->
+</div>
+
+<script>
+// Get the Sidebar
+var mySidebar = document.getElementById("mySidebar");
+
+// Get the DIV with overlay effect
+var overlayBg = document.getElementById("myOverlay");
+
+// Toggle between showing and hiding the sidebar, and add overlay effect
+function w3_open() {
+  if (mySidebar.style.display === 'block') {
+    mySidebar.style.display = 'none';
+    overlayBg.style.display = "none";
+  } else {
+    mySidebar.style.display = 'block';
+    overlayBg.style.display = "block";
+  }
+}
+
+// Close the sidebar with the close button
+function w3_close() {
+  mySidebar.style.display = "none";
+  overlayBg.style.display = "none";
+}
+</script>
+
+</body>
+</html>
