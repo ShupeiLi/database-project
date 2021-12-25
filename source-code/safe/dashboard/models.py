@@ -2,13 +2,14 @@ from django.db import models
 from register.models import NewUser
 from .tools import encrypt
 
-# Create your models here.
+
 class OrderInformation(models.Model):
-    ono = models.IntegerField(primary_key=True, unique=True, null=False)
+    ono = models.CharField(primary_key=True, max_length=32, unique=True, null=False)
     otime = models.DateField(null=False)
     ovalue = models.DecimalField(max_digits=8, decimal_places=2, null=False)
     username = models.ForeignKey('register.NewUser', related_name='usernames', on_delete=models.CASCADE)  # Uno
     sellername = models.ForeignKey('register.NewUser', related_name='sellernames', on_delete=models.CASCADE)  # Sno
+    platformname = models.ForeignKey('register.NewUser', related_name='platformnames', on_delete=models.CASCADE) # 数据来源
     otype = models.CharField(max_length=64, null=False)
     onum = models.IntegerField(null=False)
 
@@ -50,17 +51,17 @@ class DeliveryInformationManager(models.Manager):
             raise ValueError('必须选择是否接单')
 
         newinfo = {'dvalue':dvalue, 'dsetime':dsetime, 'dretime':dretime, 'is_checked':is_checked}
-        models.DeliveryInfo.objects.filter(dno=dno).update(**newinfo)
+        DeliveryInformation.objects.filter(dno=dno).update(**newinfo)
 
-        deliveryinfo = models.DeliveryInfo.objects.get(dno=dno)
+        deliveryinfo = DeliveryInformation.objects.get(dno=dno)
 
         return deliveryinfo
 
 
 class DeliveryInformation(models.Model):
     objects = DeliveryInformationManager()
-    dno = models.IntegerField(primary_key=True, null=False, unique=True)    # one to one
-    dvalue = models.DecimalField(max_digits=25, decimal_places=10, null=True)
+    dno = models.CharField(primary_key=True, max_length=32, null=False, unique=True) # one to one
+    dvalue = models.DecimalField(max_digits=25, decimal_places=2, null=True)
     dtrans = models.CharField(max_length=128)
     tno = models.ForeignKey(NewUser, related_name='DeliveryInformation_NewUser_log', on_delete=models.CASCADE)    # one to one
     sno = models.ForeignKey(NewUser, related_name='DeliveryInformation_NewUser_seller', on_delete=models.CASCADE)    # one to one
