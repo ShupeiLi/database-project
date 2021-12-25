@@ -257,6 +257,25 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
     });
     </script> <!-- settings for Platform Type -->
     </div>
+    <div class="w3-container">
+      <canvas id="BusinessV"></canvas>
+      <script>
+        var ctx = document.getElementById("BusinessV")
+        var myChart = new Chart(ctx, {
+          type: 'line',
+          data: {
+              labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+              datasets: [{
+                label: 'Business Volume of {{username}}',
+                data: {{volume}},
+                fill: false,
+                borderColor: 'rgb(75, 192, 192)',
+                tension: 0.1
+              }]
+          },
+        })
+      </script> <!-- settings for seller income -->
+  </div>
   </div>
   {%endif%}
 

@@ -69,13 +69,16 @@ def stat_func(request):
             income[o.otime.month - 1] += float(o.ovalue)
         return render(request, "stat_page.html", {"username": username, "usertype": usertype, "rate": rateNum, "income": income})
     elif usertype == "platform":
-        order = OrderInformation.objects.filter()
+        order = OrderInformation.objects.filter(platformname = username)
         order_type = [o.otype for o in order]
         type = [order_type.count(i) for i in gen_type]
+        volume = [0] * 12
+        for o in order:
+            volume[o.otime.month - 1] += float(o.ovalue)
         return render(request, "stat_page.html",
-                      {"username": username, "usertype": usertype, "type": type})
+                      {"username": username, "usertype": usertype, "type": type, "volume": volume})
     elif usertype == "company":
-        order = DeliveryInformation.objects.filter()
+        order = DeliveryInformation.objects.filter(tno = username)
         rate = RateDelivComp.objects.get(compname = username)
         rateNum = [float(rate.speed), float(rate.package), float(rate.perfection), float(rate.service), float(rate.timely_feedback)]
         income = [0] * 12
