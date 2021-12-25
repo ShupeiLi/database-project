@@ -1,6 +1,6 @@
 from django.contrib import admin
-from .models import Location, covid
+from .models import GeographicInformation, PandemicInformation
 
 # Register your models here.
-admin.site.register(Location)
-admin.site.register(covid)
+admin.site.register(GeographicInformation)
+admin.site.register(PandemicInformation)
