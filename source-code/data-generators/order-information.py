@@ -129,5 +129,5 @@ class OrderGenerator():
     
         
 if __name__ == '__main__':
-    order_gen = OrderGenerator(450)
+    order_gen = OrderGenerator(100)
     order_gen.insert_values_order()
