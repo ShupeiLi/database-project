@@ -5,7 +5,7 @@ from .models import OrderInformation, DeliveryInformation, RateSeller, RateDeliv
 from django.urls import reverse_lazy
 from django.contrib import messages
 from .tools import encrypt
-from .filters import DeliveryFilterCompany, OrderFilterBuyer
+from .filters import DeliveryFilterCompany, OrderFilterBuyer, SellerRatingFilter, CompanyRatingFilter
 
 
 User = get_user_model()
@@ -157,11 +157,16 @@ def buyer_information_summary_orders(request):
     product_orders = OrderInformation.objects.filter(username_id=username)
     product_filter = OrderFilterBuyer(request.GET, queryset=product_orders)
     product_orders = product_filter.qs
+    seller_ratings = RateSeller.objects.all()
+    seller_filter = SellerRatingFilter(request.GET, queryset=seller_ratings)
+    seller_ratings = seller_filter.qs
     
     context = {
         'username': username,
         'product_filter': product_filter,
         'product_orders': product_orders,
+        'seller_filter': seller_filter,
+        'seller_ratings': seller_ratings,
     }
     return render(request, 'information-summary-buyer.html', context)
 
@@ -221,3 +226,60 @@ def company_information_summary_orders(request):
         'delivery_orders': delivery_orders,
     }
     return render(request, 'information-summary-company.html', context)
+
+
+# Buyer: Seller Scores
+@login_required
+def buyer_view_seller_scores(request):
+    """
+    Search seller scores
+    """
+    username = request.COOKIES.get("username")
+    seller_ratings = RateSeller.objects.all()
+    seller_filter = SellerRatingFilter(request.GET, queryset=seller_ratings)
+    seller_ratings = seller_filter.qs
+
+    context = {
+        'username': username,
+        'seller_filter': seller_filter,
+        'seller_ratings': seller_ratings,
+    }
+    return render(request, 'score-buyer.html', context)
+
+
+# Platform: Seller Scores
+@login_required
+def platform_view_seller_scores(request):
+    """
+    Search seller scores
+    """
+    username = request.COOKIES.get("username")
+    seller_ratings = RateSeller.objects.all()
+    seller_filter = SellerRatingFilter(request.GET, queryset=seller_ratings)
+    seller_ratings = seller_filter.qs
+
+    context = {
+        'username': username,
+        'seller_filter': seller_filter,
+        'seller_ratings': seller_ratings,
+    }
+    return render(request, 'score-platform.html', context)
+
+
+# Seller: Company Scores
+@login_required
+def seller_view_company_scores(request):
+    """
+    Search company scores
+    """
+    username = request.COOKIES.get("username")
+    company_ratings = RateDelivComp.objects.all()
+    company_filter = CompanyRatingFilter(request.GET, queryset=company_ratings)
+    company_ratings = company_filter.qs
+    
+    context = {
+        'username': username,
+        'company_filter': company_filter,
+        'company_ratings': company_ratings,
+    }
+    return render(request, 'score-seller.html', context)

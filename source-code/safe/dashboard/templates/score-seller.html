@@ -69,8 +69,9 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
     <h5>控制面板</h5>
   </div>
   <div class="w3-bar-block">
-    <a href="{% url 'dashboard:information-summary-buyer' %}" class="w3-bar-item w3-button w3-padding"><i class="fa fa-eye fa-fw"></i>  信息总览</a>
-	<a href="{% url 'dashboard:search-scores-buyer' %}" class="w3-bar-item w3-button w3-padding"><i class="fa fa-diamond fa-fw"></i>  评分查询</a>
+    <a href="{% url 'dashboard:submit-order' %}" class="w3-bar-item w3-button w3-padding"><i class="fa fa-users fa-fw"></i> 提交订单 </a>
+	<a href="{% url 'dashboard:information-summary-seller' %}" class="w3-bar-item w3-button w3-padding"><i class="fa fa-eye fa-fw"></i>  订单总览</a>
+	<a href="{% url 'dashboard:search-scores-seller' %}" class="w3-bar-item w3-button w3-padding"><i class="fa fa-diamond fa-fw"></i>  评分查询</a>
     <a href="{% url 'dashboard:stat_page' %}" class="w3-bar-item w3-button w3-padding"><i class="fa fa-bullseye fa-fw"></i>  统计报表</a>
 	<a href="#" class="w3-bar-item w3-button w3-padding"><i class="fa fa-cog fa-fw"></i>  设置</a><br><br>
   </div>
@@ -82,7 +83,7 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
 
 <!-- !PAGE CONTENT! -->
 <div class="w3-main" style="margin-left:250px;margin-top:43px;">
-  
+
 <div class="row">
 <div class="col">
 <div class="card card-body">
@@ -90,34 +91,49 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
   {% csrf_token %}
 <table class="table align-middle">
 <tr>
-<td style="width:10%">商品单号：</td>
-<td> {% bootstrap_field product_filter.form.ono show_label=False placeholder="" bound_css_class="" %}</td>
-<td style="width:15%">商品订单类型： </td>
-<td> {% bootstrap_field product_filter.form.otype show_label=False placeholder="" bound_css_class="" %}</td>
+<td style="width:10%">物流公司账户名：</td>
+<td> {% bootstrap_field company_filter.form.compname_id show_label=False placeholder="" bound_css_class="" %}</td>
 </table>
 <table class="table align-middle">
 </tr>
 <tr>
-<td>商品订单时间：</td>
-<td> {% bootstrap_field product_filter.form.otime_min show_label=False placeholder="" bound_css_class="" %}</td>
+<td>速度评分：</td>
+<td> {% bootstrap_field company_filter.form.speed_min show_label=False placeholder="" bound_css_class="" %}</td>
 <td style="text-align:center"> - </td>
-<td> {% bootstrap_field product_filter.form.otime_max show_label=False placeholder="" bound_css_class="" %}</td>
+<td> {% bootstrap_field company_filter.form.speed_max show_label=False placeholder="" bound_css_class="" %}</td>
+</tr>
+</table>
+<table class="table align-middle">
+</tr>
+<tr>
+<td>包装评分：</td>
+<td> {% bootstrap_field company_filter.form.package_min show_label=False placeholder="" bound_css_class="" %}</td>
+<td style="text-align:center"> - </td>
+<td> {% bootstrap_field company_filter.form.package_max show_label=False placeholder="" bound_css_class="" %}</td>
 </tr>
 </table>
 <table class="table align-middle">
 <tr>
-<td>商品订单金额：</td>
-<td> {% bootstrap_field product_filter.form.ovalue_min show_label=False placeholder="" bound_css_class="" %}</td>
+<td>完整评分：</td>
+<td> {% bootstrap_field company_filter.form.perfection_min show_label=False placeholder="" bound_css_class="" %}</td>
 <td style="text-align:center"> - </td>
-<td> {% bootstrap_field product_filter.form.ovalue_max show_label=False placeholder="" bound_css_class="" %}</td>
+<td> {% bootstrap_field company_filter.form.perfection_max show_label=False placeholder="" bound_css_class="" %}</td>
 </tr>
 </table>
 <table class="table align-middle">
 <tr>
-<td>商品订单数目：</td>
-<td> {% bootstrap_field product_filter.form.onum_min show_label=False placeholder="" bound_css_class="" %}</td>
+<td>服务评分：</td>
+<td> {% bootstrap_field company_filter.form.service_min show_label=False placeholder="" bound_css_class="" %}</td>
 <td style="text-align:center"> - </td>
-<td> {% bootstrap_field product_filter.form.onum_max show_label=False placeholder="" bound_css_class="" %}</td>
+<td> {% bootstrap_field company_filter.form.service_max show_label=False placeholder="" bound_css_class="" %}</td>
+</tr>
+</table>
+<table class="table align-middle">
+<tr>
+<td>客服评分：</td>
+<td> {% bootstrap_field company_filter.form.timely_feedback_min show_label=False placeholder="" bound_css_class="" %}</td>
+<td style="text-align:center"> - </td>
+<td> {% bootstrap_field company_filter.form.timely_feedback_max show_label=False placeholder="" bound_css_class="" %}</td>
 </tr>
 </table>
 <button class="btn btn-primary" type="submit" style="float: right;">搜索</button>
@@ -130,37 +146,30 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
 <div class="table table-responsive">
 <table class="table table-hover" style="text-align:center">
 <tr class="table-dark align-middle">
-<th scope="col">商品单号</th>
-<th scope="col">商品订单时间</th>
-<th scope="col">商品订单类型</th>
-<th scope="col">商品订单金额</th>
-<th scope="col">商品订单数目</th>
-<th scope="col">卖方账户名</th>
-<th scope="col">电商平台账户名</th>
-<th scope="col">物流路线</th>
-<th scope="col">风险评估</th>
+<th scope="col">物流公司账户名</th>
+<th scope="col">速度评分</th>
+<th scope="col">包装评分</th>
+<th scope="col">完整评分</th>
+<th scope="col">服务评分</th>
+<th scope="col">客服评分</th>
 </tr>
 <tbody>
-{% for product_order in product_orders %}
+{% for company_rating in company_ratings %}
 <tr class="table-light align-middle">
-	<td>{{ product_order.ono }}</td>
-	<td>{{ product_order.otime }}</td>
-	<td>{{ product_order.otype }}</td>
-	<td>{{ product_order.ovalue }}</td>
-	<td>{{ product_order.onum }}</td>
-	<td>{{ product_order.sellername_id }}</td>
-	<td>{{ product_order.platformname_id }}</td>
-	<td><a href="#" %}" class="btn btn-sm btn-warning">查看</a></td>
-	<td><a href="#" %}" class="btn btn-sm btn-warning">查看</a></td>
+	<td>{{ company_rating.compname_id }}</td>
+	<td>{{ company_rating.speed }}</td>
+	<td>{{ company_rating.package }}</td>
+	<td>{{ company_rating.perfection }}</td>
+	<td>{{ company_rating.service }}</td>
+	<td>{{ company_rating.timely_feedback }}</td>
 </tr>
 {% endfor %}
 
 </tbody>
 </table>
 </div>
+  
 </div>
-</div>
-
 
 <script>
 // Get the Sidebar

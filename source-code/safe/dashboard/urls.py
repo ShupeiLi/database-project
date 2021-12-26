@@ -15,4 +15,7 @@ urlpatterns = [
     path('information-summary-seller/', views.seller_information_summary_orders, name='information-summary-seller'),
     path('information-summary-platform/', views.platform_information_summary_orders, name='information-summary-platform'),
     path('information-summary-company/', views.company_information_summary_orders, name='information-summary-company'),
+    path('search-scores-buyer/', views.buyer_view_seller_scores, name='search-scores-buyer'),
+    path('search-scores-platform/', views.platform_view_seller_scores, name='search-scores-platform'),
+    path('search-scores-seller/', views.seller_view_company_scores, name='search-scores-seller')
 ]

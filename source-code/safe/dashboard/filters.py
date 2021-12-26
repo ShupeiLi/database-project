@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 import django_filters
-from .models import DeliveryInformation, OrderInformation
+from .models import DeliveryInformation, OrderInformation, RateSeller, RateDelivComp
 
 
 # Information summary: Buyer
@@ -47,3 +47,42 @@ class DeliveryFilterCompany(django_filters.FilterSet):
     class Meta:
         model = DeliveryInformation
         fields = ['dno']
+        
+        
+# Seller ratings
+class SellerRatingFilter(django_filters.FilterSet):
+
+    quality_min = django_filters.NumberFilter(field_name='quality', lookup_expr='gte')
+    quality_max = django_filters.NumberFilter(field_name='quality', lookup_expr='lte')   
+    price_min = django_filters.NumberFilter(field_name='price', lookup_expr='gte')
+    price_max = django_filters.NumberFilter(field_name='price', lookup_expr='lte')  
+    look_min = django_filters.NumberFilter(field_name='look', lookup_expr='gte')
+    look_max = django_filters.NumberFilter(field_name='look', lookup_expr='lte')
+    delivery_min = django_filters.NumberFilter(field_name='delivery', lookup_expr='gte')
+    delivery_max = django_filters.NumberFilter(field_name='delivery', lookup_expr='lte')    
+    service_min = django_filters.NumberFilter(field_name='service', lookup_expr='gte')
+    service_max = django_filters.NumberFilter(field_name='service', lookup_expr='lte')       
+
+    class Meta:
+        model = RateSeller
+        fields = ['sellername_id']
+
+        
+# Company ratings
+class CompanyRatingFilter(django_filters.FilterSet):
+
+    speed_min = django_filters.NumberFilter(field_name='speed', lookup_expr='gte')
+    speed_max = django_filters.NumberFilter(field_name='speed', lookup_expr='lte')   
+    package_min = django_filters.NumberFilter(field_name='package', lookup_expr='gte')
+    package_max = django_filters.NumberFilter(field_name='package', lookup_expr='lte')  
+    perfection_min = django_filters.NumberFilter(field_name='perfection', lookup_expr='gte')
+    perfection_max = django_filters.NumberFilter(field_name='perfection', lookup_expr='lte')  
+    service_min = django_filters.NumberFilter(field_name='service', lookup_expr='gte')
+    service_max = django_filters.NumberFilter(field_name='service', lookup_expr='lte')    
+    timely_feedback_min = django_filters.NumberFilter(field_name='timely_feedback', lookup_expr='gte')
+    timely_feedback_max = django_filters.NumberFilter(field_name='timely_feedback', lookup_expr='lte')         
+
+    class Meta:
+        model = RateDelivComp
+        fields = ['compname_id']
+
