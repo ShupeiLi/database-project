@@ -10,8 +10,8 @@ urlpatterns = [
     path('submit-order/', views.seller_order_submitted, name="submit-order"),
     path('confirm-order/', views.company_confirm_homepage, name="confirm-order-homepage"),
     path('confirm-order/update/<slug:dno>/', views.company_confirm_update_order, name='confirm-order-update'),
-    path('health/', views.health, name='health'),
-    path('createhealth/', views.create_health, name='createhealth'),
-    path('distribution/', views.distribution, name='distribution'),
-    path('confirmdistribution/<str:pk>/', views.confirm_distribution, name='confirmdistribution'),
+    path('delivery-health/', views.delivery_health_homepage, name='delivery-health-home'),
+    path('delivery-health/update/<str:pk>/', views.delivery_health_update, name='delivery-health-update'),
+    path('delivery-distribution/', views.delivery_distribution_homepage, name='delivery-distribution-home'),
+    path('delivery-distribution/update/<str:pk>/', views.delivery_distribution_confirm, name='delivery-distribution-confirm'),
 ]
