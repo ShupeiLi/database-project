@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Statistics Page</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+    <script src="https://cdn.bootcss.com/echart/4.4.0-rc.1/echarts.min.js"></script>
+</head>
+html,body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
+<body class="w3-light-grey">
+<!-- Top container -->
+<div class="w3-bar w3-top w3-black w3-large" style="z-index:4">
+  <button class="w3-bar-item w3-button w3-hide-large w3-hover-none w3-hover-text-light-grey" onclick="w3_open();"><i class="fa fa-bars"></i>  Menu</button>
+  <span class="w3-bar-item w3-right">Safe Logistics</span>
+</div>
+
+<!-- Sidebar/menu -->
+<nav class="w3-sidebar w3-collapse w3-white w3-animate-left" style="z-index:3;width:250px;" id="mySidebar"><br>
+  <div class="w3-container w3-row">
+    <div class="w3-col s8 w3-bar">
+      <span>欢迎使用平安物流，</span><br><br>
+	  <span><strong>{{username}}</strong></span><br>
+    </div>
+  </div>
+  <hr>
+  <div class="w3-container">
+    <h5>控制面板</h5>
+  </div>
+  {%if usertype == "buyer" %}
+  <div class="w3-bar-block">
+    <a href="#" class="w3-bar-item w3-button w3-padding"><i class="fa fa-eye fa-fw"></i>  订单总览</a>
+    <a href="{% url 'dashboard:stat_page' %}" class="w3-bar-item w3-button w3-padding"><i class="fa fa-bullseye fa-fw"></i>  统计报表</a>
+	<a href="#" class="w3-bar-item w3-button w3-padding"><i class="fa fa-cog fa-fw"></i>  设置</a><br><br>
+  </div>
+  {%endif%}
+  {%if usertype == "seller" %}
+  <div class="w3-bar-block">
+    <a href="#" class="w3-bar-item w3-button w3-padding"><i class="fa fa-users fa-fw"></i> 提交订单 </a>
+	<a href="#" class="w3-bar-item w3-button w3-padding"><i class="fa fa-eye fa-fw"></i>  订单总览</a>
+    <a href="{% url 'dashboard:stat_page' %}" class="w3-bar-item w3-button w3-padding"><i class="fa fa-bullseye fa-fw"></i>  统计报表</a>
+	<a href="#" class="w3-bar-item w3-button w3-padding"><i class="fa fa-cog fa-fw"></i>  设置</a><br><br>
+  </div>
+  {%endif%}
+  {%if usertype == "company" %}
+  <div class="w3-bar-block">
+	<a href="#" class="w3-bar-item w3-button w3-padding"><i class="fa fa-bell fa-fw"></i> 确认订单 </a>
+	<a href="#" class="w3-bar-item w3-button w3-padding"><i class="fa fa-eye fa-fw"></i>  订单总览</a>
+    <a href="{% url 'dashboard:stat_page' %}" class="w3-bar-item w3-button w3-padding"><i class="fa fa-bullseye fa-fw"></i>  统计报表</a>
+	<a href="#" class="w3-bar-item w3-button w3-padding"><i class="fa fa-cog fa-fw"></i>  设置</a><br><br>
+  </div>
+  {%endif%}
+  {%if usertype == "platform" %}
+  <div class="w3-bar-block">
+	<a href="#" class="w3-bar-item w3-button w3-padding"><i class="fa fa-eye fa-fw"></i>  订单总览</a>
+    <a href="{% url 'dashboard:stat_page' %}" class="w3-bar-item w3-button w3-padding"><i class="fa fa-bullseye fa-fw"></i>  统计报表</a>
+	<a href="#" class="w3-bar-item w3-button w3-padding"><i class="fa fa-cog fa-fw"></i>  设置</a><br><br>
+  </div>
+  {%endif%}
+</nav>
+
+
+<!-- Overlay effect when opening sidebar on small screens -->
+<div class="w3-overlay w3-hide-large w3-animate-opacity" onclick="w3_close()" style="cursor:pointer" title="close side menu" id="myOverlay"></div>
+
+<!-- !PAGE CONTENT! -->
+<div class="w3-main" style="margin-left:300px;margin-top:43px;">
+
+  <!-- Header -->
+  <header class="w3-container" style="padding-top:22px">
+    <h5><b><i class="fa fa-dashboard"></i> My Dashboard</b></h5>
+  </header>
+
+  {%if usertype == "buyer" %}
+  <div class="w3-container">
+    <div class="w3-container">
+      <canvas id="BuyerType"></canvas>
+      <script>
+    var ctx = document.getElementById('BuyerType');
+    var myChart = new Chart(ctx, {
+        type: 'pie',
+        data: {
+            labels: ["food", "clothes", "daily use", "digital", "office supplies", "sports"],
+            datasets: [{
+              label: "Buyer Preference for {{username}}",
+              data: {{type}},
+              backgroundColor: [
+                  'rgb(255, 99, 132)',
+                  'rgb(255, 159, 64)',
+                  'rgb(255, 205, 86)',
+                  'rgb(75, 192, 192)',
+                  'rgb(54, 162, 235)',
+                  'rgb(153, 102, 255)'
+              ],
+              hoverOffset: 4
+            }]
+        }
+    });
+    </script> <!-- settings for buyer pie -->
+    </div>
+    <div class="w3-container">
+      <canvas id="BuyerOrder"></canvas>
+      <script>
+        var ctx = document.getElementById("BuyerOrder")
+        var myChart = new Chart(ctx, {
+          type: 'line',
+          data: {
+              labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+              datasets: [{
+                label: 'Buying habit of {{username}}',
+                data: {{time}},
+                fill: false,
+                borderColor: 'rgb(75, 192, 192)',
+                tension: 0.1
+              }]
+          },
+        })
+      </script> <!-- settings for buyer order -->
+    </div>
+  </div>
+  {%endif%}
+  {%if usertype == "seller" %}
+  <div class="w3-container">
+    <div>
+      <canvas id="RateSeller"></canvas>
+      <script>
+    var ctx1 = document.getElementById('RateSeller');
+    var data1 = {
+        type: 'radar',
+        data: {
+            labels: ['quality','price','look','delivery','service'],
+            datasets: [{
+                label: "Rate scores for {{username}}",
+                data: {{rate}},
+                backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                borderColor: 'rgba(255, 99, 132, 1)',
+                pointBackgroundColor: 'rgb(255, 99, 132)',
+                pointBorderColor: '#fff',
+                pointHoverBackgroundColor: '#fff',
+                pointHoverBorderColor: 'rgb(255, 99, 132)'
+            }]
+        },
+        options: {
+            elements: {
+                line: {
+                    borderWidth: 3
+                }
+            }
+        }
+    }
+    var myChart1 = new Chart(ctx1, data1);
+    </script> <!-- settings for seller radar -->
+    </div>
+<!--    <div>-->
+<!--      <select name="year" id="sel"></select>-->
+<!--    </div>-->
+    <div>
+      <canvas id="SellerEarn"></canvas>
+      <script>
+        var ctx = document.getElementById("SellerEarn")
+        var myChart = new Chart(ctx, {
+          type: 'line',
+          data: {
+              labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+              datasets: [{
+                label: 'Monthly income of {{username}}',
+                data: {{income}},
+                fill: false,
+                borderColor: 'rgb(75, 192, 192)',
+                tension: 0.1
+              }]
+          },
+        })
+      </script> <!-- settings for seller income -->
+    </div>
+  </div>
+  {%endif%}
+  {%if usertype == "company" %}
+  <div class="w3-container">
+    <div class="w3-container">
+      <canvas id="RateComp"></canvas>
+      <script>
+    const ctx = document.getElementById('RateComp');
+    const myChart = new Chart(ctx, {
+        type: 'radar',
+        data: {
+            labels: ["speed","package","perfection","service","timely feedback"],
+            datasets: [{
+                label: "Rate scores for {{username}}",
+                data: {{rate}},
+                backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                borderColor: 'rgba(255, 99, 132, 1)',
+                pointBackgroundColor: 'rgb(255, 99, 132)',
+                pointBorderColor: '#fff',
+                pointHoverBackgroundColor: '#fff',
+                pointHoverBorderColor: 'rgb(255, 99, 132)'
+            }]
+        },
+        options: {
+            elements: {
+              line: {
+                borderWidth: 3
+              }
+            }
+        }
+    });
+    </script> <!-- settings for delivery company radar -->
+    </div>
+    <div class="w3-container">
+      <canvas id="CompanyEarn"></canvas>
+      <script>
+        var ctx = document.getElementById("CompanyEarn")
+        var myChart = new Chart(ctx, {
+          type: 'line',
+          data: {
+              labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+              datasets: [{
+                label: 'Monthly income of {{username}}',
+                data: {{income}},
+                fill: false,
+                borderColor: 'rgb(75, 192, 192)',
+                tension: 0.1
+              }]
+          },
+        })
+      </script> <!-- settings for delivery company income -->
+    </div>
+  </div>
+  {%endif%}
+  {%if usertype == "platform" %}
+  <div class="w3-container">
+    <div class="w3-container">
+      <canvas id="PlatformType"></canvas>
+      <script>
+    var ctx = document.getElementById('PlatformType');
+    var myChart = new Chart(ctx, {
+        type: 'pie',
+        data: {
+            labels: ["food", "clothes", "daily use", "digital", "office supplies", "sports"],
+            datasets: [{
+              label: "Buyer Preference for {{username}}",
+              data: {{type}},
+              backgroundColor: [
+                  'rgb(255, 99, 132)',
+                  'rgb(255, 159, 64)',
+                  'rgb(255, 205, 86)',
+                  'rgb(75, 192, 192)',
+                  'rgb(54, 162, 235)',
+                  'rgb(153, 102, 255)'
+              ],
+              hoverOffset: 4
+            }]
+        }
+    });
+    </script> <!-- settings for Platform Type -->
+    </div>
+    <div class="w3-container">
+      <canvas id="BusinessV"></canvas>
+      <script>
+        var ctx = document.getElementById("BusinessV")
+        var myChart = new Chart(ctx, {
+          type: 'line',
+          data: {
+              labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+              datasets: [{
+                label: 'Business Volume of {{username}}',
+                data: {{volume}},
+                fill: false,
+                borderColor: 'rgb(75, 192, 192)',
+                tension: 0.1
+              }]
+          },
+        })
+      </script> <!-- settings for seller income -->
+  </div>
+  </div>
+  {%endif%}
+
+</div>
+
+  <!-- Footer -->
+  <footer class="w3-container w3-padding-16 w3-light-grey">
+    <h4>FOOTER</h4>
+    <p>Powered by <a href="https://www.w3schools.com/w3css/default.asp" target="_blank">w3.css</a></p>
+  </footer>
+
+  <!-- End page content -->
+</div>
+
+<!-- select for year -->
+<script type="text/javascript">
+  onload = function ()
+  {
+  var sel = document.getElementById ('sel');
+  for ( var i = 2021; i > 2015; i--)
+  {
+  var option = document.createElement ('option');
+  option.value = i;
+  var txt = document.createTextNode (i);
+  option.appendChild (txt);
+  sel.appendChild (option);
+  }
+  }
+</script>
+
+<script>
+// Get the Sidebar
+var mySidebar = document.getElementById("mySidebar");
+
+// Get the DIV with overlay effect
+var overlayBg = document.getElementById("myOverlay");
+
+// Toggle between showing and hiding the sidebar, and add overlay effect
+function w3_open() {
+  if (mySidebar.style.display === 'block') {
+    mySidebar.style.display = 'none';
+    overlayBg.style.display = "none";
+  } else {
+    mySidebar.style.display = 'block';
+    overlayBg.style.display = "block";
+  }
+}
+
+// Close the sidebar with the close button
+function w3_close() {
+  mySidebar.style.display = "none";
+  overlayBg.style.display = "none";
+}
+</script>
+</body>
+</html>
