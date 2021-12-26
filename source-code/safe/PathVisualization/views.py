@@ -14,7 +14,7 @@ def getdata(request, orderid):
         http://127.0.0.1:8000/pathvisualization/path/01
     '''
     province_covid = PandemicInformation.objects.filter(date='2021-12-19 00:00:00')
-    heatmapdata = []
+    heatmapdata = []  # ('北京市','#FFFF00')
     for i in range(len(province_covid)):
         province = province_covid[i].place
         number = province_covid[i].number
@@ -25,13 +25,14 @@ def getdata(request, orderid):
             color = '#FFFF00'
         heatmapdata.append((province, color))
     dot_list = GeographicInformation.objects.filter(dno=int(orderid))
-    path_dot = []
+    # path_dot = []
+    path_dot = [("112.368904","39.913423"), ("116.382122","39.901176"), ("116.387271","39.912501"), ("118.398258","39.904600")]
     for i in range(len(dot_list)):
         loc = dot_list[i].dloc
         latlon = loc.split(",")
         lat = latlon[0]
         lon = latlon[1]
-        path_dot.append((float(lat), float(lon)))
+        path_dot.append((str(float(lat)), str(float(lon))))
     '''
         path_dot格式：
         [(31.498294737149,120.37330074071), (31.498294737149,121.37330074071)]

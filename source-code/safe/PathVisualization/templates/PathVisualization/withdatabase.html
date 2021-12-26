@@ -31,9 +31,9 @@
                 };
                 var district = new AMap.DistrictSearch(opts);
                 {% for j in heatmapdata %}
-                    var province = {{ j.0 }};
+                    var province = '{{ j.0 }}';
                     var color = '{{ j.1 }}';
-                    district.search('province', function(status, result) {
+                    district.search(province, function(status, result) {
                     // 查询成功时，result即为对应的行政区信息
                     var bounds = result.districtList[0].boundaries;
                     for (var i = 0, l = bounds.length; i < l; i++) {
@@ -55,7 +55,7 @@
 
                 var lineArr=new Array();//创建线覆盖物节点坐标数组
                 {% for j in path_dot %}
-                    lineArr.push(new AMap.LngLat({{ j.1 }},{{ j.0 }}))
+                    lineArr.push(new AMap.LngLat("{{ j.0 }}","{{ j.1 }}"))
                 {% endfor %}
                 polyline=new AMap.Polyline({
                 path:lineArr, //设置线覆盖物路径

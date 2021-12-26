@@ -26,3 +26,89 @@ else:
         dno = dno
         dloc = pointArr2[i]
         dupdate = datetime1[i]
+
+
+class GeographicGenerator():
+    """
+    Generate Geographic information.
+    """
+
+    def __init__(self,n):
+        self.n = n
+        self.db = mysql.connector.connect(
+            host='localhost',
+            user='root',
+            password='123456',
+            database='safe'
+        )
+
+    def insert_values(self):
+        """
+        Insert values into register_newuser.
+        """
+        val = self.generator()
+        sql = """
+              INSERT INTO 
+              pathvisualization_geographicinformation(dno, dloc, dupdate) 
+              VALUES (%s, %s, %s)
+              """
+        cursor = self.db.cursor()
+        cursor.executemany(sql, val)
+        self.db.commit()
+        cursor.close()
+
+    def get_dno(self):
+        """
+        Select companys.
+        """
+        cursor = self.db.cursor()
+        cursor.execute("""
+                       SELECT dno
+                       FROM dashboard_deliveryinformation
+                       WHERE
+                         is_checked=True
+                       """)
+        records = cursor.fetchall()
+        cursor.close()
+        return records
+
+    def get_last_position(self, val):
+        """
+                Select companys.
+                """
+        cursor = self.db.cursor()
+        cursor.execute("""
+                       SELECT *
+                       FROM pathvisualization_geographicinformation
+                       WHERE dno={} order by cast(dupdate as datetime) desc
+                       """.format(val))
+        records = cursor.fetchall()
+        cursor.close()
+        return records
+
+    def generator(self):
+        """
+        Generate accounts.
+        """
+        values = []
+        dno = self.get_dno()
+        for i in len(dno):
+            num = dno[i][0]
+            rec = self.get_last_position(dno)
+            if len(rec) > 0:
+                last_date = rec[0][]
+                last_pos = rec[0][]
+                date = []
+
+            else:
+                date = [ for x in range(4)]
+                pos = ["".format(round(random.random()*360, 6)+x, round(random.random()*360, 6)+x) for x in range(4)]
+
+
+
+
+        return values
+
+
+if __name__ == '__main__':
+    print("")
