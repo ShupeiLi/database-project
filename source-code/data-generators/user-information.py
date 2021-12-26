@@ -25,7 +25,7 @@ class UserGenerator():
         self.db = mysql.connector.connect(
                     host = 'localhost',
                     user = 'root',
-                    password = 'ShupeiLi',
+                    password = '123456',
                     database = 'safe'
                     )
     

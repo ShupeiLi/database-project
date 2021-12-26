@@ -1,11 +1,10 @@
-from django.shortcuts import render, get_object_or_404, HttpResponseRedirect, redirect
+from django.shortcuts import render, get_object_or_404, HttpResponseRedirect, redirect, reverse
 from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
 from .models import OrderInformation, DeliveryInformation, HealthInformation, DistributionInformation
 from django.urls import reverse_lazy
 from django.contrib import messages
 from .tools import encrypt
-from .forms import HealthForm, DistributionForm
 
 
 User = get_user_model()
@@ -108,40 +107,69 @@ def delivery_health_homepage(request):
     health = HealthInformation.objects.filter(pno_id=username)
     context = {
         'health': health,
+        'username': username,
     }
     return render(request, 'delivery-health-home.html', context)
 
 
-# Delivery: Submit today's health information (update)
+# Delivery Historical Data
+@login_required
+def delivery_health_view(request):
+    username = request.COOKIES.get("username")
+    usertype = request.COOKIES.get("usertype")
+
+    health = HealthInformation.objects.order_by('-pupdate')
+
+    context={"username": username, "usertype": usertype, "health":health}
+
+    return render(request, "delivery-health-view.html", context)
+
+
+# Delivery Health Update
 @login_required
 def delivery_health_update(request):
     username = request.COOKIES.get("username")
-    health_form = HealthForm()
-    if request.method == 'POST':
-        if 'c-button' in request.POST:
-            health_form = HealthForm(request.POST)
-            if health_form.is_valid():
-                pno_get = health_form.cleaned_data['pno']
-                pcity_get = health_form.cleaned_data['pcity']
-                ptemp_get = health_form.cleaned_data['ptemp']
-                health = HealthInformation.objects.create(pno=pno_get, pcity=pcity_get, ptemp=ptemp_get)
-                health.save()
-                return redirect('delivery-health-home')
+    usertype = request.COOKIES.get("usertype")
+    pno = get_object_or_404(User, username=username)
+    
+    if request.method == "POST":
+        pcity = request.POST['pcity']
+        ptemp = request.POST['ptemp']
+        
+        if not pcity:
+            messages.warning(request, '必须输入今日经过城市')
+            return redirect(reverse("dashboard:delivery-health-update"))
+        if not ptemp:
+            messages.warning(request, '必须输入今日体温')
+            return redirect(reverse("dashboard:delivery-health-update"))
+
+        health = HealthInformation.objects.create_healthinfo(pno=pno, pcity=pcity, ptemp=ptemp)
+        health.save() 
+        messages.success(request, '填写成功!')
+        return redirect(reverse("dashboard:delivery-health-view"))
+
     context = {
-        'health_form': health_form,
-        'username': username,
+        'username': pno,
+        'usertype': usertype
     }
-    return render(request, 'delivery-health-update.html', context)      
-     
-            
-# Delivery: Confirm the order distribution (homepage)
+    return render(request, 'delivery-health-update.html', context)
+
+         
+# Delivery: Confirm the order distribution
 @login_required          
 def delivery_distribution_homepage(request):
     username = request.COOKIES.get("username")
     distribution = DistributionInformation.objects.filter(pno_id=username)
     distribution_count = distribution.count()
     distribution_p_count = DistributionInformation.objects.filter(pno_id=username).filter(is_checked=False).count()
-    distribution_c_count = DistributionInformation.objects.filter(tno_id=username).filter(is_checked=True).count()
+    distribution_c_count = DistributionInformation.objects.filter(pno_id=username).filter(is_checked=True).count()
+
+    if request.is_ajax and request.POST.get('distribution_confirm'):
+        confirm_distribution_id = request.POST.get('distribution_confirm')
+        confirm_distribution = distribution.objects.get(dpno = confirm_distribution_id) 
+        confirm_distribution.is_checked = True
+        distribution = confirm_distribution.save()
+        return redirect(reverse("dashboard:delivery-distribution-home"))
 
     context = {
         'distribution_count': distribution_count,
@@ -151,24 +179,3 @@ def delivery_distribution_homepage(request):
         'username': username,
     }     
     return render(request, 'delivery-distribution-home.html', context)
-
-
-# Delivery: Confirm the order distribution (update)
-@login_required   
-def delivery_distribution_confirm(request, pk):
-    username = request.COOKIES.get("username")
-    distribution = DistributionInformation.objects.get(id=pk)
-
-    if request.method == 'POST':
-        pno = request.POST.get('pno')
-        dpno = request.POST.get('dpno')
-        dno = request.POST.get('dno')
-        is_checked = True
-        distribution = DistributionInformation.objects.filter(dno=dno)
-        DistributionInformation.objects.create_distributioninfo_logistics(pno, dpno, dno, is_checked)
-        return redirect(reverse_lazy("dashboard:delivery-distribution-home"))
-    context = {
-            'distribution': distribution,
-            'username': username,
-    }
-    return render(request, 'delivery-distribution-confirm.html', context)
