@@ -5,7 +5,7 @@ from .models import OrderInformation, DeliveryInformation
 from django.urls import reverse_lazy
 from django.contrib import messages
 from .tools import encrypt
-from .filters import DeliveryFilterCompany
+from .filters import DeliveryFilterCompany, OrderFilterBuyer
 
 
 User = get_user_model()
@@ -99,6 +99,25 @@ def company_confirm_update_order(request, dno):
         'username': username,
     }
     return render(request, 'company-confirm-update-order.html', context)
+
+
+# Buyer-information-summary: Search orders
+@login_required
+def buyer_information_summary_orders(request):
+    """
+    Search information from orderinformation and deliveryinformation tables.
+    """
+    username = request.COOKIES.get("username")
+    product_orders = OrderInformation.objects.filter(username_id=username)
+    product_filter = OrderFilterBuyer(request.GET, queryset=product_orders)
+    product_orders = product_filter.qs
+    
+    context = {
+        'username': username,
+        'product_filter': product_filter,
+        'product_orders': product_orders,
+    }
+    return render(request, 'information-summary-buyer.html', context)
 
 
 # Company-information-summary: Search orders

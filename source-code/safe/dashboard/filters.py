@@ -1,9 +1,29 @@
 # -*- coding: utf-8 -*-
 
 import django_filters
-from .models import DeliveryInformation
+from .models import DeliveryInformation, OrderInformation
 
 
+# Information summary: Buyer
+class OrderFilterBuyer(django_filters.FilterSet):
+    
+    otime_min = django_filters.DateFilter(field_name="otime", lookup_expr='gte')
+    otime_max = django_filters.DateFilter(field_name="otime", lookup_expr='lte')
+    ovalue_min = django_filters.NumberFilter(field_name='ovalue', lookup_expr='gte')
+    ovalue_max = django_filters.NumberFilter(field_name='ovalue', lookup_expr='lte')
+    otype = django_filters.ChoiceFilter(field_name='otype', choices=(
+        ("food", "food"), ("clothes", "clothes"), ("daily use", "daily use"), 
+        ("digital", "digital"), ("office supplies", "office supplies"), ("sports","sports")
+        ))
+    onum_min = django_filters.NumberFilter(field_name='onum', lookup_expr='gte')
+    onum_max = django_filters.NumberFilter(field_name='onum', lookup_expr='lte')    
+    
+    class Meta:
+        model = OrderInformation
+        fields = ['ono']
+
+
+# Information summary: Company
 class DeliveryFilterCompany(django_filters.FilterSet):
     
     dvalue_min = django_filters.NumberFilter(field_name='dvalue', lookup_expr='gte')

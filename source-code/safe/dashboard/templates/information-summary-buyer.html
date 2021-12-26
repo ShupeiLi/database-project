@@ -47,7 +47,9 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
 </head>
 
 <body class="w3-light-grey">
-
+{% load bootstrap5 %}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
 <!-- Top container -->
 <div class="w3-bar w3-top w3-black w3-large" style="z-index:4">
   <button class="w3-bar-item w3-button w3-hide-large w3-hover-none w3-hover-text-light-grey" onclick="w3_open();"><i class="fa fa-bars"></i> Menu</button>
@@ -67,7 +69,7 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
     <h5>控制面板</h5>
   </div>
   <div class="w3-bar-block">
-    <a href="#" class="w3-bar-item w3-button w3-padding"><i class="fa fa-eye fa-fw"></i>  信息总览</a>
+    <a href="{% url 'dashboard:information-summary-buyer' %}" class="w3-bar-item w3-button w3-padding"><i class="fa fa-eye fa-fw"></i>  信息总览</a>
     <a href="#" class="w3-bar-item w3-button w3-padding"><i class="fa fa-bullseye fa-fw"></i>  统计报表</a>
 	<a href="#" class="w3-bar-item w3-button w3-padding"><i class="fa fa-cog fa-fw"></i>  设置</a><br><br>
   </div>
@@ -82,14 +84,87 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
 
 <!-- Tab links -->
 <div class="tab">
-  <button class="tablinks" onclick="openCity(event, 'London')" id="defaultOpen">订单信息查询</button>
+  <button class="tablinks" onclick="openCity(event, 'Order')" id="defaultOpen">订单信息查询</button>
   <button class="tablinks" onclick="openCity(event, 'Paris')">评分查询</button>
 </div>
 
 <!-- Tab content -->
-<div id="London" class="tabcontent">
-  <h3>London</h3>
-  <p>London is the capital city of England.</p>
+<div id="Order" class="tabcontent">
+	<div class="row">
+	<div class="col">
+	<div class="card card-body">
+      <form method="get" class="form">
+	  {% csrf_token %}
+	<table class="table align-middle">
+	<tr>
+	<td style="width:10%">商品单号：</td>
+	<td> {% bootstrap_field product_filter.form.ono show_label=False placeholder="" bound_css_class="" %}</td>
+	<td style="width:15%">商品订单类型： </td>
+	<td> {% bootstrap_field product_filter.form.otype show_label=False placeholder="" bound_css_class="" %}</td>
+	</table>
+	<table class="table align-middle">
+	</tr>
+	<tr>
+	<td>商品订单时间：</td>
+	<td> {% bootstrap_field product_filter.form.otime_min show_label=False placeholder="" bound_css_class="" %}</td>
+	<td style="text-align:center"> - </td>
+	<td> {% bootstrap_field product_filter.form.otime_max show_label=False placeholder="" bound_css_class="" %}</td>
+	</tr>
+	</table>
+	<table class="table align-middle">
+	<tr>
+	<td>商品订单金额：</td>
+	<td> {% bootstrap_field product_filter.form.ovalue_min show_label=False placeholder="" bound_css_class="" %}</td>
+	<td style="text-align:center"> - </td>
+	<td> {% bootstrap_field product_filter.form.ovalue_max show_label=False placeholder="" bound_css_class="" %}</td>
+	</tr>
+	</table>
+	<table class="table align-middle">
+	<tr>
+	<td>商品订单数目：</td>
+	<td> {% bootstrap_field product_filter.form.onum_min show_label=False placeholder="" bound_css_class="" %}</td>
+	<td style="text-align:center"> - </td>
+	<td> {% bootstrap_field product_filter.form.onum_max show_label=False placeholder="" bound_css_class="" %}</td>
+	</tr>
+	</table>
+    <button class="btn btn-primary" type="submit" style="float: right;">搜索</button>
+	  
+      </form>
+	</div>
+	</div>
+    </div>
+
+	<div class="table table-responsive">
+	<table class="table table-hover" style="text-align:center">
+	<tr class="table-dark align-middle">
+	<th scope="col">商品单号</th>
+	<th scope="col">商品订单时间</th>
+	<th scope="col">商品订单类型</th>
+	<th scope="col">商品订单金额</th>
+	<th scope="col">商品订单数目</th>
+	<th scope="col">卖方账户名</th>
+	<th scope="col">电商平台账户名</th>
+	<th scope="col">物流路线</th>
+	<th scope="col">风险评估</th>
+	</tr>
+	<tbody>
+	{% for product_order in product_orders %}
+	<tr class="table-light align-middle">
+		<td>{{ product_order.ono }}</td>
+		<td>{{ product_order.otime }}</td>
+		<td>{{ product_order.otype }}</td>
+		<td>{{ product_order.ovalue }}</td>
+		<td>{{ product_order.onum }}</td>
+		<td>{{ product_order.sellername_id }}</td>
+		<td>{{ product_order.platformname_id }}</td>
+		<td><a href="#" %}" class="btn btn-sm btn-warning">查看</a></td>
+		<td><a href="#" %}" class="btn btn-sm btn-warning">查看</a></td>
+	</tr>
+	{% endfor %}
+	
+	</tbody>
+	</table>
+	</div>
 </div>
 
 <div id="Paris" class="tabcontent">
