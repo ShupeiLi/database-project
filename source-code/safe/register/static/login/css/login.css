@@ -2,7 +2,7 @@ body{
 margin: 0;
 padding: 0;
 font-family: sans-serif;
-background: url(../pictures/bg1.jpg) no-repeat center 0px;
+background: url(/static/homepage/home-production.jpg) no-repeat center 0px;
 background-size: cover;
 
 background-position: center 0;

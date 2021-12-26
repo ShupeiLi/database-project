@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html>
+<title>Dashboard</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500" rel="stylesheet" />
+<style>
+html,body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
+ /* Style the tab */
+.tab {
+  overflow: hidden;
+  border: 1px solid #ccc;
+  background-color: #f1f1f1;
+}
+
+/* Style the buttons that are used to open the tab content */
+.tab button {
+  background-color: inherit;
+  float: left;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  padding: 14px 16px;
+  transition: 0.3s;
+}
+
+/* Change background color of buttons on hover */
+.tab button:hover {
+  background-color: #ddd;
+}
+
+/* Create an active/current tablink class */
+.tab button.active {
+  background-color: #ccc;
+}
+
+/* Style the tab content */
+.tabcontent {
+  display: none;
+  padding: 6px 12px;
+  border: 1px solid #ccc;
+  border-top: none;
+} 
+</style>
+</head>
+
+<body class="w3-light-grey">
+{% load bootstrap5 %}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+<!-- Top container -->
+<div class="w3-bar w3-top w3-black w3-large" style="z-index:4">
+  <button class="w3-bar-item w3-button w3-hide-large w3-hover-none w3-hover-text-light-grey" onclick="w3_open();"><i class="fa fa-bars"></i> Menu</button>
+  <span class="w3-bar-item w3-right">Safe Logistics</span>
+</div>
+
+<!-- Sidebar/menu -->
+<nav class="w3-sidebar w3-collapse w3-white w3-animate-left" style="z-index:3;width:250px;" id="mySidebar"><br>
+  <div class="w3-container w3-row">
+    <div class="w3-col s8 w3-bar">
+      <span>欢迎使用平安物流，</span><br><br>
+	  <span><strong>{{username}}</strong></span><br>
+    </div>
+  </div>
+  <hr>
+  <div class="w3-container">
+    <h5>控制面板</h5>
+  </div>
+  <div class="w3-bar-block">
+	<a href="{% url 'dashboard:confirm-order-homepage' %}" class="w3-bar-item w3-button w3-padding"><i class="fa fa-bell fa-fw"></i> 确认订单 </a>
+	<a href="{% url 'dashboard:information-summary-company' %}" class="w3-bar-item w3-button w3-padding"><i class="fa fa-eye fa-fw"></i> 信息总览 </a>
+    <a href="#" class="w3-bar-item w3-button w3-padding"><i class="fa fa-bullseye fa-fw"></i> 统计报表 </a>
+	<a href="#" class="w3-bar-item w3-button w3-padding"><i class="fa fa-cog fa-fw"></i> 设置 </a><br><br>
+  </div>
+</nav>
+
+
+<!-- Overlay effect when opening sidebar on small screens -->
+<div class="w3-overlay w3-hide-large w3-animate-opacity" onclick="w3_close()" style="cursor:pointer" title="close side menu" id="myOverlay"></div>
+
+<!-- !PAGE CONTENT! -->
+<div class="w3-main" style="margin-left:250px;margin-top:43px;">
+
+<!-- Tab links -->
+<div class="tab">
+  <button class="tablinks" onclick="openCity(event, 'Order')" id="defaultOpen">订单信息查询</button>
+  <button class="tablinks" onclick="openCity(event, 'Paris')">评分查询</button>
+  <button class="tablinks" onclick="openCity(event, 'Tokyo')">员工信息查询</button>
+</div>
+
+<!-- Tab content -->
+<div id="Order" class="tabcontent">
+   
+	<div class="row">
+	<div class="col">
+	<div class="card card-body">
+      <form method="get" class="form">
+	  {% csrf_token %}
+	<table class="table align-middle">
+	<tr>
+	<td style="width:10%">物流单号：</td>
+	<td> {% bootstrap_field delivery_filter.form.dno show_label=False placeholder="" bound_css_class="" %}</td>
+	<td style="width:15%">物流运送方式： </td>
+	<td> {% bootstrap_field delivery_filter.form.dtrans show_label=False placeholder="" bound_css_class="" %}</td>
+	<td style="width:15%">商品订单类型： </td>
+	<td> {% bootstrap_field delivery_filter.form.otype show_label=False placeholder="" bound_css_class="" %}</td>
+	</table>
+	<table class="table align-middle">
+	</tr>
+	<tr>
+	<td>物流订单金额：</td>
+	<td> {% bootstrap_field delivery_filter.form.dvalue_min show_label=False placeholder="" bound_css_class="" %}</td>
+	<td style="text-align:center"> - </td>
+	<td> {% bootstrap_field delivery_filter.form.dvalue_max show_label=False placeholder="" bound_css_class="" %}</td>
+	</tr>
+	</table>
+	<table class="table align-middle">
+	<tr>
+	<td style="width:10%">发货时间：</td>
+	<td> {% bootstrap_field delivery_filter.form.dsetime_min show_label=False placeholder="" bound_css_class="" %}</td>
+	<td style="text-align:center"> - </td>
+	<td> {% bootstrap_field delivery_filter.form.dsetime_max show_label=False placeholder="" bound_css_class="" %}</td>
+	<td style="width:10%">收货时间：</td>
+	<td> {% bootstrap_field delivery_filter.form.dretime_min show_label=False placeholder="" bound_css_class="" %}</td>
+	<td style="text-align:center"> - </td>
+	<td> {% bootstrap_field delivery_filter.form.dretime_max show_label=False placeholder="" bound_css_class="" %}</td>
+	</tr>
+	</table>
+	<table class="table align-middle">
+	<tr>
+	<td style="width:15%">商品订单金额：</td>
+	<td> {% bootstrap_field delivery_filter.form.ovalue_min show_label=False placeholder="" bound_css_class="" %}</td>
+	<td style="text-align:center"> - </td>
+	<td> {% bootstrap_field delivery_filter.form.ovalue_max show_label=False placeholder="" bound_css_class="" %}</td>
+	<td style="width:15%">商品订单数目：</td>
+	<td> {% bootstrap_field delivery_filter.form.onum_min show_label=False placeholder="" bound_css_class="" %}</td>
+	<td style="text-align:center"> - </td>
+	<td> {% bootstrap_field delivery_filter.form.onum_max show_label=False placeholder="" bound_css_class="" %}</td>
+	</tr>
+	</table>
+    <button class="btn btn-primary" type="submit" style="float: right;">搜索</button>
+	  
+      </form>
+	</div>
+	</div>
+    </div>
+
+	<div class="table table-responsive">
+	<table class="table table-hover" style="text-align:center">
+	<tr class="table-dark align-middle">
+	<th scope="col">物流单号</th>
+	<th scope="col">物流订单金额</th>
+	<th scope="col">物流运送方式</th>
+	<th scope="col">卖方账户名</th>
+	<th scope="col">发货时间</th>
+	<th scope="col">收货时间</th>
+	<th scope="col">商品订单金额</th>
+	<th scope="col">商品订单类型</th>
+	<th scope="col">商品订单数目</th>
+	<th scope="col">物流分配情况</th>
+	<th scope="col">物流路线</th>
+	<th scope="col">风险评估</th>
+	</tr>
+	<tbody>
+	{% for delivery_order in delivery_orders %}
+	<tr class="table-light align-middle">
+		<td>{{ delivery_order.dno }}</td>
+		<td>{{ delivery_order.dvalue }}</td>
+		{% if delivery_order.dtrans == 'plane' %}
+		<td>航空运输</td>
+		{% elif delivery_order.dtrans == 'train' %}
+		<td>铁道运输</td>
+		{% else %}
+		<td>公路运输</td>
+		{% endif %}
+		<td>{{ delivery_order.sno }}</td>
+		<td>{{ delivery_order.dsetime }}</td>
+		<td>{{ delivery_order.dretime }}</td>
+		<td>{{ delivery_order.order_information.ovalue }}</td>
+		<td>{{ delivery_order.order_information.otype }}</td>
+		<td>{{ delivery_order.order_information.onum }}</td>
+		<td><a href="#" %}" class="btn btn-sm btn-warning">查看</a></td>
+		<td><a href="#" %}" class="btn btn-sm btn-warning">查看</a></td>
+		<td><a href="#" %}" class="btn btn-sm btn-warning">查看</a></td>
+	</tr>
+	{% endfor %}
+	
+	</tbody>
+	</table>
+	</div>
+</div>
+
+<div id="Paris" class="tabcontent">
+  <h3>Paris</h3>
+  <p>Paris is the capital of France.</p>
+</div>
+
+<div id="Tokyo" class="tabcontent">
+  <h3>Tokyo</h3>
+  <p>Tokyo is the capital of Japan.</p>
+</div>
+  
+</div>
+
+
+<script>
+// Get the Sidebar
+var mySidebar = document.getElementById("mySidebar");
+
+// Get the DIV with overlay effect
+var overlayBg = document.getElementById("myOverlay");
+
+// Toggle between showing and hiding the sidebar, and add overlay effect
+function w3_open() {
+  if (mySidebar.style.display === 'block') {
+    mySidebar.style.display = 'none';
+    overlayBg.style.display = "none";
+  } else {
+    mySidebar.style.display = 'block';
+    overlayBg.style.display = "block";
+  }
+}
+
+// Close the sidebar with the close button
+function w3_close() {
+  mySidebar.style.display = "none";
+  overlayBg.style.display = "none";
+}
+
+function openCity(evt, cityName) {
+  // Declare all variables
+  var i, tabcontent, tablinks;
+
+  // Get all elements with class="tabcontent" and hide them
+  tabcontent = document.getElementsByClassName("tabcontent");
+  for (i = 0; i < tabcontent.length; i++) {
+    tabcontent[i].style.display = "none";
+  }
+
+  // Get all elements with class="tablinks" and remove the class "active"
+  tablinks = document.getElementsByClassName("tablinks");
+  for (i = 0; i < tablinks.length; i++) {
+    tablinks[i].className = tablinks[i].className.replace(" active", "");
+  }
+
+  // Show the current tab, and add an "active" class to the button that opened the tab
+  document.getElementById(cityName).style.display = "block";
+  evt.currentTarget.className += " active";
+} 
+
+// Get the element with id="defaultOpen" and click on it
+document.getElementById("defaultOpen").click();
+</script>
+{% load static %}
+<script src="{% static 'js/extention/choices.js' %}"></script>
+{% load static %}
+<script src="{% static 'js/extention/flatpickr.js' %}"></script>
+<script>
+  flatpickr(".datepicker",
+  {});
+
+</script>
+<script>
+  const choices = new Choices('[data-trigger]',
+  {
+	searchEnabled: false,
+	itemSelectText: '',
+  });
+
+</script>
+
+</body>
+</html>
