@@ -7,7 +7,6 @@ from django.urls import reverse_lazy
 from django.contrib import messages
 from .tools import encrypt
 from .filters import DeliveryFilterCompany, OrderFilterBuyer
-from datetime import datetime
 
 User = get_user_model()
 
@@ -339,6 +338,44 @@ def buyer_information_summary_orders(request):
     return render(request, 'information-summary-buyer.html', context)
 
 
+# Seller-information-summary: Search orders
+@login_required
+def seller_information_summary_orders(request):
+    """
+    Search information from orderinformation and deliveryinformation tables.
+    """
+    username = request.COOKIES.get("username")
+    delivery_orders = DeliveryInformation.objects.filter(sno_id=username)
+    delivery_filter = DeliveryFilterCompany(request.GET, queryset=delivery_orders)
+    delivery_orders = delivery_filter.qs
+    
+    context = {
+        'username': username,
+        'delivery_filter': delivery_filter,
+        'delivery_orders': delivery_orders,
+    }
+    return render(request, 'information-summary-seller.html', context)
+
+
+# Platform-information-summary: Search orders
+@login_required
+def platform_information_summary_orders(request):
+    """
+    Search information from orderinformation and deliveryinformation tables.
+    """
+    username = request.COOKIES.get("username")
+    delivery_orders = DeliveryInformation.objects.filter(order_information__platformname_id=username)
+    delivery_filter = DeliveryFilterCompany(request.GET, queryset=delivery_orders)
+    delivery_orders = delivery_filter.qs
+    
+    context = {
+        'username': username,
+        'delivery_filter': delivery_filter,
+        'delivery_orders': delivery_orders,
+    }
+    return render(request, 'information-summary-platform.html', context)
+
+
 # Company-information-summary: Search orders
 @login_required
 def company_information_summary_orders(request):
@@ -346,7 +383,7 @@ def company_information_summary_orders(request):
     Search information from orderinformation and deliveryinformation tables.
     """
     username = request.COOKIES.get("username")
-    delivery_orders = DeliveryInformation.objects.filter(tno_id=username)
+    delivery_orders = DeliveryInformation.objects.filter(tno=username)
     delivery_filter = DeliveryFilterCompany(request.GET, queryset=delivery_orders)
     delivery_orders = delivery_filter.qs
     

@@ -44,7 +44,7 @@ class DeliveryGenerator():
         self.db = mysql.connector.connect(
                     host = 'localhost',
                     user = 'root',
-                    password = '123456',
+                    password = 'ShupeiLi',
                     database = 'safe'
                     )
     
@@ -156,6 +156,7 @@ class DeliveryGenerator():
         Simulation: Companys confirm delivery orders.
         """
         fake = Faker()
+        cursor = self.db.cursor()
         binding = self.select_unchecked()
         updates = []
         
@@ -173,24 +174,18 @@ class DeliveryGenerator():
                 dretime_stamp = random.randint(int(round(datetime.datetime.fromtimestamp(time.mktime(dsetime.timetuple())).timestamp())), int(round(datetime.datetime.fromtimestamp(time.mktime(dretime_future.timetuple())).timestamp())))
                 dretime_str = datetime.datetime.fromtimestamp(dretime_stamp).strftime('%Y-%m-%d')
                 container = list(binding[i][0])
+                cursor.execute("""
+                           UPDATE dashboard_deliveryinformation
+                           SET dvalue = {}, dsetime = '{}', dretime = '{}', is_checked = {}
+                           WHERE dno = '{}';
+                           """.format(dvalue, dsetime_str, dretime_str, True, container[0]))
+                self.db.commit()
                 container[1] = dvalue
                 container[3] = dsetime_str
                 container[4] = dretime_str
                 container[5] = True
                 updates.append(tuple(container))
     
-            cursor = self.db.cursor()
-            cursor.execute("""
-                           DELETE FROM dashboard_deliveryinformation
-                           WHERE is_checked = False
-                           """)
-            sql = """
-                  INSERT INTO 
-                  dashboard_deliveryinformation(dno, dvalue, dtrans, dsetime, dretime, is_checked, sno_id, tno_id, order_information_id) 
-                  VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)
-                  """
-            cursor.executemany(sql, updates)
-            self.db.commit()
             cursor.close()
     
 
@@ -201,4 +196,4 @@ if __name__ == '__main__':
     model.simulate_order_submit()
     
     # 模拟公司确认订单
-    model.simulate_order_confirm()
+#    model.simulate_order_confirm()

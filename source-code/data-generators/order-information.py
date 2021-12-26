@@ -20,10 +20,14 @@ class OrderGenerator():
                     host = 'localhost',
                     user = 'root',
 <<<<<<< HEAD
+<<<<<<< HEAD
                     password = 'ShupeiLi',
 =======
                     password = '123456',
 >>>>>>> updateprofile
+=======
+                    password = 'ShupeiLi',
+>>>>>>> 35bbb3ebad74235478b0e7f9215d84e7b11ae5db
                     database = 'safe'
                     )
         
@@ -152,8 +156,12 @@ class OrderGenerator():
         
 if __name__ == '__main__':
 <<<<<<< HEAD
+<<<<<<< HEAD
     order_gen = OrderGenerator(5)
 =======
     order_gen = OrderGenerator(100)
 >>>>>>> updateprofile
+=======
+    order_gen = OrderGenerator(400)
+>>>>>>> 35bbb3ebad74235478b0e7f9215d84e7b11ae5db
     order_gen.insert_values_order()

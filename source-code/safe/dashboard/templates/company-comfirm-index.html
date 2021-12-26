@@ -9,6 +9,7 @@
 	<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/siwalikm/quick-form-css@2.2.2/qfc-light.css">
 	<style>
 	html,body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
 	</style>
@@ -39,7 +40,7 @@
   <div class="w3-bar-block">
 	<a href="{% url 'dashboard:confirm-order-homepage' %}" class="w3-bar-item w3-button w3-padding"><i class="fa fa-bell fa-fw"></i> 确认订单 </a>
 	<a href="{% url 'dashboard:information-summary-company' %}" class="w3-bar-item w3-button w3-padding"><i class="fa fa-eye fa-fw"></i>  信息总览</a>
-    <a href="#" class="w3-bar-item w3-button w3-padding"><i class="fa fa-bullseye fa-fw"></i>  统计报表</a>
+    <a href="{% url 'dashboard:stat_page' %}" class="w3-bar-item w3-button w3-padding"><i class="fa fa-bullseye fa-fw"></i>  统计报表</a>
 	<a href="#" class="w3-bar-item w3-button w3-padding"><i class="fa fa-cog fa-fw"></i>  设置</a><br><br>
   </div>
 </nav>

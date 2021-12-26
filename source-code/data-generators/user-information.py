@@ -26,10 +26,14 @@ class UserGenerator():
                     host = 'localhost',
                     user = 'root',
 <<<<<<< HEAD
+<<<<<<< HEAD
                     password = 'ShupeiLi',
 =======
                     password = '123456',
 >>>>>>> updateprofile
+=======
+                    password = 'ShupeiLi',
+>>>>>>> 35bbb3ebad74235478b0e7f9215d84e7b11ae5db
                     database = 'safe'
                     )
     
@@ -115,15 +119,15 @@ if __name__ == '__main__':
     user_gen.insert_values()
 =======
     # buyer
-    user_gen = UserGenerator(100, 0)
+    user_gen = UserGenerator(200, 0)
     user_gen.insert_values()
     
     # seller
-    user_gen = UserGenerator(20, 1)
+    user_gen = UserGenerator(40, 1)
     user_gen.insert_values()
     
     # company
-    user_gen = UserGenerator(5, 2)
+    user_gen = UserGenerator(10, 2)
     user_gen.insert_values()
     
     # platform
@@ -131,6 +135,6 @@ if __name__ == '__main__':
     user_gen.insert_values()    
     
     # delivery
-    user_gen = UserGenerator(10, 4)
+    user_gen = UserGenerator(50, 4)
     user_gen.insert_values()
 >>>>>>> updateprofile
