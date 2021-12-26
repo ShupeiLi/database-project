@@ -23,7 +23,7 @@ class OrderFilterBuyer(django_filters.FilterSet):
         fields = ['ono']
 
 
-# Information summary: Company
+# Information summary: Company / Seller / Platform
 class DeliveryFilterCompany(django_filters.FilterSet):
     
     dvalue_min = django_filters.NumberFilter(field_name='dvalue', lookup_expr='gte')
