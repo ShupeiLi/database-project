@@ -18,4 +18,8 @@ urlpatterns = [
     path('search-scores-buyer/', views.buyer_view_seller_scores, name='search-scores-buyer'),
     path('search-scores-platform/', views.platform_view_seller_scores, name='search-scores-platform'),
     path('search-scores-seller/', views.seller_view_company_scores, name='search-scores-seller')
+    path('profile/', views.profile, name = "profile"),
+    path('profile/update/', views.update_profile, name = "update_profile"),
+    path('delivery-health-view/', views.delivery_health_view, name = "delivery-health-view"),
+    path('delivery-health-update/', views.delivery_health_update, name = "delivery-health-update"),
 ]

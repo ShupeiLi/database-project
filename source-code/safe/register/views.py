@@ -28,40 +28,40 @@ def register(request):
         
 		# check blank
 		if not username:
-			messages.info(request, '必须输入用户名')
+			messages.warning(request, '必须输入用户名')
 			return redirect(reverse("register:signup"))
 		if not password1:
-			messages.info(request, '必须输入有效密码')
+			messages.warning(request, '必须输入有效密码')
 			return redirect(reverse("register:signup"))
 		if not password2:
-			messages.info(request, '必须确认密码')
+			messages.warning(request, '必须确认密码')
 			return redirect(reverse("register:signup"))
 		if not utype:
-			messages.info(request, '必须填写用户类型')
+			messages.warning(request, '必须填写用户类型')
 			return redirect(reverse("register:signup"))
 		if not companyname:
-			messages.info(request, '必须输入公司名')
+			messages.warning(request, '必须输入公司名')
 			return redirect(reverse("register:signup"))
 		if not email:
-			messages.info(request, '必须提供邮箱')
+			messages.warning(request, '必须提供邮箱')
 			return redirect(reverse("register:signup"))
 
 		# register criteria
 		if password1 == password2:
 			if User.objects.filter(username=username).exists():
-				messages.info(request, '用户名已存在')
+				messages.warning(request, '用户名已存在')
 				return redirect(reverse("register:signup"))
 			elif User.objects.filter(email=email).exists():
-				messages.info(request, '邮箱已使用')
+				messages.warning(request, '邮箱已使用')
 				return redirect(reverse("register:signup"))
 			else:
 				user = User.objects.create_user(username=username, password=password1, utype=utype, 
                                                 companyname=companyname, address=address, tel=tel, email=email)					
 				user.save()
-				messages.info(request, '注册成功!')
+				messages.success(request, '注册成功!')
                 
 		else:
-			messages.info(request, '密码不正确!')
+			messages.warning(request, '密码不正确!')
 			return redirect(reverse("register:signup"))
 	
 		return redirect(reverse("register:login"))
