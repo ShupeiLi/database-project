@@ -104,5 +104,15 @@ function w3_close() {
 }
 </script>
 
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    
+    {% for message in messages %}
+    <script>
+        Swal.fire({
+            "title" : "{{message}}"
+        });
+    </script>
+    {% endfor %}
+
 </body>
 </html>

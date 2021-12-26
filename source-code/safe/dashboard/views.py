@@ -27,7 +27,7 @@ def delivery_health_view(request):
 
     health = HealthInformation.objects.order_by('-pupdate')
 
-    context={"username": username, "usertype": usertype}
+    context={"username": username, "usertype": usertype, "health":health}
 
     return render(request, "delivery-health-view.html", context)
 
@@ -37,10 +37,29 @@ def delivery_health_view(request):
 def delivery_health_update(request):
     username = request.COOKIES.get("username")
     usertype = request.COOKIES.get("usertype")
+    pno = get_object_or_404(User, username=username)
     
-    context={"username": username, "usertype": usertype}
+    if request.method == "POST":
+        pcity = request.POST['pcity']
+        ptemp = request.POST['ptemp']
+        
+        if not pcity:
+            messages.warning(request, '必须输入今日经过城市')
+            return redirect(reverse("dashboard:delivery-health-update"))
+        if not ptemp:
+            messages.warning(request, '必须输入今日体温')
+            return redirect(reverse("dashboard:delivery-health-update"))
 
-    return render(request, "delivery-health-update.html", context) 
+        health = HealthInformation.objects.create_healthinfo(pno=pno, pcity=pcity, ptemp=ptemp)
+        health.save() 
+        messages.success(request, '填写成功!')
+        return redirect(reverse("dashboard:delivery-health-view"))
+
+    context = {
+        'username': pno,
+        'usertype': usertype
+    }
+    return render(request, 'delivery-health-update.html', context)
 
 
 # Logistics Risk
