@@ -25,7 +25,7 @@ class UserGenerator():
         self.db = mysql.connector.connect(
                     host = 'localhost',
                     user = 'root',
-                    password = '123456',
+                    password = 'ShupeiLi',
                     database = 'safe'
                     )
     
@@ -107,15 +107,15 @@ class UserGenerator():
     
 if __name__ == '__main__':
     # buyer
-    user_gen = UserGenerator(100, 0)
+    user_gen = UserGenerator(200, 0)
     user_gen.insert_values()
     
     # seller
-    user_gen = UserGenerator(20, 1)
+    user_gen = UserGenerator(40, 1)
     user_gen.insert_values()
     
     # company
-    user_gen = UserGenerator(5, 2)
+    user_gen = UserGenerator(10, 2)
     user_gen.insert_values()
     
     # platform
@@ -123,5 +123,5 @@ if __name__ == '__main__':
     user_gen.insert_values()    
     
     # delivery
-    user_gen = UserGenerator(10, 4)
+    user_gen = UserGenerator(50, 4)
     user_gen.insert_values()

@@ -6,7 +6,6 @@ from django.urls import reverse_lazy
 from django.contrib import messages
 from .tools import encrypt
 from .filters import DeliveryFilterCompany, OrderFilterBuyer
-from datetime import datetime
 
 
 User = get_user_model()
