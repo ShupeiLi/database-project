@@ -1,0 +1,138 @@
+{% extends 'company-comfirm-index.html' %}
+
+{% block title %}首页{% endblock %}
+
+{% block content %}
+
+    <div style="height: 10px;"></div>
+    <div class="container-fluid">
+{#        卡片#}
+        <div style="height: 10px;"></div>
+        <div class="row">
+            <div class="col-md-4">
+                <div class="card bg-light shadow text-center">
+                    <div class="card-header">
+                        <h4 class="card-title">订单总数</h4>
+                    </div>
+                    <div class="card-body">
+                        <h3>{{ order_count }}</h3>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card bg-light shadow text-center">
+                    <div class="card-header">
+                        <h4 class="card-title">待确认订单</h4>
+                    </div>
+                    <div class="card-body">
+                        <h3>{{ order_p_count }}</h3>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card bg-light shadow text-center">
+                    <div class="card-header">
+                        <h4 class="card-title">已确认订单</h4>
+                    </div>
+                    <div class="card-body">
+                        <h3>{{ order_c_count }}</h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div style="height: 10px;"></div>
+    <hr>
+    
+
+    <div class="container-fluid">
+        <div class="row">
+           
+                <h4>订单详情</h4>
+				<div style="height: 10px;"></div>
+                <table class="table table-hover" style="text-align:center">
+                    <thead>
+                        <tr class="table-dark align-middle">
+                            <th scope="col">物流单号</th>
+                            <th scope="col">物流订单金额</th>
+							<th scope="col">物流运送方式</th>
+                            <th scope="col">物流公司账户名</th>
+                            <th scope="col">卖方账户名</th>
+                            <th scope="col">发货时间</th>
+							<th scope="col">收货时间</th>
+                            <th scope="col">状态</th>
+                            <th scope="col">删除</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for j in order %}
+                            <tr class="table-light align-middle">
+                                <td>{{ j.dno }}</td>
+                                <td>{{ j.dvalue }}</td>
+								{% if j.dtrans == 'plane' %}
+								<td>航空运输</td>
+								{% elif j.dtrans == 'train' %}
+								<td>铁道运输</td>
+								{% else %}
+								<td>公路运输</td>
+								{% endif %}
+                                <td>{{ j.tno }}</td>
+                                <td>{{ j.sno }}</td>
+								<td>{{ j.dsetime }}</td>
+                                <td>{{ j.dretime }}</td>
+                                <td>
+								{% if j.is_checked %}
+                                    <a href="{% url 'dashboard:confirm-order-update' j.dno %}" class="btn btn-sm btn-warning">更新</a>
+								{% else %}
+									<a href="{% url 'dashboard:confirm-order-update' j.dno %}" class="btn btn-sm btn-warning">确认</a>
+								{% endif %}
+                                </td>
+                                <td>
+                                    <button type="button" id="{{ j.dno }}-del" class="btn btn-sm btn-danger">删除</button>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+ 
+    </div>
+
+{% endblock %}
+
+{% block javascript %}
+
+    <script>
+        {% for j in order %}
+            $(document).ready(function(){
+                $('#{{ j.dno }}-del').click(function(){
+                    var r = confirm("你确定要删除这个订单吗？")
+                    if(r){
+                        $.ajaxSetup({
+                            data: {
+                                csrfmiddlewaretoken: '{{ csrf_token }}'
+                            }
+                        })
+                        $.ajax({
+                            type: 'POST',
+                            url: "{% url 'dashboard:confirm-order-homepage' %}",
+                            data: {
+                                'order_del': {{ j.dno }}
+                            },
+                            dataType: 'text',
+                            success: function(){
+                                window.location.reload()
+                            },
+                            error: function(){
+                                console.log("Somewhere is wrong!")
+                            }
+                        })
+                    }
+                })
+            })
+        {% endfor %}
+    </script>
+
+{% endblock %}

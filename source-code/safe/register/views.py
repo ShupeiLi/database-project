@@ -1,10 +1,9 @@
 # -*- coding: utf-8 -*-
 
-from django.shortcuts import render, redirect, reverse, HttpResponseRedirect
+from django.shortcuts import render, redirect, reverse
 from django.contrib import messages
-from django.contrib.auth import get_user_model
+from django.contrib.auth import get_user_model, login
 from django.urls import reverse_lazy
-from django.contrib.auth.hashers import check_password
 
 
 User = get_user_model()
@@ -19,7 +18,6 @@ def register(request):
 		password2 = request.POST['password2']
 		utype = request.POST['utype']
 		companyname = request.POST['companyname']
-		registerid = request.POST['registerid'] # 自动生成
 		address = request.POST['address']
 		tel = request.POST['tel']
 		email = request.POST['email']
@@ -44,9 +42,6 @@ def register(request):
 		if not companyname:
 			messages.info(request, '必须输入公司名')
 			return redirect(reverse("register:signup"))
-		if not registerid:
-			messages.info(request, '必须输入登录ID')
-			return redirect(reverse("register:signup"))
 		if not email:
 			messages.info(request, '必须提供邮箱')
 			return redirect(reverse("register:signup"))
@@ -60,14 +55,14 @@ def register(request):
 				messages.info(request, '邮箱已使用')
 				return redirect(reverse("register:signup"))
 			else:
-				user = User.objects.create_user(username=username, password=password1, utype=utype, companyname=companyname, 
-        										registerid=registerid, address=address, tel=tel, email=email)
+				user = User.objects.create_user(username=username, password=password1, utype=utype, 
+                                                companyname=companyname, address=address, tel=tel, email=email)					
 				user.save()
 				messages.info(request, '注册成功!')
                 
 		else:
 			messages.info(request, '密码不正确!')
-			return redirect(reverse("register:register"))
+			return redirect(reverse("register:signup"))
 	
 		return redirect(reverse("register:login"))
 
@@ -75,7 +70,7 @@ def register(request):
 
 
 # Login view function
-def login(request):
+def login_view(request):
     if request.method == 'POST' and request.POST:
         # get content from request
         usertype = request.POST.get("usertype")
@@ -88,8 +83,9 @@ def login(request):
             user = None
         if user:
             if user.is_active:
-                if check_password(password, user.password):  # 密码正确
-                    response = HttpResponseRedirect(reverse_lazy("dashboard:boardhome"))  # 跳转至新的页面
+                if password == user.password:  # 密码正确
+                    login(request, user)
+                    response = redirect(reverse_lazy("dashboard:board-home"))  # 跳转至新的页面
                     response.set_cookie("username", username)  # 设置cookie
                     response.set_cookie("usertype", usertype)
                     return response
