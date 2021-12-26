@@ -74,3 +74,27 @@ class DeliveryInformation(models.Model):
 
     def __str__(self):
         return self.dno
+
+
+class RateSeller(models.Model):
+    sellername = models.OneToOneField('register.NewUser', related_name='rateforseller', on_delete=models.CASCADE)
+    quality = models.DecimalField(max_digits=2, decimal_places=1, null=True)  # 产品质量
+    price = models.DecimalField(max_digits=2, decimal_places=1, null=True)  # 产品价格或性价比
+    look = models.DecimalField(max_digits=2, decimal_places=1, null=True)  # 产品外观
+    delivery = models.DecimalField(max_digits=2, decimal_places=1, null=True)  # 产品配送
+    service = models.DecimalField(max_digits=2, decimal_places=1, null=True)  # 卖方客服服务情况
+
+    def __str__(self):
+        return self.sellername
+
+
+class RateDelivComp(models.Model):
+    compname = models.OneToOneField('register.NewUser', related_name='rateforcompany', on_delete=models.CASCADE)
+    speed = models.DecimalField(max_digits=2, decimal_places=1, null=True)  # 配送速度
+    package = models.DecimalField(max_digits=2, decimal_places=1, null=True)  # 包装质量
+    perfection = models.DecimalField(max_digits=2, decimal_places=1, null=True)  # 配送后包裹完好度
+    service = models.DecimalField(max_digits=2, decimal_places=1, null=True)  # 服务情况
+    timely_feedback = models.DecimalField(max_digits=2, decimal_places=1, null=True)  # 及时提供数据（地理位置或健康信息），及时反馈
+
+    def __str__(self):
+        return self.compname
