@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}{% endblock %}</title>
+    <title>Dashboard</title>
     {% load static %}
     <link href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
     <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
@@ -43,44 +43,48 @@
     <div class="w3-container">
       <h5>控制面板</h5>
     </div>
-    {%if usertype == "buyer" %}
-    <div class="w3-bar-block">
-      <a href="{% url 'dashboard:information-summary-buyer' %}" class="w3-bar-item w3-button w3-padding"><i class="fa fa-eye fa-fw"></i>  信息总览</a>
-      <a href="{% url 'dashboard:stat_page' %}" class="w3-bar-item w3-button w3-padding"><i class="fa fa-bullseye fa-fw"></i>  统计报表</a>
-        <a href="{% url 'dashboard:profile' %}" class="w3-bar-item w3-button w3-padding"><i class="fa fa-cog fa-fw"></i>  设置</a><br><br>
-    </div>
-    {%endif%}
-    {%if usertype == "seller" %}
-    <div class="w3-bar-block">
-      <a href="{% url 'dashboard:submit-order' %}" class="w3-bar-item w3-button w3-padding"><i class="fa fa-users fa-fw"></i> 提交订单 </a>
-      <a href="{% url 'dashboard:information-summary-seller' %}" class="w3-bar-item w3-button w3-padding"><i class="fa fa-eye fa-fw"></i>  信息总览</a>
-      <a href="{% url 'dashboard:stat_page' %}" class="w3-bar-item w3-button w3-padding"><i class="fa fa-bullseye fa-fw"></i>  统计报表</a>
-        <a href="{% url 'dashboard:profile' %}" class="w3-bar-item w3-button w3-padding"><i class="fa fa-cog fa-fw"></i>  设置</a><br><br>
-    </div>
-    {%endif%}
-    {%if usertype == "company" %}
-    <div class="w3-bar-block">
-        <a href="{% url 'dashboard:confirm-order-homepage' %}" class="w3-bar-item w3-button w3-padding"><i class="fa fa-bell fa-fw"></i> 确认订单 </a>
-        <a href="{% url 'dashboard:information-summary-company' %}" class="w3-bar-item w3-button w3-padding"><i class="fa fa-eye fa-fw"></i> 信息总览 </a>
-      <a href="{% url 'dashboard:stat_page' %}" class="w3-bar-item w3-button w3-padding"><i class="fa fa-bullseye fa-fw"></i>  统计报表</a>
-        <a href="{% url 'dashboard:profile' %}" class="w3-bar-item w3-button w3-padding"><i class="fa fa-cog fa-fw"></i>  设置</a><br><br>
-    </div>
-    {%endif%}
-    {%if usertype == "platform" %}
-    <div class="w3-bar-block">
-        <a href="{% url 'dashboard:information-summary-platform' %}" class="w3-bar-item w3-button w3-padding"><i class="fa fa-eye fa-fw"></i>  信息总览</a>
-      <a href="{% url 'dashboard:stat_page' %}" class="w3-bar-item w3-button w3-padding"><i class="fa fa-bullseye fa-fw"></i>  统计报表</a>
-        <a href="{% url 'dashboard:profile' %}" class="w3-bar-item w3-button w3-padding"><i class="fa fa-cog fa-fw"></i>  设置</a><br><br>
-    </div>
-    {%endif%}
-    {%if usertype == "delivery" %}
-    <div class="w3-bar-block">
-      <a href="#" class="w3-bar-item w3-button w3-padding"><i class="fa fa-bell fa-fw"></i> 确认订单 </a>
-        <a href="{% url 'dashboard:delivery-health-update' %}" class="w3-bar-item w3-button w3-padding"><i class="fa fa-users fa-fw"></i> 每日填报 </a>
-        <a href="{% url 'dashboard:delivery-health-view' %}" class="w3-bar-item w3-button w3-padding"><i class="fa fa-history fa-fw"></i>  填报历史</a>
-      <a href="{% url 'dashboard:profile' %}" class="w3-bar-item w3-button w3-padding"><i class="fa fa-cog fa-fw"></i>  设置</a><br><br>
-    </div>
-    {%endif%}
+  {%if usertype == "buyer" %}
+  <div class="w3-bar-block">
+    <a href="{% url 'dashboard:information-summary-buyer' %}" class="w3-bar-item w3-button w3-padding"><i class="fa fa-eye fa-fw"></i>  订单总览</a>
+	<a href="{% url 'dashboard:search-scores-buyer' %}" class="w3-bar-item w3-button w3-padding"><i class="fa fa-diamond fa-fw"></i>  评分查询</a>
+    <a href="{% url 'dashboard:stat_page' %}" class="w3-bar-item w3-button w3-padding"><i class="fa fa-bullseye fa-fw"></i>  统计报表</a>
+	<a href="{% url 'dashboard:profile' %}" class="w3-bar-item w3-button w3-padding"><i class="fa fa-cog fa-fw"></i>  设置</a><br><br>
+  </div>
+  {%endif%}
+  {%if usertype == "seller" %}
+  <div class="w3-bar-block">
+    <a href="{% url 'dashboard:submit-order' %}" class="w3-bar-item w3-button w3-padding"><i class="fa fa-users fa-fw"></i> 提交订单 </a>
+	<a href="{% url 'dashboard:information-summary-seller' %}" class="w3-bar-item w3-button w3-padding"><i class="fa fa-eye fa-fw"></i>  订单总览</a>
+	<a href="{% url 'dashboard:search-scores-seller' %}" class="w3-bar-item w3-button w3-padding"><i class="fa fa-diamond fa-fw"></i>  评分查询</a>
+    <a href="{% url 'dashboard:stat_page' %}" class="w3-bar-item w3-button w3-padding"><i class="fa fa-bullseye fa-fw"></i>  统计报表</a>
+	<a href="{% url 'dashboard:profile' %}" class="w3-bar-item w3-button w3-padding"><i class="fa fa-cog fa-fw"></i>  设置</a><br><br>
+  </div>
+  {%endif%}
+  {%if usertype == "company" %}
+  <div class="w3-bar-block">
+	<a href="{% url 'dashboard:confirm-order-homepage' %}" class="w3-bar-item w3-button w3-padding"><i class="fa fa-bell fa-fw"></i> 确认订单 </a>
+	<a href="{% url 'dashboard:information-summary-company' %}" class="w3-bar-item w3-button w3-padding"><i class="fa fa-eye fa-fw"></i> 订单总览 </a>
+    <a href="#" class="w3-bar-item w3-button w3-padding"><i class="fa fa-diamond fa-fw"></i>  员工信息</a>
+	<a href="{% url 'dashboard:stat_page' %}" class="w3-bar-item w3-button w3-padding"><i class="fa fa-bullseye fa-fw"></i>  统计报表</a>
+	<a href="{% url 'dashboard:profile' %}" class="w3-bar-item w3-button w3-padding"><i class="fa fa-cog fa-fw"></i>  设置</a><br><br>
+  </div>
+  {%endif%}
+  {%if usertype == "platform" %}
+  <div class="w3-bar-block">
+	<a href="{% url 'dashboard:information-summary-platform' %}" class="w3-bar-item w3-button w3-padding"><i class="fa fa-eye fa-fw"></i>  信息总览</a>
+    <a href="{% url 'dashboard:search-scores-platform' %}" class="w3-bar-item w3-button w3-padding"><i class="fa fa-diamond fa-fw"></i>  评分查询</a>
+	<a href="{% url 'dashboard:stat_page' %}" class="w3-bar-item w3-button w3-padding"><i class="fa fa-bullseye fa-fw"></i>  统计报表</a>
+	<a href="{% url 'dashboard:profile' %}" class="w3-bar-item w3-button w3-padding"><i class="fa fa-cog fa-fw"></i>  设置</a><br><br>
+  </div>
+  {%endif%}
+  {%if usertype == "delivery" %}
+  <div class="w3-bar-block">
+    <a href="#" class="w3-bar-item w3-button w3-padding"><i class="fa fa-bell fa-fw"></i> 确认订单 </a>
+  	<a href="{% url 'dashboard:delivery-health-update' %}" class="w3-bar-item w3-button w3-padding"><i class="fa fa-users fa-fw"></i> 每日填报 </a>
+	<a href="{% url 'dashboard:delivery-health-view' %}" class="w3-bar-item w3-button w3-padding"><i class="fa fa-history fa-fw"></i>  填报历史</a>
+    <a href="{% url 'dashboard:profile' %}" class="w3-bar-item w3-button w3-padding"><i class="fa fa-cog fa-fw"></i>  设置</a><br><br>
+  </div>
+  {%endif%}
   </nav>
 <div class="container">
     <div class="row">

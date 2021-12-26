@@ -19,15 +19,7 @@ class OrderGenerator():
         self.db = mysql.connector.connect(
                     host = 'localhost',
                     user = 'root',
-<<<<<<< HEAD
-<<<<<<< HEAD
                     password = 'ShupeiLi',
-=======
-                    password = '123456',
->>>>>>> updateprofile
-=======
-                    password = 'ShupeiLi',
->>>>>>> 35bbb3ebad74235478b0e7f9215d84e7b11ae5db
                     database = 'safe'
                     )
         
@@ -101,14 +93,6 @@ class OrderGenerator():
         i = 0
         buyers = self.select_user_type(0)
         sellers = self.select_user_type(1)
-<<<<<<< HEAD
-        types = ["food", "clothes", "daily use", "digital", "office supplies", "sports"]
-        
-        while i < self.n:
-            ono = random.randint(100000, 999999)
-            uno = random.choice(buyers)[0]
-            sno = random.choice(sellers)[0]
-=======
         platforms = self.select_user_type(3)
         types = ["food", "clothes", "daily use", "digital", "office supplies", "sports"]
         
@@ -117,16 +101,11 @@ class OrderGenerator():
             uno = random.choice(buyers)[0]
             sno = random.choice(sellers)[0]
             platform_name = random.choice(platforms)[0]
->>>>>>> updateprofile
             otime = datetime.datetime.fromtimestamp(self.random_date_order(uno, sno)).strftime('%Y-%m-%d')
             ovalue = round(random.uniform(0, 999), 2)
             onum = random.randint(1, 100)
             otype = random.choice(types)
-<<<<<<< HEAD
-            one_value = (ono, otime, ovalue, uno, sno, otype, onum)
-=======
             one_value = (ono, otime, ovalue, uno, sno, platform_name, otype, onum)
->>>>>>> updateprofile
             if self.check_valid(one_value):
                 values.append(one_value)
                 i += 1
@@ -140,13 +119,8 @@ class OrderGenerator():
         val = self.generator_order()
         sql = """
               INSERT INTO 
-<<<<<<< HEAD
-              dashboard_orderinformation(ono, otime, ovalue, username_id, sellername_id, otype, onum) 
-              VALUES (%s, %s, %s, %s, %s, %s, %s)
-=======
               dashboard_orderinformation(ono, otime, ovalue, username_id, sellername_id, platformname_id, otype, onum) 
               VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
->>>>>>> updateprofile
               """
         cursor = self.db.cursor()
         cursor.executemany(sql, val)
@@ -155,13 +129,5 @@ class OrderGenerator():
     
         
 if __name__ == '__main__':
-<<<<<<< HEAD
-<<<<<<< HEAD
-    order_gen = OrderGenerator(5)
-=======
-    order_gen = OrderGenerator(100)
->>>>>>> updateprofile
-=======
     order_gen = OrderGenerator(400)
->>>>>>> 35bbb3ebad74235478b0e7f9215d84e7b11ae5db
     order_gen.insert_values_order()

@@ -42,6 +42,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'register',
     'dashboard',
+    'django_filters',
+    'bootstrap5',
 ]
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
@@ -85,7 +87,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'safe', # 需要先在电脑上创建名为 safe 的 MySQL 数据库
         'USER': 'root', # 改为自己电脑上的 MySQL 用户名
-        'PASSWORD': 'gc001204', # 改为自己电脑上的 MySQL 密码
+        'PASSWORD': 'ShupeiLi', # 改为自己电脑上的 MySQL 密码
         'HOST': 'localhost',
         'PORT': '3306',
         'OPTION': {'default-character-set': "utf8"},
