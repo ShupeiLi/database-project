@@ -73,27 +73,27 @@ class DeliveryInformation(models.Model):
         return self.dno
 
 
-class Health(models.Model):
+class HealthInformation(models.Model):
     """
-    Show the health information of the deliveryman
+    Show the health information of all deliverymen
     """
-    username = models.CharField(max_length=100)
+    pno = models.ForeignKey(NewUser, related_name='HealthInformation_Deliverymanname', on_delete=models.CASCADE)    # one to one
     pcity = models.CharField(max_length=100)
-    ptemp = models.DecimalField(max_digits=50, decimal_places=1)
-    pupdate = models.DateTimeField(auto_now_add=True)
-
+    ptemp = models.DecimalField(max_digits=25, decimal_places=1)
+    pupdate = models.DateField(max_length=128, null=True)
     
+    class Meta:
+        verbose_name = '员工健康信息表'
+        verbose_name_plural = verbose_name
+        unique_together = ("pno", "pupdate")
+  
     
-class Distribution(models.Model):
+class DistributionInformation(models.Model):
     """
-    Show the order information distributed to a certain deliveryman
+    Show the distribution of order to all deliveryman
     """
-    STATUS = (
-        ('pending', '待确认'),
-        ('confirmed', '已确认')
-    )
-    dpno = models.CharField(max_length=100)
-    dno = models.CharField(max_length=100)
-    username = models.CharField(max_length=100)
-    status = models.CharField(max_length=30, choices=STATUS)
+    pno = models.ForeignKey(NewUser, related_name='DistributionInformation_Deliverymanname', on_delete=models.CASCADE)    # one to one
+    dpno = models.CharField(max_length=100,primary_key=True)
+    dno = models.ForeignKey(DeliveryInformation, related_name='DistributionInformation_OrderNo', on_delete=models.CASCADE)
+    is_checked = models.BooleanField(default=False)
     
