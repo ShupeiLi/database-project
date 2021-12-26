@@ -65,7 +65,7 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
   {%if usertype == "delivery" %}
   <div class="w3-bar-block">
     <a href="#" class="w3-bar-item w3-button w3-padding"><i class="fa fa-bell fa-fw"></i> 确认订单 </a>
-  	<a href="#" class="w3-bar-item w3-button w3-padding"><i class="fa fa-users fa-fw"></i> 每日填报 </a>
+  	<a href="{% url 'dashboard:delivery-health-update' %}" class="w3-bar-item w3-button w3-padding"><i class="fa fa-users fa-fw"></i> 每日填报 </a>
 	  <a href="{% url 'dashboard:delivery-health-view' %}" class="w3-bar-item w3-button w3-padding"><i class="fa fa-history fa-fw"></i>  填报历史</a>
     <a href="{% url 'dashboard:profile' %}" class="w3-bar-item w3-button w3-padding"><i class="fa fa-cog fa-fw"></i>  设置</a><br><br>
   </div>

@@ -8,7 +8,7 @@
     <div class="table-responsive">
       <table id="deliveryhealth" class="table table-striped table-bordened" width="100%">
         <thead>
-          <th>编号</th>
+          <th>账户名</th>
           <th>途径城市</th>
           <th>体温</th>
           <th>更新时间</th>
@@ -17,7 +17,6 @@
         <tbody>
           {% for dh in health %}
             <tr>
-              <td><input type="checkbox" class="checkthis" /></td>
               <td>{{ dh.pno }}</td>
               <td>{{ dh.pcity }}</td>
               <td>{{ dh.ptemp }}</td>
