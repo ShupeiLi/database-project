@@ -2,7 +2,7 @@
 from django.shortcuts import render, get_object_or_404,redirect, reverse, HttpResponseRedirect
 from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
-from .models import OrderInformation, DeliveryInformation, RateSeller, RateDelivComp, Health
+from .models import OrderInformation, DeliveryInformation, RateSeller, RateDelivComp, HealthInformation
 from django.urls import reverse_lazy
 from django.contrib import messages
 from .tools import encrypt
@@ -21,26 +21,26 @@ def board_home(request):
 
 # Delivery Historical Data
 @login_required
-def delivery_health(request):
+def delivery_health_view(request):
     username = request.COOKIES.get("username")
     usertype = request.COOKIES.get("usertype")
 
-    health = Health.objects.order_by('-pupdate')
+    health = HealthInformation.objects.order_by('-pupdate')
 
     context={"username": username, "usertype": usertype}
 
     return render(request, "delivery-health-view.html", context)
 
 
-# Add New
+# Delivery Health Update
 @login_required
-def addnew(request):
+def delivery_health_update(request):
     username = request.COOKIES.get("username")
     usertype = request.COOKIES.get("usertype")
     
     context={"username": username, "usertype": usertype}
 
-    return render(request, "?", context) 
+    return render(request, "delivery-health-update.html", context) 
 
 
 # Logistics Risk

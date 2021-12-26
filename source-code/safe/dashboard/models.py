@@ -114,10 +114,19 @@ class RateDelivComp(models.Model):
         return self.compname
 
 
-class Health(models.Model):
-
-    def __str__(self):
-        return self.pno
+class HealthInformation(models.Model):
+    """
+    Show the health information of all deliverymen
+    """
+    pno = models.ForeignKey(NewUser, related_name='HealthInformation_Deliverymanname', on_delete=models.CASCADE)    # one to one
+    pcity = models.CharField(max_length=100)
+    ptemp = models.DecimalField(max_digits=25, decimal_places=1)
+    pupdate = models.DateField(max_length=128, null=True)
+    
+    class Meta:
+        verbose_name = '员工健康信息表'
+        verbose_name_plural = verbose_name
+        unique_together = ("pno", "pupdate")
 
 
 class COV19():
