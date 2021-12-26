@@ -25,9 +25,10 @@
       
       /* Puts the form in the center both horizontally and vertically. Sets its height to 100% of the viewport's height */
       .registerForm {
-          display: flex;
-          justify-content: center;
-          align-items: center;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
       }
       
       .form {
@@ -206,7 +207,8 @@
       {% for message in messages %}
       <script>
         Swal.fire({
-            "title" : "{{message}}"
+            "title" : "{{message}}",
+            "icon" : "warning"
         });
       </script>
       {% endfor %}
