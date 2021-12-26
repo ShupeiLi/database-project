@@ -23,7 +23,9 @@ class DeliveryInformationManager(models.Manager):
 
         # encrypt
         dno = encrypt(ono)
-
+        
+        order_information = OrderInformation.objects.get(ono=ono)
+        
         if not ono:
             raise ValueError('必须提供有效订单号')
         if not dtrans:
@@ -32,7 +34,7 @@ class DeliveryInformationManager(models.Manager):
             raise ValueError('必须选择物流公司')
         
         deliveryinfo = self.model(
-            dno=dno, dtrans=dtrans, tno=tno, sno=sno
+            dno=dno, dtrans=dtrans, tno=tno, sno=sno, order_information=order_information
             )
 
         deliveryinfo.save(using=self._db)
@@ -60,6 +62,7 @@ class DeliveryInformationManager(models.Manager):
 
 class DeliveryInformation(models.Model):
     objects = DeliveryInformationManager()
+    order_information = models.OneToOneField(OrderInformation, null=True, on_delete=models.CASCADE)
     dno = models.CharField(primary_key=True, max_length=32, null=False, unique=True) # one to one
     dvalue = models.DecimalField(max_digits=25, decimal_places=2, null=True)
     dtrans = models.CharField(max_length=128)

@@ -137,13 +137,13 @@ class DeliveryGenerator():
                 sno = order[1]
                 dtrans = random.choice(dtrans_choices)
                 tno = random.choice(companys)[0]
-                one_value = (dno, sno, tno, dtrans, False)
+                one_value = (dno, sno, tno, dtrans, False, order[0])
                 values.append(one_value)
                 
             sql = """
                   INSERT INTO 
-                  dashboard_deliveryinformation(dno, sno_id, tno_id, dtrans, is_checked) 
-                  VALUES (%s, %s, %s, %s, %s)
+                  dashboard_deliveryinformation(dno, sno_id, tno_id, dtrans, is_checked, order_information_id) 
+                  VALUES (%s, %s, %s, %s, %s, %s)
                   """
                   
             cursor = self.db.cursor()
@@ -186,8 +186,8 @@ class DeliveryGenerator():
                            """)
             sql = """
                   INSERT INTO 
-                  dashboard_deliveryinformation(dno, dvalue, dtrans, dsetime, dretime, is_checked, sno_id, tno_id) 
-                  VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
+                  dashboard_deliveryinformation(dno, dvalue, dtrans, dsetime, dretime, is_checked, sno_id, tno_id, order_information_id) 
+                  VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)
                   """
             cursor.executemany(sql, updates)
             self.db.commit()
