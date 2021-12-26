@@ -7,8 +7,6 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500" rel="stylesheet" />
-{% load static %}
-<link href="{% static 'css/main.css' %}" rel="stylesheet" />
 <style>
 html,body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
  /* Style the tab */
@@ -173,7 +171,7 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
 		<td>{{ delivery_order.dvalue }}</td>
 		{% if delivery_order.dtrans == 'plane' %}
 		<td>航空运输</td>
-		{% elif j.dtrans == 'train' %}
+		{% elif delivery_order.dtrans == 'train' %}
 		<td>铁道运输</td>
 		{% else %}
 		<td>公路运输</td>
