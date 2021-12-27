@@ -196,6 +196,7 @@ def update_profile(request):
             if password1 != '':
                 if_update = True
                 User.objects.filter(username=username).update(password=password1)
+                return redirect(reverse_lazy("register:login"))
             if address != '':
                 if_update = True
                 User.objects.filter(username=username).update(address=address)
