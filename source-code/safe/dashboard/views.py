@@ -25,7 +25,7 @@ def delivery_health_view(request):
     username = request.COOKIES.get("username")
     usertype = request.COOKIES.get("usertype")
 
-    health = HealthInformation.objects.order_by('-pupdate')
+    health = HealthInformation.objects.filter(pno_id=username).order_by('-pupdate')
 
     context={"username": username, "usertype": usertype, "health":health}
 

@@ -82,7 +82,7 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
 
 <!-- !PAGE CONTENT! -->
 <div class="w3-main" style="margin-left:280px;margin-top:43px;">
-
+<div class="w3-display-middle">
 {% if usertype == "buyer" %}
 <div class='content-profile'>
 	<h2 class='account-heading'>{{ user.username }}</h2>
@@ -127,6 +127,7 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
 {% endif %}
 
 <a href="update" class="btn btn-primary"> 修改信息 </a>
+</div>
 </div>
 
 <script>
