@@ -273,7 +273,7 @@ def stat_func(request):
         return render(request, "stat_page.html",
                       {"username": username, "usertype": usertype, "type": type, "volume": volume})
     elif usertype == "company":
-        order = DeliveryInformation.objects.filter(tno = username)
+        order = DeliveryInformation.objects.filter(tno = username, is_checked=True)
         rate = RateDelivComp.objects.get(compname = username)
         rateNum = [float(rate.speed), float(rate.package), float(rate.perfection), float(rate.service), float(rate.timely_feedback)]
         income = [0] * 12
