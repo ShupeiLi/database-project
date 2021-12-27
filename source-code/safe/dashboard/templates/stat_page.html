@@ -2,19 +2,18 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Dashboard</title>
+    <title>Statistics Page</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
-    <script src="https://cdn.bootcss.com/echart/4.4.0-rc.1/echarts.min.js"></script>
 </head>
-<!--html,body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}-->
+html,body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
 <body class="w3-light-grey">
-<!--{% load bootstrap5 %}-->
-<!--{% bootstrap_css %}-->
-<!--{% bootstrap_javascript %}-->
+{% load bootstrap5 %}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
 <!-- Top container -->
 <div class="w3-bar w3-top w3-black w3-large" style="z-index:4">
   <button class="w3-bar-item w3-button w3-hide-large w3-hover-none w3-hover-text-light-grey" onclick="w3_open();"><i class="fa fa-bars"></i>  Menu</button>
@@ -88,7 +87,7 @@
             labels: ["food", "clothes", "daily use", "digital", "office supplies", "sports"],
             datasets: [{
               label: "Buyer Preference for {{username}}",
-              data: "{{type}}",
+              data: {{type}},
               backgroundColor: [
                   'rgb(255, 99, 132)',
                   'rgb(255, 159, 64)',
@@ -113,7 +112,7 @@
               labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
               datasets: [{
                 label: 'Buying habit of {{username}}',
-                data: "{{time}}",
+                data: {{time}},
                 fill: false,
                 borderColor: 'rgb(75, 192, 192)',
                 tension: 0.1
@@ -126,9 +125,6 @@
   {%endif%}
   {%if usertype == "seller" %}
   <div class="w3-container">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
-    {{rate}}
-    {{income}}
     <div>
       <canvas id="RateSeller"></canvas>
       <script>
@@ -139,7 +135,7 @@
             labels: ['quality','price','look','delivery','service'],
             datasets: [{
                 label: "Rate scores for {{username}}",
-                data: "{{rate}}",
+                data: {{rate}},
                 backgroundColor: 'rgba(255, 99, 132, 0.2)',
                 borderColor: 'rgba(255, 99, 132, 1)',
                 pointBackgroundColor: 'rgb(255, 99, 132)',
@@ -172,7 +168,7 @@
               labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
               datasets: [{
                 label: 'Monthly income of {{username}}',
-                data: "{{income}}",
+                data: {{income}},
                 fill: false,
                 borderColor: 'rgb(75, 192, 192)',
                 tension: 0.1
@@ -184,8 +180,8 @@
   </div>
   {%endif%}
   {%if usertype == "company" %}
-  <div class="">
-    <div class="">
+  <div class="w3-container">
+    <div class="w3-container">
       <canvas id="RateComp"></canvas>
       <script>
     const ctx = document.getElementById('RateComp');
@@ -195,7 +191,7 @@
             labels: ["speed","package","perfection","service","timely feedback"],
             datasets: [{
                 label: "Rate scores for {{username}}",
-                data: "{{rate}}",
+                data: {{rate}},
                 backgroundColor: 'rgba(255, 99, 132, 0.2)',
                 borderColor: 'rgba(255, 99, 132, 1)',
                 pointBackgroundColor: 'rgb(255, 99, 132)',
@@ -214,7 +210,7 @@
     });
     </script> <!-- settings for delivery company radar -->
     </div>
-    <div class="">
+    <div class="w3-container">
       <canvas id="CompanyEarn"></canvas>
       <script>
         var ctx = document.getElementById("CompanyEarn")
@@ -224,7 +220,7 @@
               labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
               datasets: [{
                 label: 'Monthly income of {{username}}',
-                data: "{{income}}",
+                data: {{income}},
                 fill: false,
                 borderColor: 'rgb(75, 192, 192)',
                 tension: 0.1
@@ -247,7 +243,7 @@
             labels: ["food", "clothes", "daily use", "digital", "office supplies", "sports"],
             datasets: [{
               label: "Buyer Preference for {{username}}",
-              data: "{{type}}",
+              data: {{type}},
               backgroundColor: [
                   'rgb(255, 99, 132)',
                   'rgb(255, 159, 64)',
@@ -272,7 +268,7 @@
               labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
               datasets: [{
                 label: 'Business Volume of {{username}}',
-                data: "{{volume}}",
+                data: {{volume}},
                 fill: false,
                 borderColor: 'rgb(75, 192, 192)',
                 tension: 0.1
