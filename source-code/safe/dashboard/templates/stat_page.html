@@ -24,6 +24,7 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
 <nav class="w3-sidebar w3-collapse w3-white w3-animate-left" style="z-index:3;width:250px;" id="mySidebar"><br>
   <div class="w3-container w3-row">
     <div class="w3-col s8 w3-bar">
+	<br>
       <span>欢迎使用平安物流，</span><br><br>
 	  <span><strong>{{username}}</strong></span><br>
     </div>
@@ -73,11 +74,12 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
 <div class="w3-overlay w3-hide-large w3-animate-opacity" onclick="w3_close()" style="cursor:pointer" title="close side menu" id="myOverlay"></div>
 
 <!-- !PAGE CONTENT! -->
-<div class="w3-main" style="margin-left:300px;margin-top:43px;">
+<div class="w3-main" style="margin-left:250px;margin-top:43px">
 
   {%if usertype == "buyer" %}
   <div class="w3-container">
     <div class="w3-container">
+	<h3>商品订单分类</h3>
       <canvas id="BuyerType"></canvas>
       <script>
     var ctx = document.getElementById('BuyerType');
@@ -102,7 +104,9 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
     });
     </script> <!-- settings for buyer pie -->
     </div>
+	<br>
     <div class="w3-container">
+	<h3>购买习惯</h3>
       <canvas id="BuyerOrder"></canvas>
       <script>
         var ctx = document.getElementById("BuyerOrder")
@@ -126,6 +130,7 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
   {%if usertype == "seller" %}
   <div class="w3-container">
     <div class="w3-container">
+	<h3>卖家评分</h3>
       <canvas id="RateSeller"></canvas>
       <script>
     var ctx1 = document.getElementById('RateSeller');
@@ -159,6 +164,7 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
 <!--      <select name="year" id="sel"></select>-->
 <!--    </div>-->
     <div class="w3-container">
+	<h3>月收入</h3>
       <canvas id="SellerEarn"></canvas>
       <script>
         var ctx = document.getElementById("SellerEarn")
@@ -182,6 +188,7 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
   {%if usertype == "company" %}
   <div class="w3-container">
     <div class="w3-container">
+		<h3>物流公司评分</h3>
       <canvas id="RateComp"></canvas>
       <script>
     const ctx = document.getElementById('RateComp');
@@ -210,7 +217,7 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
     });
     </script> <!-- settings for delivery company radar -->
     </div>
-    <div class="w3-container">
+<!--    <div class="w3-container"> 
       <canvas id="CompanyEarn"></canvas>
       <script>
         var ctx = document.getElementById("CompanyEarn")
@@ -227,13 +234,14 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
               }]
           },
         })
-      </script> <!-- settings for delivery company income -->
-    </div>
+      </script> 
+   </div> -->
   </div>
   {%endif%}
   {%if usertype == "platform" %}
   <div class="w3-container">
     <div class="w3-container">
+	<h3>商品订单分类</h3>
       <canvas id="PlatformType"></canvas>
       <script>
     var ctx = document.getElementById('PlatformType');
@@ -259,6 +267,7 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
     </script> <!-- settings for Platform Type -->
     </div>
     <div class="w3-container">
+	<h3>月收入</h3>
       <canvas id="BusinessV"></canvas>
       <script>
         var ctx = document.getElementById("BusinessV")

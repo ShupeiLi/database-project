@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from django.shortcuts import render, get_object_or_404,redirect, reverse, HttpResponseRedirect
-from django.contrib.auth import get_user_model
+from django.contrib.auth import get_user_model, logout
 from django.contrib.auth.decorators import login_required
 from .models import OrderInformation, DeliveryInformation, RateSeller, RateDelivComp, HealthInformation
 from django.urls import reverse_lazy
@@ -171,6 +171,10 @@ def profile(request):
     username = request.COOKIES.get("username")
     usertype = request.COOKIES.get("usertype")
 
+    if request.method == 'POST':
+        logout(request)
+        return redirect(reverse_lazy("register:login"))
+
     return render(request, template_name='profile.html', 
                     context={"username": username, "usertype": usertype})
 
@@ -273,7 +277,7 @@ def stat_func(request):
         return render(request, "stat_page.html",
                       {"username": username, "usertype": usertype, "type": type, "volume": volume})
     elif usertype == "company":
-        order = DeliveryInformation.objects.filter(tno = username, is_checked=True)
+        order = DeliveryInformation.objects.filter(tno_id = username).filter(is_checked=True)
         rate = RateDelivComp.objects.get(compname = username)
         rateNum = [float(rate.speed), float(rate.package), float(rate.perfection), float(rate.service), float(rate.timely_feedback)]
         income = [0] * 12

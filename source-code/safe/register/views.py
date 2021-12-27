@@ -71,7 +71,7 @@ def register(request):
 
 # Login view function
 def login_view(request):
-    if request.method == 'POST' and request.POST:
+    if request.method == 'POST':
         # get content from request
         usertype = request.POST.get("usertype")
         username = request.POST.get("username")

@@ -16,7 +16,7 @@ class DistributionGenerator():
         self.db = mysql.connector.connect(
             host='localhost',
             user='root',
-            password='123456',  # !!!remember to change the password
+            password='ShupeiLi',  # !!!remember to change the password
             database='safe'
         )
 

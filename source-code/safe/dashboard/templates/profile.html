@@ -7,9 +7,20 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/3.2.1/css/font-awesome.css">
+{% load static %}
 <style>
 html,body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
 </style>
+
+<style  type="text/css">
+.bgimg-1 {
+  background-position: center;
+  background-size: cover;
+  background-image: url("{% static 'image/city.jpg' %}");
+  min-height: 100%;
+}
+</style>
+
 <body class="w3-light-grey">
 {% load bootstrap5 %}
 {% bootstrap_css %}
@@ -81,53 +92,26 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
 <div class="w3-overlay w3-hide-large w3-animate-opacity" onclick="w3_close()" style="cursor:pointer" title="close side menu" id="myOverlay"></div>
 
 <!-- !PAGE CONTENT! -->
-<div class="w3-main" style="margin-left:280px;margin-top:43px;">
-<div class="w3-display-middle">
-{% if usertype == "buyer" %}
-<div class='content-profile'>
-	<h2 class='account-heading'>{{ user.username }}</h2>
-	<p class='text-secondary'><i class="icon-phone"></i>  手机号: {{ user.tel }}</p> 
-	<p class='text-secondary'><i class="icon-envelope-alt"></i>  邮箱: {{ user.email }}</p>
-	<p class='text-secondary'><i class="icon-home"></i>  地址: {{ user.address }}</p>
-</div>
-{% endif %}
-{% if usertype == "seller" %}
-<div class='content-profile'>
-	<h2 class='account-heading'>{{ user.username }}</h2>
-	<p class='text-secondary'><i class="icon-phone"></i>  手机号: {{ user.tel }}</p> 
-	<p class='text-secondary'><i class="icon-envelope-alt"></i>  邮箱: {{ user.email }}</p>
-	<p class='text-secondary'><i class="icon-home"></i>  地址: {{ user.address }}</p>
-</div>
-{% endif %}
-{% if usertype == "company" %}
-<div class='content-profile'>
-	<h2 class='account-heading'>{{ user.username }}</h2>
-	<p class='text-secondary'><i class="icon-briefcase"></i>  公司: {{ user.companyname }}</p>
-	<p class='text-secondary'><i class="icon-phone"></i>  手机号: {{ user.tel }}</p> 
-	<p class='text-secondary'><i class="icon-envelope-alt"></i>  邮箱: {{ user.email }}</p>
-	<p class='text-secondary'><i class="icon-home"></i>  地址: {{ user.address }}</p>
-</div>
-{% endif %}
-{% if usertype == "platform" %}
-<div class='content-profile'>
-	<h2 class='account-heading'>{{ user.username }}</h2>
-	<p class='text-secondary'><i class="icon-briefcase"></i>  公司: {{ user.companyname }}</p>
-	<p class='text-secondary'><i class="icon-phone"></i>  手机号: {{ user.tel }}</p> 
-	<p class='text-secondary'><i class="icon-envelope-alt"></i>  邮箱: {{ user.email }}</p>
-	<p class='text-secondary'><i class="icon-home"></i>  地址: {{ user.address }}</p>
-</div>
-{% endif %}
-{% if usertype == "delivery" %}
-<div class='content-profile'>
-	<h2 class='account-heading'>{{ user.username }}</h2>
-	<p class='text-secondary'><i class="icon-phone"></i>  手机号: {{ user.tel }}</p> 
-	<p class='text-secondary'><i class="icon-envelope-alt"></i>  邮箱: {{ user.email }}</p>
-	<p class='text-secondary'><i class="icon-home"></i>  地址: {{ user.address }}</p>
-</div>
-{% endif %}
-
-<a href="update" class="btn btn-primary"> 修改信息 </a>
-</div>
+<div class="bgimg-1 w3-main" style="margin-left:250px;margin-top:43px;">
+<div class="w3-display-center w3-text-light-grey" style="padding-left:270px;padding-top:46px">
+	<span class="w3-xxlarge">账户信息：</span><br>
+	<span class="w3-xlarge w3-hide-large w3-hide-medium"></span><br>
+    <span class="w3-jumbo w3-hide-small">{{ user.username }}</span><br>
+    <span class="w3-xxlarge w3-hide-large w3-hide-medium"></span><br>
+    <span class="w3-large"><strong>手机号：</strong> {{ user.tel }}</span><br><br>
+	<span class="w3-large"><strong>邮箱：</strong> {{ user.email }}</span><br><br>
+	<span class="w3-large"><strong>地址：</strong> {{ user.address }}</span><br><br>
+	{% if usertype == "company" or usertype == "platform" %}
+	<span class="w3-large"><strong>公司：</strong> {{ user.companyname }}</span><br><br>
+	{% endif %}
+	<span class="w3-large"></span><br><br>
+	<form action="" method="post">
+	<p><a href="update" class="w3-button w3-black w3-padding-large w3-large w3-margin-top w3-opacity w3-hover-opacity-off">修改信息</a>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+    <button	type="submit" name="logout" value="logout" class="w3-button w3-black w3-padding-large w3-large w3-margin-top w3-opacity w3-hover-opacity-off">切换账户</button>
+	</p>
+	</form>
+	<br><br>
+</div> 
 </div>
 
 <script>

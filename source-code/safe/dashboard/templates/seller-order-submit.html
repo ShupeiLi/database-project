@@ -11,6 +11,13 @@
 
 <style>
 html,body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
+
+.qfc-container {
+	  --form-theme-color: gray;
+	  --form-bg-color   : white;
+	  --button-hover    : gray;
+	  --input-text-color: black;
+ }
 </style>
 
 <body class="w3-light-grey">
@@ -49,7 +56,7 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
 <div class="w3-overlay w3-hide-large w3-animate-opacity" onclick="w3_close()" style="cursor:pointer" title="close side menu" id="myOverlay"></div>
 
 <!-- !PAGE CONTENT! -->
-<div class="w3-main qfc-container" style="margin-left:430px;margin-top:43px;">
+<div class="w3-main qfc-container" style="margin-left:400px;margin-top:43px;">
 
 <h6>物流订单填写</h6>
 
@@ -63,7 +70,6 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
 	{% csrf_token %}
 	
 	<label>商品订单号：</label>
-	<br>
     <input type="text" value="" name="ono" />
 	
 	<br>
@@ -93,6 +99,7 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
     <input type="submit" value="提交" />
 
 </form>
+</div>
 
 </div>
 
