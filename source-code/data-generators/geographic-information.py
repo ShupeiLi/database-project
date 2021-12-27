@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import datetime
 
 import mysql.connector
 import random
@@ -96,13 +97,13 @@ class GeographicGenerator():
             num = dno[i][0]
             rec = self.get_last_position(dno)
             if len(rec) > 0:
-                last_date = rec[0][]
-                last_pos = rec[0][]
-                date = []
-
+                last_date = rec[0][1]
+                last_pos = rec[0][2]
+                date = [last_date + datetime.timedelta(days=x+1) for x in range(4)]
+                pos = []  # 根据最后的历史数据，生成一个范围内的移动
             else:
-                date = [ for x in range(4)]
-                pos = ["".format(round(random.random()*360, 6)+x, round(random.random()*360, 6)+x) for x in range(4)]
+                date = [datetime.datetime.now() + datetime.timedelta(days=x+1) for x in range(4)]
+                pos = ["{},{}".format(round(random.random()*360, 6)+x, round(random.random()*360, 6)+x) for x in range(4)]
 
 
 
