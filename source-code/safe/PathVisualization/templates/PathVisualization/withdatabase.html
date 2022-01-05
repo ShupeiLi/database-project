@@ -12,15 +12,16 @@
 </head>
 
 <body>
+    {{heatmapdata}}
     <div id='map' style='width:800px; height:600px;'></div>
     <script>
         window.onload = function() {
             const map = new AMap.Map('map', {
                 pitch: 50, // 地图俯仰角度，有效范围 0 度- 83 度
                 viewMode: '3D', // 地图模式
-                mapStyle: 'amap://styles/8b1ff64d2c968f4f84c2a5f5ef562cfb', // 地图主题
+                mapStyle: 'amap://styles/57994c871bb604a4c79184f5f65d8782', // 地图主题
                 zoom: 8, //设置地图的缩放级别
-                zooms: [8, 20], // 缩放级别限制
+                zooms: [1, 20], // 缩放级别限制
                 center: [116.368904, 39.913423],
             });
             AMap.plugin('AMap.DistrictSearch', function(){
@@ -38,11 +39,11 @@
                     var bounds = result.districtList[0].boundaries;
                     for (var i = 0, l = bounds.length; i < l; i++) {
                         var polygonbox = new AMap.Polygon({
-                            strokeWeight: 3,
+                            strokeWeight: 1.5,
                             path: bounds[i],
-                            fillOpacity: 0.9,
-                            fillColor: color,
-                            strokeColor: "#6e3fc8",
+                            fillOpacity: 0.8,
+                            fillColor: '{{ j.1 }}',
+                            strokeColor: "#87CEFA",
                             extData: {
                                 IDname: "北京",
                                 Center: "传递内容"
@@ -55,13 +56,13 @@
 
                 var lineArr=new Array();//创建线覆盖物节点坐标数组
                 {% for j in path_dot %}
-                    lineArr.push(new AMap.LngLat("{{ j.0 }}","{{ j.1 }}"))
+                    lineArr.push(new AMap.LngLat('{{ j.0 }}','{{ j.1 }}'))
                 {% endfor %}
                 polyline=new AMap.Polyline({
                 path:lineArr, //设置线覆盖物路径
                 strokeColor:"#3366FF", //线颜色
                 strokeOpacity:1, //线透明度
-                strokeWeight:5, //线宽
+                strokeWeight:2, //线宽
                 strokeStyle:"solid", //线样式
                 strokeDasharray:[10,5] //补充线样式
                 });

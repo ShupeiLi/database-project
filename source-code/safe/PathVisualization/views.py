@@ -1,5 +1,5 @@
 from django.shortcuts import render
-
+import datetime
 # Create your views here.
 
 from PathVisualization.models import GeographicInformation, PandemicInformation
@@ -13,14 +13,14 @@ def getdata(request, orderid):
         若订单号为01，运行：
         http://127.0.0.1:8000/pathvisualization/path/01
     '''
-    province_covid = PandemicInformation.objects.filter(date='2021-12-19 00:00:00')
-    heatmapdata = []  # ('北京市','#FFFF00')
-    for i in range(len(province_covid)):
-        province = province_covid[i].place
-        number = province_covid[i].number
-        color = '#00FF00'
+    province_covid = PandemicInformation.objects.filter(date__contains=datetime.date(2021, 12, 19))
+    heatmapdata = []  #('北京市','#FFFF00')
+    for x in province_covid:
+        province = x.place
+        number = x.number
+        # color = '#00FF00'
         if number >= 5:
-            color = '#FF0000'
+            color = '#ff9900'
         elif number > 0:
             color = '#FFFF00'
         heatmapdata.append((province, color))

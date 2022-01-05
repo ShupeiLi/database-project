@@ -42,4 +42,4 @@ records_df = pd.DataFrame(records, columns = ["date", "place", "number"])
 # Save in MySQL
 connection_string = "mysql+pymysql://%s:%s@%s:%s/%s"%('root', '123456', 'localhost', 3306, "safe")
 engine = create_engine(connection_string, echo = False)
-records_df.to_sql(con = engine, name = 'pathvisualization_pandemicinformation', if_exists='replace', index = True)
+records_df.to_sql(con = engine, name = '', if_exists='replace', index = True)

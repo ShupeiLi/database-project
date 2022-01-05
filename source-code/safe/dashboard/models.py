@@ -153,7 +153,7 @@ class HealthInformation(models.Model):
         return (self.pno, self.pupdate)
 
 
-class COV19():
+class COV19(models.Model):
     id = models.BigAutoField(primary_key=True)
     date = models.DateField(max_length=128)
     place = models.CharField(max_length=25)
