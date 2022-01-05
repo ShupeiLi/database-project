@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'dashboard',
     'django_filters',
     'bootstrap5',
+    'PathVisualization',
 ]
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
@@ -87,8 +88,8 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'safe', # 需要先在电脑上创建名为 safe 的 MySQL 数据库
         'USER': 'root', # 改为自己电脑上的 MySQL 用户名
-        'PASSWORD': 'ShupeiLi', # 改为自己电脑上的 MySQL 密码
-        'HOST': 'localhost',
+        'PASSWORD': '123456', # 改为自己电脑上的 MySQL 密码
+        'HOST': '127.0.0.1',
         'PORT': '3306',
         'OPTION': {'default-character-set': "utf8"},
     }
@@ -136,7 +137,7 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = ( os.path.join('static'), )
 
 
-AUTH_USER_MODEL = 'register.NewUser'
+#AUTH_USER_MODEL = 'register.NewUser'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
