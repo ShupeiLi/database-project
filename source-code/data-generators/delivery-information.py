@@ -137,13 +137,13 @@ class DeliveryGenerator():
                 sno = order[1]
                 dtrans = random.choice(dtrans_choices)
                 tno = random.choice(companys)[0]
-                one_value = (dno, sno, tno, dtrans, False)
+                one_value = (dno, sno, tno, dtrans, False, order[0])
                 values.append(one_value)
                 
             sql = """
                   INSERT INTO 
-                  dashboard_deliveryinformation(dno, sno_id, tno_id, dtrans, is_checked) 
-                  VALUES (%s, %s, %s, %s, %s)
+                  dashboard_deliveryinformation(dno, sno_id, tno_id, dtrans, is_checked, order_information_id) 
+                  VALUES (%s, %s, %s, %s, %s, %s)
                   """
                   
             cursor = self.db.cursor()
@@ -156,6 +156,7 @@ class DeliveryGenerator():
         Simulation: Companys confirm delivery orders.
         """
         fake = Faker()
+        cursor = self.db.cursor()
         binding = self.select_unchecked()
         updates = []
         
@@ -173,24 +174,18 @@ class DeliveryGenerator():
                 dretime_stamp = random.randint(int(round(datetime.datetime.fromtimestamp(time.mktime(dsetime.timetuple())).timestamp())), int(round(datetime.datetime.fromtimestamp(time.mktime(dretime_future.timetuple())).timestamp())))
                 dretime_str = datetime.datetime.fromtimestamp(dretime_stamp).strftime('%Y-%m-%d')
                 container = list(binding[i][0])
+                cursor.execute("""
+                           UPDATE dashboard_deliveryinformation
+                           SET dvalue = {}, dsetime = '{}', dretime = '{}', is_checked = {}
+                           WHERE dno = '{}';
+                           """.format(dvalue, dsetime_str, dretime_str, True, container[0]))
+                self.db.commit()
                 container[1] = dvalue
                 container[3] = dsetime_str
                 container[4] = dretime_str
                 container[5] = True
                 updates.append(tuple(container))
     
-            cursor = self.db.cursor()
-            cursor.execute("""
-                           DELETE FROM dashboard_deliveryinformation
-                           WHERE is_checked = False
-                           """)
-            sql = """
-                  INSERT INTO 
-                  dashboard_deliveryinformation(dno, dvalue, dtrans, dsetime, dretime, is_checked, sno_id, tno_id) 
-                  VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
-                  """
-            cursor.executemany(sql, updates)
-            self.db.commit()
             cursor.close()
     
 
@@ -198,7 +193,7 @@ if __name__ == '__main__':
     model = DeliveryGenerator(50)
     
     # 模拟商家提交订单
-    model.simulate_order_submit()
+    # model.simulate_order_submit()
     
     # 模拟公司确认订单
     model.simulate_order_confirm()

@@ -2,7 +2,7 @@ body{
 margin: 0;
 padding: 0;
 font-family: sans-serif;
-background: url(../pictures/bg1.jpg) no-repeat center 0px;
+background: url(/static/homepage/register.jpg) no-repeat center 0px;
 background-size: cover;
 
 background-position: center 0;
@@ -66,7 +66,7 @@ transition: .5s;
 .checkbox label{
 position: relative;
 font-size: 15px;
-color: grey;
+color: white;
 margin-bottom: 20px;
 background: transparent;
 }
@@ -91,7 +91,7 @@ border-radius: 5px;
 }
 
 .login-box .login-field select {
-background: transparent;
+background: #000000;
 font-size: 16px;
 margin-bottom: 25px;
 color: #fff;

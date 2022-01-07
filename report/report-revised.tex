@@ -434,6 +434,8 @@
 	36 &	Zpeople & 配送人员风险评分 & Integer & 4 & 非空 \\
 	37 &	Zloc & 配送路线风险评分 & Integer & 4 & 非空 \\
 	38 &	Dpno & 订单分配编号 & Integer & 4 & 非空 \\
+	39 &	Otype & 商品订单类型 & Char &	30 	& 非空 \\
+	40 &	Onum & 商品订单数目 & Integer &	4 &	非空 \\
 \end{supertabular}
 \end{center}
 
@@ -452,8 +454,8 @@
 1 &	Buyer User &	买方用户信息表 & Uname &	\uline{Uno} &	Uaddress  \\ & Information &&	Uphone && \\
 2 &	Seller User &	卖方用户信息表 & Sname &	\uline{Sno} &	Saddress \\ & Information &&&& \\
 3 &	Order  & 商品订单信息表 &	\uline{Ono} &	Otime &	Ovalue  \\
-& Information &&	Otrans & \textit{Uno} &	\textit{Sno}  \\
-4 &	Delivery &	物流订单信息表 &	\uline{Dno} &	Dvalue &	Dtrans  \\ & Information && Tno &	\textit{Sno} & Dsetime \\ &&& Dretime && \\
+& Information &&	\textit{Uno} &	\textit{Sno}  & Otype \\ &&& Onum & &\\
+4 &	Delivery &	物流订单信息表 &	\uline{Dno} &	Dvalue &	Dtrans  \\ & Information && Tno &	\textit{Sno} & Dsetime \\ &&& Dretime & \textit{Ono} & \\
 5 &	Staff Health &	员工健康信息表 &	\uline{Pno} &	Pcity & Ptemp \\ 
 & Information && \uline{Pupdate} && \\
 6 &	Pandemic &	疫情情况信息表 &	Cname &	\uline{Cno} &	Cstate \\	& Information &&  Cloc & \uline{Cupdate}	& \\
@@ -1063,6 +1065,8 @@
 
 为了提高效率，我们小组通过Git + GitHub合作编写程序。项目源代码可直接在GitHub网站上查看：\url{https://github.com/ShupeiLi/database-project} 。
 
+\section*{\textbf{Note：目前我们小组还在整合数据库方面的代码以及重新设计url，这两部分这周暂时没有更新}}
+
 \subsection{数据库建立}
 由于Django采用对象关系映射（Object Relational Mapping，简称 ORM ）实现面向对象编程语言里不同类型系统的数据之间的转换。本小节展示建立数据库的相关 Python 语句。
 
@@ -1185,10 +1189,38 @@ class NewUser(AbstractBaseUser):
 	\includegraphics[width = 13.5cm]{login.png}
 \end{center}
 
+\subsubsection{控制面板：通用界面}
+\noindent \textbf{(1)} 设置
+\begin{center}
+	\includegraphics[width = 13.5cm]{buyer-setting.png}
+\end{center}
+
+\noindent \textbf{(2)} 修改账户信息
+\begin{center}
+	\includegraphics[width = 13.5cm]{modify-profile.png}
+\end{center}
+
+\section*{Note：控制面板主页还在设计中，暂时没有更新}
+
 \subsubsection{控制面板：买方}
 \noindent \textbf{(1)} 主页
 \begin{center}
 	\includegraphics[width = 13.5cm]{buyer-main.png}
+\end{center}
+
+\noindent \textbf{(2)} 订单总览
+\begin{center}
+	\includegraphics[width = 13.5cm]{buyer-info-sum.png}
+\end{center}
+
+\noindent \textbf{(3)} 评分查询 (卖方评分)
+\begin{center}
+	\includegraphics[width = 13.5cm]{buyer-score-sum.png}
+\end{center}
+
+\noindent \textbf{(4)} 统计报表
+\begin{center}
+	\includegraphics[width = 13.5cm]{buyer-stat.png}
 \end{center}
 
 \subsubsection{控制面板：卖方}
@@ -1197,11 +1229,45 @@ class NewUser(AbstractBaseUser):
 	\includegraphics[width = 13.5cm]{seller-main.png}
 \end{center}
 
+\noindent \textbf{(2)} 提交订单
+\begin{center}
+	\includegraphics[width = 13.5cm]{seller-submit.png}
+\end{center}
+
+\noindent \textbf{(3)} 订单总览
+\begin{center}
+	\includegraphics[width = 13.5cm]{seller-info-sum.png}
+\end{center}
+
+\noindent \textbf{(4)} 评分查询 (物流公司评分)
+\begin{center}
+	\includegraphics[width = 13.5cm]{seller-score-sum.png}
+\end{center}
+
+\noindent \textbf{(5)} 统计报表
+\begin{center}
+	\includegraphics[width = 13.5cm]{seller-stat.png}
+\end{center}
+
 \subsubsection{控制面板：物流公司}
 \noindent \textbf{(1)} 主页
 \begin{center}
 	\includegraphics[width = 13.5cm]{company-main.png}
 \end{center}
+
+\noindent \textbf{(2)} 确认订单
+\begin{center}
+	\includegraphics[width = 13.5cm]{company-confirm.png}
+\end{center}
+
+\noindent \textbf{(3)} 订单总览
+\begin{center}
+	\includegraphics[width = 13.5cm]{company-info-sum.png}
+\end{center}
+
+\noindent \textbf{(4)} 评分查询 (卖方评分)
+
+同 5.4.3 (3)
 
 \subsubsection{控制面板：电商平台}
 \noindent \textbf{(1)} 主页
@@ -1209,10 +1275,34 @@ class NewUser(AbstractBaseUser):
 	\includegraphics[width = 13.5cm]{platform-main.png}
 \end{center}
 
+\noindent \textbf{(2)} 订单总览
+\begin{center}
+	\includegraphics[width = 13.5cm]{platform-info-sum.png}
+\end{center}
+
+\noindent \textbf{(3)} 评分查询 (卖方评分)
+
+同 5.4.3 (3)
+
+\noindent \textbf{(4)} 统计报表
+\begin{center}
+	\includegraphics[width = 13.5cm]{platform-stat.png}
+\end{center}
+
 \subsubsection{控制面板：物流人员}
 \noindent \textbf{(1)} 主页
 \begin{center}
 	\includegraphics[width = 13.5cm]{delivery-main.png}
+\end{center}
+
+\noindent \textbf{(2)} 每日填报
+\begin{center}
+	\includegraphics[width = 13.5cm]{delivery-submit.png}
+\end{center}
+
+\noindent \textbf{(3)} 填报历史
+\begin{center}
+	\includegraphics[width = 13.5cm]{delivery-history.png}
 \end{center}
 
 \section{总结}

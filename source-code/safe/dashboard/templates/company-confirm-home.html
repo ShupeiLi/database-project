@@ -12,7 +12,7 @@
             <div class="col-md-4">
                 <div class="card bg-light shadow text-center">
                     <div class="card-header">
-                        <h3 class="card-title">订单总数</h3>
+                        <h4 class="card-title">订单总数</h4>
                     </div>
                     <div class="card-body">
                         <h3>{{ order_count }}</h3>
@@ -22,7 +22,7 @@
             <div class="col-md-4">
                 <div class="card bg-light shadow text-center">
                     <div class="card-header">
-                        <h3 class="card-title">待确认订单</h3>
+                        <h4 class="card-title">待确认订单</h4>
                     </div>
                     <div class="card-body">
                         <h3>{{ order_p_count }}</h3>
@@ -32,7 +32,7 @@
             <div class="col-md-4">
                 <div class="card bg-light shadow text-center">
                     <div class="card-header">
-                        <h3 class="card-title">已确认订单</h3>
+                        <h4 class="card-title">已确认订单</h4>
                     </div>
                     <div class="card-body">
                         <h3>{{ order_c_count }}</h3>
@@ -49,17 +49,17 @@
 
     <div class="container-fluid">
         <div class="row">
-            <div class="col-md-12 text-center">
+           
                 <h4>订单详情</h4>
 				<div style="height: 10px;"></div>
-                <table class="table">
-                    <thead class="thead-light">
-                        <tr>
+                <table class="table table-hover" style="text-align:center">
+                    <thead>
+                        <tr class="table-dark align-middle">
                             <th scope="col">物流单号</th>
                             <th scope="col">物流订单金额</th>
 							<th scope="col">物流运送方式</th>
                             <th scope="col">物流公司账户名</th>
-                            <th scope="col">卖家账户名</th>
+                            <th scope="col">卖方账户名</th>
                             <th scope="col">发货时间</th>
 							<th scope="col">收货时间</th>
                             <th scope="col">状态</th>
@@ -68,7 +68,7 @@
                     </thead>
                     <tbody>
                         {% for j in order %}
-                            <tr>
+                            <tr class="table-light align-middle">
                                 <td>{{ j.dno }}</td>
                                 <td>{{ j.dvalue }}</td>
 								{% if j.dtrans == 'plane' %}
@@ -97,7 +97,7 @@
                     </tbody>
                 </table>
             </div>
-        </div>
+ 
     </div>
 
 {% endblock %}

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Update Profile</title>
+	{% load static %}
+	<link href="https://cdn.bootcss.com/twitter-bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+	<link rel="stylesheet" type="text/css" media="screen" href="{% static 'css/rgststyles.css' %}">
+	<link href="https://cdn.bootcss.com/twitter-bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/static/css/login.css" rel="stylesheet"/>
+</head>
+<body>
+
+    <div class="login-box">
+        <form action="" method="post">
+          {% csrf_token %}
+		  
+		<h3 class="text-center"><strong>修改账户信息</strong></h3>
+
+          <div class="inputContainer">
+            <input type="password" name='password1' class="input" placeholder=" ">
+            <label for="" class="label">请输入新密码</label>
+          </div>
+    
+          <div class="inputContainer">
+            <input type="password" name='password2' class="input" placeholder=" ">
+            <label for="" class="label">请确认新密码</label>
+          </div>
+
+          <div class="inputContainer">
+            <input type="text" name='address' class="input" placeholder=" ">
+            <label for="" class="label">请输入新地址</label>
+          </div>
+    
+          <div class="inputContainer">
+            <input type="tel" name='tel' class="input" placeholder=" ">
+            <label for="" class="label">请输入新手机号码</label>
+          </div>
+    
+          <input type="submit" class="submitBtn" value="确认">
+        </form>
+    </div>
+
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    
+    {% for message in messages %}
+    <script>
+        Swal.fire({
+            "title" : "{{message}}",
+            "icon" : "warning"
+        });
+    </script>
+    {% endfor %}
+
+</body>
+</html>
