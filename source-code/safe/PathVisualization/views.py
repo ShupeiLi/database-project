@@ -24,9 +24,11 @@ def getdata(request, orderid):
         elif number > 0:
             color = '#FFFF00'
         heatmapdata.append((province, color))
-    dot_list = GeographicInformation.objects.filter(dno=int(orderid))
-    # path_dot = []
-    path_dot = [("112.368904","39.913423"), ("116.382122","39.901176"), ("116.387271","39.912501"), ("118.398258","39.904600")]
+    delivery_id = str(orderid).rjust(6,'0')
+    dot_list = GeographicInformation.objects.filter(dno=delivery_id)
+    # dot_list = [dot_list[0], dot_list[len(dot_list - 1)]]
+    path_dot = []
+    #path_dot = [("112.368904","39.913423"), ("116.382122","39.901176"), ("116.387271","39.912501"), ("118.398258","39.904600")]
     for i in range(len(dot_list)):
         loc = dot_list[i].dloc
         latlon = loc.split(",")
@@ -42,4 +44,4 @@ def getdata(request, orderid):
         效果可参考nodatabase.html
     '''
     return render(request, "PathVisualization/withdatabase.html",
-                  context={'heatmapdata': heatmapdata, "path_dot": path_dot})
+                  context={'heatmapdata': heatmapdata, "path_dot": path_dot, "id":orderid})
