@@ -157,43 +157,6 @@ class COV19():
     def __str__(self):
         return self.dno
 
-
-class HealthInformationManager(models.Manager):
-    def create_healthinfo(self, pno, pcity, ptemp):
-
-        if not pcity:
-            raise ValueError('必须输入途径城市')
-        if not ptemp:
-            raise ValueError('必须输入今日体温')
-        
-        healthinfo = self.model(
-            pno=pno, pcity=pcity, ptemp=ptemp
-            )
-
-        healthinfo.save(using=self._db)
-
-        return healthinfo
-
-
-class HealthInformation(models.Model):
-    """
-    Show the health information of all deliverymen
-    """
-    pno = models.ForeignKey(NewUser, related_name='HealthInformation_Deliverymanname', on_delete=models.CASCADE)    # one to one
-    pcity = models.CharField(max_length=100)
-    ptemp = models.DecimalField(max_digits=25, decimal_places=1)
-    pupdate = models.DateField(auto_now_add=True)
-    
-    objects = HealthInformationManager()
-
-    class Meta:
-        verbose_name = '员工健康信息表'
-        verbose_name_plural = verbose_name
-        unique_together = ("pno", "pupdate")
-
-    def __str__(self):
-        return (self.pno, self.pupdate)
-
     
 class DistributionInformation(models.Model):
     """
@@ -203,6 +166,7 @@ class DistributionInformation(models.Model):
     dpno = models.CharField(max_length=100,primary_key=True)
     dno = models.ForeignKey(DeliveryInformation, related_name='DistributionInformation_OrderNo', on_delete=models.CASCADE)
     is_checked = models.BooleanField(default=False)
+   
     def __str__(self):
         return self.dpno
 
@@ -213,5 +177,6 @@ class CompanyStaff(models.Model):
     """
     pno = models.ForeignKey(NewUser, related_name='CompanyStaff_Staffname', on_delete=models.CASCADE)    # one to one
     tno = models.ForeignKey(NewUser, related_name='CompanyStaff_Companyname', on_delete=models.CASCADE)    # one to one
+   
     def __str__(self):
         return self.pno

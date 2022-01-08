@@ -1,10 +1,8 @@
 # -*- coding: utf-8 -*-
 
-import time
 import pandas as pd
 import mysql.connector
 import random
-#from datetime import datetime
 import datetime
 
 

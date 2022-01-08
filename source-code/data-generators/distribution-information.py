@@ -172,4 +172,3 @@ if __name__ == '__main__':
 
     # 模拟配送人员确认
     model.simulate_distribution_confirm()
-    print("hi")

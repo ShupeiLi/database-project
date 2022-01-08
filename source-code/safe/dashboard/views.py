@@ -7,8 +7,11 @@ from django.urls import reverse_lazy
 from django.contrib import messages
 from .tools import encrypt
 from .filters import DeliveryFilterCompany, OrderFilterBuyer, SellerRatingFilter, CompanyRatingFilter
+import datetime
+
 
 User = get_user_model()
+
 
 # Homepage
 @login_required
@@ -49,7 +52,11 @@ def delivery_health_update(request):
         if not ptemp:
             messages.warning(request, '必须输入今日体温')
             return redirect(reverse("dashboard:delivery-health-update"))
-
+        
+        if HealthInformation.objects.filter(pno_id=username).filter(pupdate=datetime.date.today()).exists():
+            messages.warning(request, '今日已填写')
+            return redirect(reverse("dashboard:delivery-health-update"))
+        
         health = HealthInformation.objects.create_healthinfo(pno=pno, pcity=pcity, ptemp=ptemp)
         health.save() 
         messages.success(request, '填写成功!')
@@ -356,49 +363,6 @@ def delivery_health_homepage(request):
     }
     return render(request, 'delivery-health-home.html', context)
 
-
-# Delivery Historical Data
-@login_required
-def delivery_health_view(request):
-    username = request.COOKIES.get("username")
-    usertype = request.COOKIES.get("usertype")
-
-    health = HealthInformation.objects.order_by('-pupdate')
-
-    context={"username": username, "usertype": usertype, "health":health}
-
-    return render(request, "delivery-health-view.html", context)
-
-
-# Delivery Health Update
-@login_required
-def delivery_health_update(request):
-    username = request.COOKIES.get("username")
-    usertype = request.COOKIES.get("usertype")
-    pno = get_object_or_404(User, username=username)
-    
-    if request.method == "POST":
-        pcity = request.POST['pcity']
-        ptemp = request.POST['ptemp']
-        
-        if not pcity:
-            messages.warning(request, '必须输入今日经过城市')
-            return redirect(reverse("dashboard:delivery-health-update"))
-        if not ptemp:
-            messages.warning(request, '必须输入今日体温')
-            return redirect(reverse("dashboard:delivery-health-update"))
-
-        health = HealthInformation.objects.create_healthinfo(pno=pno, pcity=pcity, ptemp=ptemp)
-        health.save() 
-        messages.success(request, '填写成功!')
-        return redirect(reverse("dashboard:delivery-health-view"))
-
-    context = {
-        'username': pno,
-        'usertype': usertype
-    }
-    return render(request, 'delivery-health-update.html', context)
-
          
 # Delivery: Confirm the order distribution
 @login_required          
@@ -414,7 +378,7 @@ def delivery_distribution_homepage(request):
         confirm_distribution = distribution.objects.get(dpno = confirm_distribution_id) 
         confirm_distribution.is_checked = True
         distribution = confirm_distribution.save()
-        return redirect(reverse("dashboard:delivery-distribution-home"))
+        return redirect(reverse_lazy("dashboard:delivery-distribution-home"))
 
     context = {
         'distribution_count': distribution_count,

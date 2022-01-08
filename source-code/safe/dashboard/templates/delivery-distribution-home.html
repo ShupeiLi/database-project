@@ -1,9 +1,11 @@
 {% extends 'delivery-index.html' %}
 
 {% block content %}
-
+	
+	<div style="height: 10px;"></div>
     <div class="container-fluid">
 {#        卡片#}
+	<div style="height: 10px;"></div>
         <div class="row">
             <div class="col-md-4">
                 <div class="card bg-light shadow text-center">
@@ -40,13 +42,16 @@
     
     
     <div style="height: 10px;"></div>
+	<hr>
+	
     <div class="container-fluid">
         <div class="row">
-            <div class="col-md-12 text-center">
+            
                 <h4>订单详情</h4>
-                <table class="table">
-                    <thead class="thead-light">
-                        <tr>
+				<div style="height: 10px;"></div>
+                <table class="table table-hover" style="text-align:center">
+                    <thead>
+                        <tr class="table-dark align-middle">
                             <th scope="col">订单分配编号</th>
                             <th scope="col">物流单号</th>
                             <th scope="col">配送人员</th>
@@ -56,7 +61,7 @@
                     </thead>
                     <tbody>
                         {% for j in distribution %}
-                            <tr>
+                            <tr class="table-light align-middle">
                                 <td>{{ j.dpno }}</td>
                                 <td>{{ j.dno }}</td>
                                 <td>{{ j.pno }}</td>
@@ -69,7 +74,6 @@
                     </tbody>
                 </table>
             </div>
-        </div>
     </div>
 
 {% endblock %}
