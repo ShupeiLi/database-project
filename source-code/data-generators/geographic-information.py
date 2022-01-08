@@ -1,35 +1,14 @@
 # -*- coding: utf-8 -*-
 import datetime
-
+import pandas as pd
 import mysql.connector
 import random
 
-#造出两组数据
-pointArr1 = [{lng: 120.37330074071, lat: 31.498294737149}, {lng: 120.57330074071, lat: 31.498294737149},
-            {lng: 120.87330074071, lat: 31.498294737149}, {lng: 121.37330074071, lat: 31.498294737149}]
-pointArr2 = [{lng: 113.39505673967, lat: 22.94738905789}, {lng: 120.57330074071, lat: 31.498294737149},
-            {lng: 112.830583950802, lat: 34.27474928498}, {lng: 116.46473277246, lat: 39.934649603730}]
-
-datetime1 = ["2021-12-19 14:00:00 ", "2021-12-20 07:34:12", "2021-12-20 19:46:95", "2021-12-21 13:23:37"]
-datetime2 = ["2021-11-15 19:30:00 ", "2021-11-18 20:34:54", "2021-11-21 09:43:26", "2021-11-24 13:24:49"]
-
-#将输入的物流订单输入到变量deliverorder
-deliverorder = dno
-
-#物流订单号奇偶数
-if deliverorder % 2 == 0:
-    for i in range(4):
-        dno = dno
-        dloc = pointArr1[i]
-        dupdate = datetime1[i]
-else:
-    for i in range(4):
-        dno = dno
-        dloc = pointArr2[i]
-        dupdate = datetime1[i]
+df = pd.read_csv(r'D:\复旦\大四上\数据库与企业管理\project\database-project\source-code\data-generators\worldcities.csv')
+data = df.loc[df['country'] == 'China']
 
 
-class GeographicGenerator():
+class GeographicGenerator:
     """
     Generate Geographic information.
     """
@@ -64,7 +43,7 @@ class GeographicGenerator():
         """
         cursor = self.db.cursor()
         cursor.execute("""
-                       SELECT dno
+                       SELECT dno, cast(dsetime as datetime)
                        FROM dashboard_deliveryinformation
                        WHERE
                          is_checked=True
@@ -89,27 +68,36 @@ class GeographicGenerator():
 
     def generator(self):
         """
-        Generate accounts.
+        Generate positions.
         """
         values = []
-        dno = self.get_dno()
-        for i in len(dno):
-            num = dno[i][0]
-            rec = self.get_last_position(dno)
-            if len(rec) > 0:
-                last_date = rec[0][1]
-                last_pos = rec[0][2]
-                date = [last_date + datetime.timedelta(days=x+1) for x in range(4)]
-                pos = []  # 根据最后的历史数据，生成一个范围内的移动
-            else:
-                date = [datetime.datetime.now() + datetime.timedelta(days=x+1) for x in range(4)]
-                pos = ["{},{}".format(round(random.random()*360, 6)+x, round(random.random()*360, 6)+x) for x in range(4)]
-
-
-
-
+        dno_info = self.get_dno()
+        # 默认之前是没有记录的
+        for i in range(len(dno_info)):
+            dnum = dno_info[i][0]
+            start_time = dno_info[i][1]
+            print(type(start_time))
+            x = random.randint(0, len(data))
+            y = random.randint(0,len(data))
+            if x == y:
+                y = y+1
+            start_loc = [data.iloc[x]['lat'], data.iloc[x]['lng']] # list
+            end_loc = [data.iloc[y]['lat'], data.iloc[y]['lng']] # list
+            one_value = (dnum, ",".join([str(x) for x in start_loc]), start_time)
+            values.append(one_value)
+            for j in range(self.n):
+                loc = [start_loc[0] + (end_loc[0]-start_loc[0]) / self.n * j + random.random() * 0.1 - 0.05, start_loc[1]+(end_loc[1]-start_loc[1]) / self.n * j + random.random() * 0.1 - 0.05]
+                dloc = ",".join([str(x) for x in loc])
+                start_time = start_time + datetime.timedelta(seconds=random.randint(0,59), minutes=random.randint(0,59), hours=random.randint(0,2))
+                one_value = (dnum, dloc, start_time)
+                values.append(one_value)
+            start_time = start_time + datetime.timedelta(seconds=random.randint(0, 59), minutes=random.randint(0, 59),
+                                                         hours=random.randint(0, 2))
+            one_value = (dnum, ",".join([str(x) for x in end_loc]), start_time)
+            values.append(one_value)
         return values
 
 
 if __name__ == '__main__':
-    print("")
+    pathGenerator = GeographicGenerator(10)
+    pathGenerator.insert_values()
