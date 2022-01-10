@@ -9,6 +9,7 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/siwalikm/quick-form-css@2.2.2/qfc-light.css">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 
+{% load static %}
 <style>
 html,body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
 
@@ -18,6 +19,22 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
 	  --button-hover    : gray;
 	  --input-text-color: black;
  }
+ 
+  #outPopUp {
+  position: absolute;
+  width: 600px;
+  height: 500px;
+  z-index: 15;
+  top: 5%;
+  left: 3%;
+  margin: -100px 0 0 -150px;
+  background: white;
+}
+
+body {
+  background-image: url({% static 'image/abstract.jpg' %});
+  background-size: 1920px 1080px;
+}
 </style>
 
 <body class="w3-light-grey">
@@ -56,7 +73,7 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
 <div class="w3-overlay w3-hide-large w3-animate-opacity" onclick="w3_close()" style="cursor:pointer" title="close side menu" id="myOverlay"></div>
 
 <!-- !PAGE CONTENT! -->
-<div class="w3-main qfc-container" style="margin-left:400px;margin-top:43px;">
+<div id="outPopUp" class="w3-main qfc-container" style="margin-left:400px;margin-top:43px;">
 
 <h6>物流订单填写</h6>
 
@@ -71,8 +88,6 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
 	
 	<label>商品订单号：</label>
     <input type="text" value="" name="ono" />
-	
-	<br>
 	<br>
  
     <label>物流运输方式：</label>
@@ -84,7 +99,6 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
     </select>
 
 	<br>
-	<br>
 	
 	<label>选择物流公司：</label>
 	<br>
@@ -93,7 +107,6 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
 		<option value="{{ company.username }}">{{ company.companyname }}</option>
 	{% endfor %}
 	</select>
-	<br>
 	<br>
 	
     <input type="submit" value="提交" />
