@@ -1,14 +1,17 @@
 # -*- coding: utf-8 -*-
-from django.shortcuts import render, get_object_or_404,redirect, reverse, HttpResponseRedirect
+from django.shortcuts import render, get_object_or_404, redirect, reverse, HttpResponseRedirect
 from django.contrib.auth import get_user_model, logout
 from django.contrib.auth.decorators import login_required
-from .models import OrderInformation, DeliveryInformation, RateSeller, RateDelivComp, HealthInformation
+from .models import OrderInformation, DeliveryInformation, RateSeller, RateDelivComp, HealthInformation, DistributionInformation
 from django.urls import reverse_lazy
 from django.contrib import messages
 from .tools import encrypt
 from .filters import DeliveryFilterCompany, OrderFilterBuyer, SellerRatingFilter, CompanyRatingFilter
+import datetime
+
 
 User = get_user_model()
+
 
 # Homepage
 @login_required
@@ -49,7 +52,11 @@ def delivery_health_update(request):
         if not ptemp:
             messages.warning(request, '必须输入今日体温')
             return redirect(reverse("dashboard:delivery-health-update"))
-
+        
+        if HealthInformation.objects.filter(pno_id=username).filter(pupdate=datetime.date.today()).exists():
+            messages.warning(request, '今日已填写')
+            return redirect(reverse("dashboard:delivery-health-update"))
+        
         health = HealthInformation.objects.create_healthinfo(pno=pno, pcity=pcity, ptemp=ptemp)
         health.save() 
         messages.success(request, '填写成功!')
@@ -243,7 +250,7 @@ def seller_order_submitted(request):
     
     return render(request, "seller-order-submit.html", 
                   context={'companys':companys, "username": sno})
-
+          
 
 # Stat Page: calculate and send statistics data.
 @login_required
@@ -343,6 +350,45 @@ def company_confirm_update_order(request, dno):
         'username': username,
     }
     return render(request, 'company-confirm-update-order.html', context)
+
+
+# Delivery: Submit today's health information (homepage)
+@login_required
+def delivery_health_homepage(request):
+    username = request.COOKIES.get("username")
+    health = HealthInformation.objects.filter(pno_id=username)
+    context = {
+        'health': health,
+        'username': username,
+    }
+    return render(request, 'delivery-health-home.html', context)
+
+         
+# Delivery: Confirm the order distribution
+@login_required          
+def delivery_distribution_homepage(request):
+    username = request.COOKIES.get("username")
+    distribution = DistributionInformation.objects.filter(pno_id=username)
+    distribution_count = distribution.count()
+    distribution_p_count = DistributionInformation.objects.filter(pno_id=username).filter(is_checked=False).count()
+    distribution_c_count = DistributionInformation.objects.filter(pno_id=username).filter(is_checked=True).count()
+
+    if request.method == 'POST':
+        confirm_distribution_id = request.POST.get('confirm')
+        comfirm_dpno = confirm_distribution_id + username
+        confirm_distribution = DistributionInformation.objects.get(dpno = comfirm_dpno) 
+        confirm_distribution.is_checked = True
+        confirm_distribution.save()
+        return redirect(reverse("dashboard:delivery-distribution-home"))
+
+    context = {
+        'distribution_count': distribution_count,
+        'distribution_p_count': distribution_p_count,
+        'distribution_c_count': distribution_c_count,
+        'distribution': distribution,
+        'username': username,
+    }     
+    return render(request, 'delivery-distribution-home.html', context)
 
 
 # Buyer-information-summary: Search orders

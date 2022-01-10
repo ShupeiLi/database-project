@@ -1,0 +1,84 @@
+{% extends 'delivery-index.html' %}
+
+{% block content %}
+	
+	<div style="height: 10px;"></div>
+    <div class="container-fluid">
+{#        卡片#}
+	<div style="height: 10px;"></div>
+        <div class="row">
+            <div class="col-md-4">
+                <div class="card bg-light shadow text-center">
+                    <div class="card-header">
+                        <h3 class="card-title">订单总数</h3>
+                    </div>
+                    <div class="card-body">
+                        <h3>{{ distribution_count }}</h3>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card bg-light shadow text-center">
+                    <div class="card-header">
+                        <h3 class="card-title">待确认订单</h3>
+                    </div>
+                    <div class="card-body">
+                        <h3>{{ distribution_p_count }}</h3>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card bg-light shadow text-center">
+                    <div class="card-header">
+                        <h3 class="card-title">已确认订单</h3>
+                    </div>
+                    <div class="card-body">
+                        <h3>{{ distribution_c_count }}</h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    
+    <div style="height: 10px;"></div>
+	<hr>
+	
+    <div class="container-fluid">
+        <div class="row">
+            
+                <h4>订单详情</h4>
+				<div style="height: 10px;"></div>
+                <table class="table table-hover" style="text-align:center">
+                    <thead>
+                        <tr class="table-dark align-middle">
+                            <th scope="col">订单分配编号</th>
+                            <th scope="col">物流单号</th>
+                            <th scope="col">订单状态</th>
+                            <th scope="col">操作</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for j in distribution %}
+                            <tr class="table-light align-middle">
+                                <td>{{ j.dpno }}</td>
+                                <td>{{ j.dno }}</td>
+								{% if j.is_checked %}
+                                <td>已确认</td>
+								{% else %}
+								<td>未确认</td>
+								{% endif %}
+                                <td>
+									<form method="post">
+									{% csrf_token %}
+									 <button type="submit" name='confirm' value={{ j.dno }} class="btn btn-sm btn-warning">确认</button>
+									</form>								                          
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+    </div>
+
+{% endblock %}

@@ -5,11 +5,6 @@ from .tools import encrypt
 
 User = get_user_model()
 
-# Create your models here.
-
-from .tools import encrypt
-
-# Create your models here.
 
 # User Profile
 class Profile(models.Model):
@@ -160,4 +155,28 @@ class COV19():
     number = models.IntegerField(max_length=10)
 
     def __str__(self):
-        return self.id
+        return self.dno
+
+    
+class DistributionInformation(models.Model):
+    """
+    Show the distribution of order to all deliveryman
+    """
+    pno = models.ForeignKey(NewUser, related_name='DistributionInformation_Deliverymanname', on_delete=models.CASCADE)    # one to one
+    dpno = models.CharField(max_length=100,primary_key=True)
+    dno = models.ForeignKey(DeliveryInformation, related_name='DistributionInformation_OrderNo', on_delete=models.CASCADE)
+    is_checked = models.BooleanField(default=False)
+   
+    def __str__(self):
+        return self.dpno
+
+
+class CompanyStaff(models.Model):
+    """
+    Show the relationship between the staff and the company
+    """
+    pno = models.ForeignKey(NewUser, related_name='CompanyStaff_Staffname', on_delete=models.CASCADE)    # one to one
+    tno = models.ForeignKey(NewUser, related_name='CompanyStaff_Companyname', on_delete=models.CASCADE)    # one to one
+   
+    def __str__(self):
+        return self.pno

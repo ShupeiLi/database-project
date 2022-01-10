@@ -2,14 +2,11 @@
 
 import mysql.connector
 import random
-from datetime import datetime
+
 
 class DistributionGenerator():
     """
-    Generate delivery order information.
-
-    Args:
-        n: number of orders.
+    Generate distribution information.
     """
 
     def __init__(self):
@@ -35,7 +32,7 @@ class DistributionGenerator():
         self.db.commit()
         cursor.close()
 
-    def get_name(self):
+    def get_tno(self):
         """
         Get all seller names from register_newuser.
         """
@@ -59,7 +56,7 @@ class DistributionGenerator():
                SELECT dno
                FROM dashboard_deliveryinformation
                WHERE
-                 tno_id = {}
+                 tno_id = '{}'
                """.format(val))
         records = cursor.fetchall()
         cursor.close()
@@ -71,10 +68,10 @@ class DistributionGenerator():
         """
         cursor = self.db.cursor()
         cursor.execute("""
-               SELECT pno
-               FROM dashboard_pno2tno
+               SELECT pno_id
+               FROM dashboard_companystaff
                WHERE
-                 tno_id = {}
+                 tno_id = '{}'
                """.format(val))
         records = cursor.fetchall()
         cursor.close()
@@ -124,11 +121,11 @@ class DistributionGenerator():
             comp_name = tno[i][0]
             dno = self.get_dno(comp_name)
             pno = self.get_pno(comp_name)
-            for j in len(dno):
+            for j in range(len(dno)):
                 if self.check_exist(dno[j][0]):
                     # dpno, pno_id, dno_id, is_checked
-                    one_value = [dno[j][0]+pno[j][0], pno[j][0], dno[j][0], 0]
-                    one_value = tuple(one_value)
+                    one_pno = random.choice(pno)[0]
+                    one_value = (dno[j][0] + one_pno, one_pno, dno[j][0], 0)
                     values.append(one_value)
 
         if len(values) == 0:
@@ -155,11 +152,11 @@ class DistributionGenerator():
             print("所有订单已确认")
         else:
             cursor = self.db.cursor()
-            sql='''
+            sql = """
             UPDATE dashboard_distributioninformation
             set is_checked = True 
             WHERE dpno = %s
-            '''
+            """
             cursor.executemany(sql, unchecked_list)
             self.db.commit()
 
@@ -172,4 +169,3 @@ if __name__ == '__main__':
 
     # 模拟配送人员确认
     model.simulate_distribution_confirm()
-    print("hi")
