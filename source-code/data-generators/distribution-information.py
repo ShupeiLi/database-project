@@ -2,14 +2,11 @@
 
 import mysql.connector
 import random
-from datetime import datetime
+
 
 class DistributionGenerator():
     """
-    Generate delivery order information.
-
-    Args:
-        n: number of orders.
+    Generate distribution information.
     """
 
     def __init__(self):
@@ -127,8 +124,8 @@ class DistributionGenerator():
             for j in range(len(dno)):
                 if self.check_exist(dno[j][0]):
                     # dpno, pno_id, dno_id, is_checked
-                    one_value = [dno[j][0]+pno[j][0], pno[j][0], dno[j][0], 0]
-                    one_value = tuple(one_value)
+                    one_pno = random.choice(pno)[0]
+                    one_value = (dno[j][0] + one_pno, one_pno, dno[j][0], 0)
                     values.append(one_value)
 
         if len(values) == 0:
@@ -171,4 +168,4 @@ if __name__ == '__main__':
     model.simulate_order_distribute()
 
     # 模拟配送人员确认
-    model.simulate_distribution_confirm()
+    #model.simulate_distribution_confirm()

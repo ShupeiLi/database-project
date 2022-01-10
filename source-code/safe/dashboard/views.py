@@ -378,7 +378,7 @@ def delivery_distribution_homepage(request):
         confirm_distribution = distribution.objects.get(dpno = confirm_distribution_id) 
         confirm_distribution.is_checked = True
         distribution = confirm_distribution.save()
-        return redirect(reverse_lazy("dashboard:delivery-distribution-home"))
+        return redirect(reverse("dashboard:delivery-distribution-home"))
 
     context = {
         'distribution_count': distribution_count,
