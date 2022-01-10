@@ -152,11 +152,11 @@ class DistributionGenerator():
             print("所有订单已确认")
         else:
             cursor = self.db.cursor()
-            sql='''
+            sql = """
             UPDATE dashboard_distributioninformation
             set is_checked = True 
             WHERE dpno = %s
-            '''
+            """
             cursor.executemany(sql, unchecked_list)
             self.db.commit()
 
@@ -168,4 +168,4 @@ if __name__ == '__main__':
     model.simulate_order_distribute()
 
     # 模拟配送人员确认
-    #model.simulate_distribution_confirm()
+    model.simulate_distribution_confirm()

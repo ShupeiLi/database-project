@@ -68,8 +68,11 @@
 								{% else %}
 								<td>未确认</td>
 								{% endif %}
-                                <td>                                    
-                                    <button type="button" id="{{ j.dpno }}-update" class="btn btn-sm btn-warning">确认</button>                             
+                                <td>
+									<form method="post">
+									{% csrf_token %}
+									 <button type="submit" name='confirm' value={{ j.dno }} class="btn btn-sm btn-warning">确认</button>
+									</form>								                          
                                 </td>
                             </tr>
                         {% endfor %}
@@ -77,40 +80,5 @@
                 </table>
             </div>
     </div>
-
-{% endblock %}
-
-{% block javascript %}
-
-    <script>
-        {% for j in distribution %}
-            $(document).ready(function(){
-                $('#{{ j.dpno }}-update').click(function(){
-                    var r = confirm("你要确认这个订单吗？")
-                    if(r){
-                        $.ajaxSetup({
-                            data: {
-                                csrfmiddlewaretoken: '{{ csrf_token }}',                                
-                            }
-                        })
-                        $.ajax({
-                            type: 'POST',
-                            url: "{% url 'dashboard:delivery-distribution-home' %}",
-                            data: {
-                                'distribution_confirm': {{ j.dpno }},
-                            },
-                            dataType: 'text',
-                            success: function(){
-                                window.location.reload()
-                            },
-                            error: function(){
-                                console.log("Somewhere is wrong!")
-                            }
-                        })
-                    }
-                })
-            })
-        {% endfor %}
-    </script>
 
 {% endblock %}

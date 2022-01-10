@@ -373,11 +373,12 @@ def delivery_distribution_homepage(request):
     distribution_p_count = DistributionInformation.objects.filter(pno_id=username).filter(is_checked=False).count()
     distribution_c_count = DistributionInformation.objects.filter(pno_id=username).filter(is_checked=True).count()
 
-    if request.is_ajax and request.POST.get('distribution_confirm'):
-        confirm_distribution_id = request.POST.get('distribution_confirm')
-        confirm_distribution = distribution.objects.get(dpno = confirm_distribution_id) 
+    if request.method == 'POST':
+        confirm_distribution_id = request.POST.get('confirm')
+        comfirm_dpno = confirm_distribution_id + username
+        confirm_distribution = DistributionInformation.objects.get(dpno = comfirm_dpno) 
         confirm_distribution.is_checked = True
-        distribution = confirm_distribution.save()
+        confirm_distribution.save()
         return redirect(reverse("dashboard:delivery-distribution-home"))
 
     context = {
