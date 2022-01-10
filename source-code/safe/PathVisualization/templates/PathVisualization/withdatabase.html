@@ -12,7 +12,6 @@
 </head>
 
 <body>
-    {{path_dot}}
     <div id='map' style='width:800px; height:600px;'></div>
     <script>
         window.onload = function() {
@@ -22,7 +21,7 @@
                 mapStyle: 'amap://styles/57994c871bb604a4c79184f5f65d8782', // 地图主题
                 zoom: 8, //设置地图的缩放级别
                 zooms: [1, 20], // 缩放级别限制
-                center: [116.368904, 39.913423],
+                center: [{{center.0}}, {{center.1}}], // 设置初始中心位置为快递最后更新的数据位置
             });
             AMap.plugin('AMap.DistrictSearch', function(){
                 var opts = {
@@ -56,7 +55,7 @@
 
                 var lineArr=new Array();//创建线覆盖物节点坐标数组
                 {% for j in path_dot %}
-                    lineArr.push(new AMap.LngLat('{{ j.1 }}','{{ j.0 }}'))
+                    lineArr.push(new AMap.LngLat('{{ j.0 }}','{{ j.1 }}'))
                 {% endfor %}
                 polyline=new AMap.Polyline({
                 path:lineArr, //设置线覆盖物路径
@@ -64,7 +63,8 @@
                 strokeOpacity:1, //线透明度
                 strokeWeight:5, //线宽
                 strokeStyle:"solid", //线样式
-                strokeDasharray:[10,5] //补充线样式
+                strokeDasharray:[10,5], //补充线样式
+                lineCap:"round" //线头部样式
                 });
                 map.add(polyline);
             })

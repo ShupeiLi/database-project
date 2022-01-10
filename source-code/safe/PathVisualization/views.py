@@ -26,15 +26,14 @@ def getdata(request, orderid):
         heatmapdata.append((province, color))
     delivery_id = str(orderid).rjust(6,'0')
     dot_list = GeographicInformation.objects.filter(dno=delivery_id)
-    # dot_list = [dot_list[0], dot_list[len(dot_list - 1)]]
-    path_dot = []
+    path_dot = [] #
     #path_dot = [("112.368904","39.913423"), ("116.382122","39.901176"), ("116.387271","39.912501"), ("118.398258","39.904600")]
     for i in range(len(dot_list)):
         loc = dot_list[i].dloc
         latlon = loc.split(",")
-        lat = latlon[0]
-        lon = latlon[1]
-        path_dot.append((str(float(lat)), str(float(lon))))
+        lon = latlon[0]
+        lat = latlon[1]
+        path_dot.append((float(lat), float(lon)))
     '''
         path_dot格式：
         [(31.498294737149,120.37330074071), (31.498294737149,121.37330074071)]
@@ -44,4 +43,4 @@ def getdata(request, orderid):
         效果可参考nodatabase.html
     '''
     return render(request, "PathVisualization/withdatabase.html",
-                  context={'heatmapdata': heatmapdata, "path_dot": path_dot, "id":orderid})
+                  context={'heatmapdata': heatmapdata, "path_dot": path_dot, "center": path_dot[-1]})
