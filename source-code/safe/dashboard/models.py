@@ -6,12 +6,6 @@ from .tools import encrypt
 User = get_user_model()
 
 
-# User Profile
-class Profile(models.Model):
-    def __str__(self):
-        return self.username
-
-
 class OrderInformation(models.Model):
     ono = models.CharField(primary_key=True, max_length=32, unique=True, null=False)
     otime = models.DateField(null=False)
@@ -179,4 +173,4 @@ class CompanyStaff(models.Model):
     tno = models.ForeignKey(NewUser, related_name='CompanyStaff_Companyname', on_delete=models.CASCADE)    # one to one
    
     def __str__(self):
-        return self.pno
+        return self.pno.username

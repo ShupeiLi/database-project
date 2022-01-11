@@ -2,7 +2,7 @@
 from django.shortcuts import render, get_object_or_404, redirect, reverse, HttpResponseRedirect
 from django.contrib.auth import get_user_model, logout
 from django.contrib.auth.decorators import login_required
-from .models import OrderInformation, DeliveryInformation, RateSeller, RateDelivComp, HealthInformation, DistributionInformation
+from .models import OrderInformation, DeliveryInformation, RateSeller, RateDelivComp, HealthInformation, DistributionInformation, CompanyStaff
 from django.urls import reverse_lazy
 from django.contrib import messages
 from .tools import encrypt
@@ -526,4 +526,24 @@ def seller_view_company_scores(request):
         'company_filter': company_filter,
         'company_ratings': company_ratings,
     }
+    
     return render(request, 'score-seller.html', context)
+
+
+# Company: Manage delivery staffs
+@login_required
+def company_manage_staffs(request):
+    """
+    Delivery staffs' information summary
+    """
+    username = request.COOKIES.get("username")
+    staffs = CompanyStaff.objects.filter(tno_id=username)
+    
+    
+    context = {
+        'username': username,
+        'staffs': staffs,
+    }
+    
+    return render(request, 'company-manage-staffs.html', context)
+
