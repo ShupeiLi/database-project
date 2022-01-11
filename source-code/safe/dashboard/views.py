@@ -464,7 +464,7 @@ def company_information_summary_orders(request):
 @login_required
 def buyer_view_seller_scores(request):
     """
-    Search seller scores
+    Search seller scores.
     """
     username = request.COOKIES.get("username")
     seller_ratings = RateSeller.objects.all()
@@ -483,7 +483,7 @@ def buyer_view_seller_scores(request):
 @login_required
 def platform_view_seller_scores(request):
     """
-    Search seller scores
+    Search seller scores.
     """
     username = request.COOKIES.get("username")
     seller_ratings = RateSeller.objects.all()
@@ -502,7 +502,7 @@ def platform_view_seller_scores(request):
 @login_required
 def seller_view_company_scores(request):
     """
-    Search company scores
+    Search company scores.
     """
     username = request.COOKIES.get("username")
     company_ratings = RateDelivComp.objects.all()
@@ -522,7 +522,7 @@ def seller_view_company_scores(request):
 @login_required
 def company_manage_staffs(request):
     """
-    Delivery staffs' information summary
+    Delivery staffs' information summary.
     """
     username = request.COOKIES.get("username")
     staffs = CompanyStaff.objects.filter(tno_id=username)
@@ -534,4 +534,22 @@ def company_manage_staffs(request):
     }
     
     return render(request, 'company-manage-staffs.html', context)
+
+
+# Company: View the health history
+@login_required
+def company_staff_history(request, pno):
+    """
+    View the health history.
+    """
+    username = request.COOKIES.get("username")
+    pno = pno.replace("-", " ").title()
+    records = HealthInformation.objects.filter(pno_id=pno).order_by('-pupdate')
+
+    context = {
+        'username': username,
+        'records': records,
+    }
+    
+    return render(request, 'company-staff-history.html', context)
 

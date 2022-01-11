@@ -24,4 +24,5 @@ urlpatterns = [
     path('delivery-health-update/', views.delivery_health_update, name = "delivery-health-update"),
     path('delivery-distribution/', views.delivery_distribution_homepage, name='delivery-distribution-home'),
     path('manage-staffs', views.company_manage_staffs, name="manage-staffs"),
+    path('manage-staffs/history/<slug:pno>/', views.company_staff_history, name='manage-staffs-history'),
 ]

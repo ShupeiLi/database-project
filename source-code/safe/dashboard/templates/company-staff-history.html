@@ -56,29 +56,35 @@
 
     <div class="container-fluid">
         <div class="row">
-            <div class="col-md-12 text-center">
-                <h4>填报历史</h4>
-				<div style="height: 10px;"></div>
-                <table class="table">
-                    <thead class="thead-light">
-                        <tr>
-                            <th scope="col">配送人员</th>
-                            <th scope="col">当日途经城市</th>
-                            <th scope="col">配送人员体温(℃)</th>
-                            <th scope="col">填写时间</th>                          
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for record in records %}
-                            <tr>
-                                <td>{{ record.pno }}</td>
-                                <td>{{ record.pcity }}</td>
-                                <td>{{ record.ptemp }}</td>
-                                <td>{{ record.pupdate }}</td>
-                            </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
+            <div class="col-md-12">
+                <br>
+			<h2 style="text-align:center">填报历史</h2> 
+			<br>
+			<a href="{% url 'dashboard:manage-staffs' %}" class="btn btn-primary" style="float: right;">返回</a>
+			<br>
+			<br>
+			<div class="table table-responsive">
+	<table id="deliveryhealth" class="table table-hover" style="text-align:center">
+		<tr class="table-dark align-middle">
+		<th>物流人员</th>
+		<th>途径城市</th>
+		<th>体温</th>
+		<th>更新时间</th>
+		</tr>
+
+		<tbody>
+		{% for record in records %}
+		<tr class="table-light align-middle">
+		<td>{{ record.pno }}</td>
+		<td>{{ record.pcity }}</td>
+		<td>{{ record.ptemp }}</td>
+		<td>{{ record.pupdate }}</td> 
+		</tr>
+		{% endfor %}
+		</tbody>
+
+  </table>
+</div>
             </div>
         </div>
     </div>
