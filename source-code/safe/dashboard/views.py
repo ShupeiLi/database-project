@@ -351,18 +351,6 @@ def company_confirm_update_order(request, dno):
     }
     return render(request, 'company-confirm-update-order.html', context)
 
-
-# Delivery: Submit today's health information (homepage)
-@login_required
-def delivery_health_homepage(request):
-    username = request.COOKIES.get("username")
-    health = HealthInformation.objects.filter(pno_id=username)
-    context = {
-        'health': health,
-        'username': username,
-    }
-    return render(request, 'delivery-health-home.html', context)
-
          
 # Delivery: Confirm the order distribution
 @login_required          

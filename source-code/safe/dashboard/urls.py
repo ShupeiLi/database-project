@@ -22,7 +22,6 @@ urlpatterns = [
     path('profile/update/', views.update_profile, name = "update_profile"),
     path('delivery-health-view/', views.delivery_health_view, name = "delivery-health-view"),
     path('delivery-health-update/', views.delivery_health_update, name = "delivery-health-update"),
-    path('delivery-health/', views.delivery_health_homepage, name='delivery-health-home'),
     path('delivery-distribution/', views.delivery_distribution_homepage, name='delivery-distribution-home'),
     path('manage-staffs', views.company_manage_staffs, name="manage-staffs"),
 ]
