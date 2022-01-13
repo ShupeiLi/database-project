@@ -2,7 +2,7 @@
 from django.shortcuts import render, get_object_or_404, redirect, reverse, HttpResponseRedirect
 from django.contrib.auth import get_user_model, logout
 from django.contrib.auth.decorators import login_required
-from .models import OrderInformation, DeliveryInformation, RateSeller, RateDelivComp, HealthInformation, DistributionInformation, CompanyStaff
+from .models import OrderInformation, DeliveryInformation, RateSeller, RateDelivComp, HealthInformation, DistributionInformation, CompanyStaff, GeographicInformation, PandemicInformation
 from django.urls import reverse_lazy
 from django.contrib import messages
 from .tools import encrypt
@@ -569,3 +569,45 @@ def company_view_order_distribution(request,dno):
     }
     
     return render(request, 'company-view-order-distribution.html', context)
+
+  
+# Path visualization
+@login_required
+def visualiztion(request, orderid):
+    """
+    Path visualiztion.
+    """
+    username = request.COOKIES.get("username")
+    usertype = request.COOKIES.get("usertype")
+    province_covid = PandemicInformation.objects.filter(date__contains=datetime.date(2021, 12, 19))
+    heatmapdata = []  # ('北京市','#FFFF00')
+    for x in province_covid:
+        province = x.place
+        number = int(x.number)
+        # color = '#00FF00'
+        if number >= 5:
+            color = '#ff9900'
+        elif number > 0:
+            color = '#FFFF00'
+        heatmapdata.append((province, color))
+    delivery_id = str(orderid).rjust(6,'0')
+    dot_list = GeographicInformation.objects.filter(dno=delivery_id)
+    path_dot = []
+    
+    # path_dot = [("112.368904","39.913423"), ("116.382122","39.901176"), ("116.387271","39.912501"), ("118.398258","39.904600")]
+    for i in range(len(dot_list)):
+        loc = dot_list[i].dloc
+        latlon = loc.split(",")
+        lon = latlon[0]
+        lat = latlon[1]
+        path_dot.append((float(lat), float(lon)))
+        
+        context = {
+            'username': username,
+            "usertype": usertype,
+            "heatmapdata": heatmapdata, 
+            "path_dot": path_dot, 
+            "center": path_dot[-1],
+            }
+
+    return render(request, "visualiztion.html", context)

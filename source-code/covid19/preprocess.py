@@ -40,6 +40,6 @@ records_df = pd.DataFrame(records, columns = ["date", "place", "number"])
 #records_df.to_csv(r"D:\Document\大学资料\大四上课件\数据库与企业数据管理\项目\database-project\source-code\covid19\covid19.csv", index = False)
 
 # Save in MySQL
-connection_string = "mysql+pymysql://%s:%s@%s:%s/%s"%('root', 'ShupeiLi', 'localhost', 3306, "safe")
+connection_string = "mysql+pymysql://%s:%s@%s:%s/%s"%('root', 'ShupeiLi', 'localhost', 3306, "safe") #!!! Change passowrd
 engine = create_engine(connection_string, echo = False)
-records_df.to_sql(con = engine, name = 'pandemic_information', if_exists='replace', index = True)
+records_df.to_sql(con = engine, name = 'dashboard_pandemicinformation', if_exists='append', index = False)
