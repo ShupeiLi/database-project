@@ -142,11 +142,11 @@ class HealthInformation(models.Model):
         return (self.pno, self.pupdate)
 
 
-class COV19():
+class COV19(models.Model):
     id = models.BigAutoField(primary_key=True)
     date = models.DateField(max_length=128)
     place = models.CharField(max_length=25)
-    number = models.IntegerField(max_length=10)
+    number = models.IntegerField()
 
     def __str__(self):
         return self.dno
@@ -174,3 +174,22 @@ class CompanyStaff(models.Model):
    
     def __str__(self):
         return self.pno.username
+   
+    
+class GeographicInformation(models.Model):
+    dno = models.CharField(max_length=200)
+    dloc = models.CharField(max_length=200)
+    dupdate = models.DateTimeField(max_length=200)
+
+    def __str__(self):
+        return self.dno
+    
+
+class PandemicInformation(models.Model):
+    id = models.AutoField(primary_key=True, unique=True, null=False)
+    date = models.DateTimeField(max_length=6)
+    place = models.CharField(max_length=200)
+    number = models.CharField(max_length=200)
+
+    def __str__(self):
+        return self.id

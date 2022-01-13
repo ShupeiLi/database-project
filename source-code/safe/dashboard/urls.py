@@ -25,4 +25,5 @@ urlpatterns = [
     path('delivery-distribution/', views.delivery_distribution_homepage, name='delivery-distribution-home'),
     path('manage-staffs', views.company_manage_staffs, name="manage-staffs"),
     path('manage-staffs/history/<slug:pno>/', views.company_staff_history, name='manage-staffs-history'),
+    path('information-summary/visualization/<int:orderid>/', views.visualiztion, name="visualization"),
 ]

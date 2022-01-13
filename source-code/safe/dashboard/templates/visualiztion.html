@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Dashboard</title>
+    <script src="https://a.amap.com/Loca/static/dist/jquery.min.js"></script>
+    <script src="https://webapi.amap.com/maps?key=2da678792428d85bd3f0c0e26b25c54b&v=1.4.15&plugin=Map3D"></script>
+    <script src="https://webapi.amap.com/loca?key=2da678792428d85bd3f0c0e26b25c54b&v=1.3.0"></script>
+	<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+	<link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/3.2.1/css/font-awesome.css">
+	<style>
+	html,body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
+	</style>
+</head>
+
+<body class="w3-light-grey">
+{% load bootstrap5 %}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+<!-- Top container -->
+<div class="w3-bar w3-top w3-black w3-large" style="z-index:4">
+  <button class="w3-bar-item w3-button w3-hide-large w3-hover-none w3-hover-text-light-grey" onclick="w3_open();"><i class="fa fa-bars"></i> Menu</button>
+  <span class="w3-bar-item w3-right">Safe Logistics</span>
+</div>
+
+<!-- Sidebar/menu -->
+<nav class="w3-sidebar w3-collapse w3-white w3-animate-left" style="z-index:3;width:250px;" id="mySidebar"><br>
+  <div class="w3-container w3-row">
+    <div class="w3-col s8 w3-bar">
+      <span>欢迎使用平安物流，</span><br><br>
+	  <span><strong>{{username}}</strong></span><br>
+    </div>
+  </div>
+  <hr>
+  <div class="w3-container">
+    <h5>控制面板</h5>
+  </div>
+  {%if usertype == "buyer" %}
+  <div class="w3-bar-block">
+    <a href="{% url 'dashboard:information-summary-buyer' %}" class="w3-bar-item w3-button w3-padding"><i class="fa fa-eye fa-fw"></i>  订单总览</a>
+	<a href="{% url 'dashboard:search-scores-buyer' %}" class="w3-bar-item w3-button w3-padding"><i class="fa fa-diamond fa-fw"></i>  评分查询</a>
+    <a href="{% url 'dashboard:stat_page' %}" class="w3-bar-item w3-button w3-padding"><i class="fa fa-bullseye fa-fw"></i>  统计报表</a>
+	<a href="{% url 'dashboard:profile' %}" class="w3-bar-item w3-button w3-padding"><i class="fa fa-cog fa-fw"></i>  设置</a><br><br>
+  </div>
+  {%endif%}
+  {%if usertype == "seller" %}
+  <div class="w3-bar-block">
+    <a href="{% url 'dashboard:submit-order' %}" class="w3-bar-item w3-button w3-padding"><i class="fa fa-users fa-fw"></i> 提交订单 </a>
+	<a href="{% url 'dashboard:information-summary-seller' %}" class="w3-bar-item w3-button w3-padding"><i class="fa fa-eye fa-fw"></i>  订单总览</a>
+	<a href="{% url 'dashboard:search-scores-seller' %}" class="w3-bar-item w3-button w3-padding"><i class="fa fa-diamond fa-fw"></i>  评分查询</a>
+    <a href="{% url 'dashboard:stat_page' %}" class="w3-bar-item w3-button w3-padding"><i class="fa fa-bullseye fa-fw"></i>  统计报表</a>
+	<a href="{% url 'dashboard:profile' %}" class="w3-bar-item w3-button w3-padding"><i class="fa fa-cog fa-fw"></i>  设置</a><br><br>
+  </div>
+  {%endif%}
+  {%if usertype == "company" %}
+  <div class="w3-bar-block">
+	<a href="{% url 'dashboard:confirm-order-homepage' %}" class="w3-bar-item w3-button w3-padding"><i class="fa fa-bell fa-fw"></i> 确认订单 </a>
+	<a href="{% url 'dashboard:information-summary-company' %}" class="w3-bar-item w3-button w3-padding"><i class="fa fa-eye fa-fw"></i> 订单总览 </a>
+    <a href="{% url 'dashboard:manage-staffs' %}" class="w3-bar-item w3-button w3-padding"><i class="fa fa-diamond fa-fw"></i>  员工信息</a>
+	<a href="{% url 'dashboard:stat_page' %}" class="w3-bar-item w3-button w3-padding"><i class="fa fa-bullseye fa-fw"></i>  统计报表</a>
+	<a href="{% url 'dashboard:profile' %}" class="w3-bar-item w3-button w3-padding"><i class="fa fa-cog fa-fw"></i>  设置</a><br><br>
+  </div>
+  {%endif%}
+  {%if usertype == "platform" %}
+  <div class="w3-bar-block">
+	<a href="{% url 'dashboard:information-summary-platform' %}" class="w3-bar-item w3-button w3-padding"><i class="fa fa-eye fa-fw"></i>  信息总览</a>
+    <a href="{% url 'dashboard:search-scores-platform' %}" class="w3-bar-item w3-button w3-padding"><i class="fa fa-diamond fa-fw"></i>  评分查询</a>
+	<a href="{% url 'dashboard:stat_page' %}" class="w3-bar-item w3-button w3-padding"><i class="fa fa-bullseye fa-fw"></i>  统计报表</a>
+	<a href="{% url 'dashboard:profile' %}" class="w3-bar-item w3-button w3-padding"><i class="fa fa-cog fa-fw"></i>  设置</a><br><br>
+  </div>
+  {%endif%}
+</nav>
+
+
+<!-- Overlay effect when opening sidebar on small screens -->
+<div class="w3-overlay w3-hide-large w3-animate-opacity" onclick="w3_close()" style="cursor:pointer" title="close side menu" id="myOverlay"></div>
+
+<!-- !PAGE CONTENT! -->
+<div class="w3-main" style="margin-left:250px;margin-top:43px;">
+<br>
+<h2 style="text-align:center">路径可视化</h2> 
+<br>
+
+{%if usertype == "buyer" %}
+<a href="{% url 'dashboard:information-summary-buyer' %}" class="btn btn-primary" style="float: right;">返回</a>
+{%endif%}
+
+{%if usertype == "seller" %}
+<a href="{% url 'dashboard:information-summary-seller' %}" class="btn btn-primary" style="float: right;">返回</a>
+{%endif%}
+
+{%if usertype == "company" %}
+<a href="{% url 'dashboard:information-summary-company' %}" class="btn btn-primary" style="float: right;">返回</a>
+{%endif%}
+
+{%if usertype == "platform" %}
+<a href="{% url 'dashboard:information-summary-platform' %}" class="btn btn-primary" style="float: right;">返回</a>
+{%endif%}
+ 
+<div id='map' style='width:1100px; height:440px;'></div>
+</div>
+
+<script>
+	window.onload = function() {
+		const map = new AMap.Map('map', {
+			pitch: 50, // 地图俯仰角度，有效范围 0 度- 83 度
+			viewMode: '3D', // 地图模式
+			mapStyle: 'amap://styles/57994c871bb604a4c79184f5f65d8782', // 地图主题
+			zoom: 8, //设置地图的缩放级别
+			zooms: [1, 20], // 缩放级别限制
+			center: [{{center.0}}, {{center.1}}], // 设置初始中心位置为快递最后更新的数据位置
+		});
+		AMap.plugin('AMap.DistrictSearch', function(){
+			var opts = {
+				subdistrict: 0, // 获取边界不需要返回下级行政区
+				extensions: "all", // 返回行政区边界坐标组等具体信息
+				level: "province" // 查询行政级别为 市
+			};
+			var district = new AMap.DistrictSearch(opts);
+			{% for j in heatmapdata %}
+				var province = '{{ j.0 }}';
+				var color = '{{ j.1 }}';
+				district.search(province, function(status, result) {
+				// 查询成功时，result即为对应的行政区信息
+				var bounds = result.districtList[0].boundaries;
+				for (var i = 0, l = bounds.length; i < l; i++) {
+					var polygonbox = new AMap.Polygon({
+						strokeWeight: 1.5,
+						path: bounds[i],
+						fillOpacity: 0.8,
+						fillColor: '{{ j.1 }}',
+						strokeColor: "#87CEFA",
+						extData: {
+							IDname: "北京",
+							Center: "传递内容"
+						}
+					});
+					map.add(polygonbox);
+				}
+			})
+			{% endfor %}
+
+			var lineArr=new Array();//创建线覆盖物节点坐标数组
+			{% for j in path_dot %}
+				lineArr.push(new AMap.LngLat('{{ j.0 }}','{{ j.1 }}'))
+			{% endfor %}
+			polyline=new AMap.Polyline({
+			path:lineArr, //设置线覆盖物路径
+			strokeColor:"#FF0000", //线颜色
+			strokeOpacity:1, //线透明度
+			strokeWeight:5, //线宽
+			strokeStyle:"solid", //线样式
+			strokeDasharray:[10,5], //补充线样式
+			lineCap:"round" //线头部样式
+			});
+			map.add(polyline);
+		})
+	}
+</script>
+
+<script>
+// Get the Sidebar
+var mySidebar = document.getElementById("mySidebar");
+
+// Get the DIV with overlay effect
+var overlayBg = document.getElementById("myOverlay");
+
+// Toggle between showing and hiding the sidebar, and add overlay effect
+function w3_open() {
+  if (mySidebar.style.display === 'block') {
+	mySidebar.style.display = 'none';
+	overlayBg.style.display = "none";
+  } else {
+	mySidebar.style.display = 'block';
+	overlayBg.style.display = "block";
+  }
+}
+
+// Close the sidebar with the close button
+function w3_close() {
+  mySidebar.style.display = "none";
+  overlayBg.style.display = "none";
+}
+</script>
+
+</body>
+
+</html>

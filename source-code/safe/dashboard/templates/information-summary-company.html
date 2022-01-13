@@ -174,7 +174,7 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
 	<td>{{ delivery_order.order_information.otype }}</td>
 	<td>{{ delivery_order.order_information.onum }}</td>
 	<td><a href="#" %}" class="btn btn-sm btn-warning">查看</a></td>
-	<td><a href="#" %}" class="btn btn-sm btn-warning">查看</a></td>
+	<td><a href="{% url 'dashboard:visualization' delivery_order.dno %}" %}" class="btn btn-sm btn-warning">查看</a></td>
 	<td><a href="#" %}" class="btn btn-sm btn-warning">查看</a></td>
 </tr>
 {% endfor %}
