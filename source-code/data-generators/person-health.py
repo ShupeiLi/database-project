@@ -3,7 +3,7 @@
 import pandas as pd
 import mysql.connector
 import random
-from datetime import datetime
+import datetime
 
 
 class HealthGenerator:
@@ -103,7 +103,7 @@ class HealthGenerator:
         """
 
         # !!! 记得改表格存储地址
-        table = pd.read_csv("china_city_list.csv")
+        table = pd.read_csv("china_city_list.csv", encoding="gbk")
         loc = table["City_Admaster"].tolist()
         values = []
         names = self.get_name()
@@ -114,7 +114,10 @@ class HealthGenerator:
             location = [loc[random.randint(0, len(loc)-1)] for x in range(num)]
             temperature = [round(random.random()*8, 1)+35 for x in range(num)]
             latest_date = self.get_latest_update(name)
-            date = [latest_date+datetime.timedelta(days=x+1) for x in range(num)]
+            if not latest_date:
+                date = [datetime.datetime.now()+datetime.timedelta(days=x+1) for x in range(num)]
+            else:
+                date = [latest_date+datetime.timedelta(days=x+1) for x in range(num)]
             for j in range(num):
                 one_value = [name, location[j], temperature[j], date[j]]
                 one_value = tuple(one_value)

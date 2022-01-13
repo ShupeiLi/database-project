@@ -11,13 +11,6 @@
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/siwalikm/quick-form-css@2.2.2/qfc-light.css">
 	<style>
 	html,body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
-	
-	.qfc-container {
-	  --form-theme-color: gray;
-	  --form-bg-color   : white;
-	  --button-hover    : gray;
-	  --input-text-color: black;
- }
 	</style>
 </head>
 
@@ -59,14 +52,48 @@
 <!-- !PAGE CONTENT! -->
 <div class="w3-main" style="margin-left:250px;margin-top:43px;">
 	{% load static %}
-    {% block content %}
+    <div style="height: 10px;"></div>   
 
-    {% endblock %}
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <br>
+			<h2 style="text-align:center">填报历史</h2> 
+			<br>
+			<a href="{% url 'dashboard:manage-staffs' %}" class="btn btn-primary" style="float: right;">返回</a>
+			<br>
+			<br>
+			<div class="table table-responsive">
+	<table id="deliveryhealth" class="table table-hover" style="text-align:center">
+		<tr class="table-dark align-middle">
+		<th>物流人员</th>
+		<th>途径城市</th>
+		<th>体温</th>
+		<th>更新时间</th>
+		</tr>
 
+		<tbody>
+		{% for record in records %}
+		<tr class="table-light align-middle">
+		<td>{{ record.pno }}</td>
+		<td>{{ record.pcity }}</td>
+		<td>{{ record.ptemp }}</td>
+		<td>{{ record.pupdate }}</td> 
+		</tr>
+		{% endfor %}
+		</tbody>
+
+  </table>
+</div>
+            </div>
+        </div>
+    </div>
+	
+	{% block javascript %}
     <script type="text/javascript" src="{% static 'js/jquery-3.4.1.min.js' %}"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" crossorigin="anonymous"></script>
-    {% block javascript %}{% endblock %}
+    {% endblock %}
 	
 </div>
 

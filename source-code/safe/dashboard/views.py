@@ -1,14 +1,17 @@
 # -*- coding: utf-8 -*-
-from django.shortcuts import render, get_object_or_404,redirect, reverse, HttpResponseRedirect
+from django.shortcuts import render, get_object_or_404, redirect, reverse, HttpResponseRedirect
 from django.contrib.auth import get_user_model, logout
 from django.contrib.auth.decorators import login_required
-from .models import OrderInformation, DeliveryInformation, RateSeller, RateDelivComp, HealthInformation
+from .models import OrderInformation, DeliveryInformation, RateSeller, RateDelivComp, HealthInformation, DistributionInformation, CompanyStaff
 from django.urls import reverse_lazy
 from django.contrib import messages
 from .tools import encrypt
 from .filters import DeliveryFilterCompany, OrderFilterBuyer, SellerRatingFilter, CompanyRatingFilter
+import datetime
+
 
 User = get_user_model()
+
 
 # Homepage
 @login_required
@@ -49,7 +52,11 @@ def delivery_health_update(request):
         if not ptemp:
             messages.warning(request, '必须输入今日体温')
             return redirect(reverse("dashboard:delivery-health-update"))
-
+        
+        if HealthInformation.objects.filter(pno_id=username).filter(pupdate=datetime.date.today()).exists():
+            messages.warning(request, '今日已填写')
+            return redirect(reverse("dashboard:delivery-health-update"))
+        
         health = HealthInformation.objects.create_healthinfo(pno=pno, pcity=pcity, ptemp=ptemp)
         health.save() 
         messages.success(request, '填写成功!')
@@ -243,7 +250,7 @@ def seller_order_submitted(request):
     
     return render(request, "seller-order-submit.html", 
                   context={'companys':companys, "username": sno})
-
+          
 
 # Stat Page: calculate and send statistics data.
 @login_required
@@ -344,6 +351,33 @@ def company_confirm_update_order(request, dno):
     }
     return render(request, 'company-confirm-update-order.html', context)
 
+         
+# Delivery: Confirm the order distribution
+@login_required          
+def delivery_distribution_homepage(request):
+    username = request.COOKIES.get("username")
+    distribution = DistributionInformation.objects.filter(pno_id=username)
+    distribution_count = distribution.count()
+    distribution_p_count = DistributionInformation.objects.filter(pno_id=username).filter(is_checked=False).count()
+    distribution_c_count = DistributionInformation.objects.filter(pno_id=username).filter(is_checked=True).count()
+
+    if request.method == 'POST':
+        confirm_distribution_id = request.POST.get('confirm')
+        comfirm_dpno = confirm_distribution_id + username
+        confirm_distribution = DistributionInformation.objects.get(dpno = comfirm_dpno) 
+        confirm_distribution.is_checked = True
+        confirm_distribution.save()
+        return redirect(reverse("dashboard:delivery-distribution-home"))
+
+    context = {
+        'distribution_count': distribution_count,
+        'distribution_p_count': distribution_p_count,
+        'distribution_c_count': distribution_c_count,
+        'distribution': distribution,
+        'username': username,
+    }     
+    return render(request, 'delivery-distribution-home.html', context)
+
 
 # Buyer-information-summary: Search orders
 @login_required
@@ -430,7 +464,7 @@ def company_information_summary_orders(request):
 @login_required
 def buyer_view_seller_scores(request):
     """
-    Search seller scores
+    Search seller scores.
     """
     username = request.COOKIES.get("username")
     seller_ratings = RateSeller.objects.all()
@@ -449,7 +483,7 @@ def buyer_view_seller_scores(request):
 @login_required
 def platform_view_seller_scores(request):
     """
-    Search seller scores
+    Search seller scores.
     """
     username = request.COOKIES.get("username")
     seller_ratings = RateSeller.objects.all()
@@ -468,7 +502,7 @@ def platform_view_seller_scores(request):
 @login_required
 def seller_view_company_scores(request):
     """
-    Search company scores
+    Search company scores.
     """
     username = request.COOKIES.get("username")
     company_ratings = RateDelivComp.objects.all()
@@ -480,4 +514,42 @@ def seller_view_company_scores(request):
         'company_filter': company_filter,
         'company_ratings': company_ratings,
     }
+    
     return render(request, 'score-seller.html', context)
+
+
+# Company: Manage delivery staffs
+@login_required
+def company_manage_staffs(request):
+    """
+    Delivery staffs' information summary.
+    """
+    username = request.COOKIES.get("username")
+    staffs = CompanyStaff.objects.filter(tno_id=username)
+    
+    
+    context = {
+        'username': username,
+        'staffs': staffs,
+    }
+    
+    return render(request, 'company-manage-staffs.html', context)
+
+
+# Company: View the health history
+@login_required
+def company_staff_history(request, pno):
+    """
+    View the health history.
+    """
+    username = request.COOKIES.get("username")
+    pno = pno.replace("-", " ").title()
+    records = HealthInformation.objects.filter(pno_id=pno).order_by('-pupdate')
+
+    context = {
+        'username': username,
+        'records': records,
+    }
+    
+    return render(request, 'company-staff-history.html', context)
+

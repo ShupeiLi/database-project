@@ -8,22 +8,40 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/siwalikm/quick-form-css@2.2.2/qfc-light.css">
 
+{% load static %}
 <style>
 html,body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
-
 	.qfc-container {
 	  --form-theme-color: gray;
 	  --form-bg-color   : white;
 	  --button-hover    : gray;
 	  --input-text-color: black;
  }
+ 
+ #outPopUp {
+  position: absolute;
+  width: 600px;
+  height: 450px;
+  z-index: 15;
+  top: 35%;
+  left: 45%;
+  margin: -100px 0 0 -150px;
+  background: white;
+}
+
+body {
+  background-image: url({% static 'image/abstract.jpg' %});
+  background-size: 1920px 1080px;
+}
 </style>
 </head>
 
 <body class="w3-light-grey">
+
 {% load bootstrap5 %}
 {% bootstrap_css %}
 {% bootstrap_javascript %}
+
 <!-- Top container -->
 <div class="w3-bar w3-top w3-black w3-large" style="z-index:4">
   <button class="w3-bar-item w3-button w3-hide-large w3-hover-none w3-hover-text-light-grey" onclick="w3_open();"><i class="fa fa-bars"></i> Menu</button>
@@ -43,7 +61,7 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
     <h5>控制面板</h5>
   </div>
   <div class="w3-bar-block">
-    <a href="#" class="w3-bar-item w3-button w3-padding"><i class="fa fa-users fa-fw"></i> 确认订单 </a>
+    <a href="{% url 'dashboard:delivery-distribution-home' %}" class="w3-bar-item w3-button w3-padding"><i class="fa fa-users fa-fw"></i> 确认订单 </a>
 	<a href="{% url 'dashboard:delivery-health-update' %}" class="w3-bar-item w3-button w3-padding"><i class="fa fa-eye fa-fw"></i>  每日填报</a>
     <a href="{% url 'dashboard:delivery-health-view' %}" class="w3-bar-item w3-button w3-padding"><i class="fa fa-bullseye fa-fw"></i>  填报历史</a>
 	<a href="{% url 'dashboard:profile' %}" class="w3-bar-item w3-button w3-padding"><i class="fa fa-cog fa-fw"></i>  设置</a><br><br>
@@ -55,7 +73,7 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
 <div class="w3-overlay w3-hide-large w3-animate-opacity" onclick="w3_close()" style="cursor:pointer" title="close side menu" id="myOverlay"></div>
 
 <!-- !PAGE CONTENT! -->
-<div class="w3-main qfc-container" style="margin-left:430px;margin-top:43px;">
+<div id="outPopUp" class="w3-display-center qfc-container">
 
 <h6>每日健康信息填写</h6>
 
