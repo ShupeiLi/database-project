@@ -4,7 +4,7 @@ import pandas as pd
 import mysql.connector
 import random
 
-df = pd.read_csv(r'D:\复旦\大四上\数据库与企业管理\project\database-project\source-code\data-generators\worldcities.csv')
+df = pd.read_csv(r'.\worldcities.csv')
 data = df.loc[df['country'] == 'China']
 
 
@@ -18,7 +18,7 @@ class GeographicGenerator:
         self.db = mysql.connector.connect(
             host='localhost',
             user='root',
-            password='123456',
+            password='ShupeiLi',
             database='safe'
         )
 
@@ -76,7 +76,6 @@ class GeographicGenerator:
         for i in range(len(dno_info)):
             dnum = dno_info[i][0]
             start_time = dno_info[i][1]
-            print(type(start_time))
             x = random.randint(0, len(data))
             y = random.randint(0,len(data))
             if x == y:

@@ -88,7 +88,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'safe', # 需要先在电脑上创建名为 safe 的 MySQL 数据库
         'USER': 'root', # 改为自己电脑上的 MySQL 用户名
-        'PASSWORD': '123456', # 改为自己电脑上的 MySQL 密码
+        'PASSWORD': 'ShupeiLi', # 改为自己电脑上的 MySQL 密码
         'HOST': '127.0.0.1',
         'PORT': '3306',
         'OPTION': {'default-character-set': "utf8"},

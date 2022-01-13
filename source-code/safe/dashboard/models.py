@@ -146,7 +146,7 @@ class COV19(models.Model):
     id = models.BigAutoField(primary_key=True)
     date = models.DateField(max_length=128)
     place = models.CharField(max_length=25)
-    number = models.IntegerField(max_length=10)
+    number = models.IntegerField()
 
     def __str__(self):
         return self.dno

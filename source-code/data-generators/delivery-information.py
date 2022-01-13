@@ -193,7 +193,7 @@ if __name__ == '__main__':
     model = DeliveryGenerator(50)
     
     # 模拟商家提交订单
-    #model.simulate_order_submit()
+    model.simulate_order_submit()
     
     # 模拟公司确认订单
     model.simulate_order_confirm()
