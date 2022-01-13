@@ -553,3 +553,19 @@ def company_staff_history(request, pno):
     
     return render(request, 'company-staff-history.html', context)
 
+
+# Company: View the order distribution
+@login_required
+def company_view_order_distribution(request,dno):
+    """
+    View the order distribution.
+    """
+    username = request.COOKIES.get("username")
+    records = DistributionInformation.objects.filter(dno_id=dno)
+
+    context = {
+        'username': username,
+        'records': records,
+    }
+    
+    return render(request, 'company-view-order-distribution.html', context)
