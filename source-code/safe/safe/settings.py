@@ -44,7 +44,6 @@ INSTALLED_APPS = [
     'dashboard',
     'django_filters',
     'bootstrap5',
-    'PathVisualization',
 ]
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'

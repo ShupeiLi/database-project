@@ -7,5 +7,4 @@ urlpatterns = [
     path('safelogistics/dashboard/', include('dashboard.urls')),
     path('safelogistics/', include('register.urls')),
     path('admin/', admin.site.urls),
-    path('pathvisualization/', include('PathVisualization.urls')),
 ]

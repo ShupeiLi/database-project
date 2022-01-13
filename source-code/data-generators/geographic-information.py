@@ -29,7 +29,7 @@ class GeographicGenerator:
         val = self.generator()
         sql = """
               INSERT INTO 
-              pathvisualization_geographicinformation(dno, dloc, dupdate) 
+              dashboard_geographicinformation(dno, dloc, dupdate) 
               VALUES (%s, %s, %s)
               """
         cursor = self.db.cursor()
@@ -59,7 +59,7 @@ class GeographicGenerator:
         cursor = self.db.cursor()
         cursor.execute("""
                        SELECT *
-                       FROM pathvisualization_geographicinformation
+                       FROM dashboard_geographicinformation
                        WHERE dno={} order by cast(dupdate as datetime) desc
                        """.format(val))
         records = cursor.fetchall()
