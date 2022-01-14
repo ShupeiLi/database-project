@@ -101,12 +101,22 @@
 {%if usertype == "platform" %}
 <a href="{% url 'dashboard:information-summary-platform' %}" class="btn btn-primary" style="float: right;">返回</a>
 {%endif%}
-{{center}}
+<form action="" method="post">
+<div>
+    <label for="sel">查询日期：</label>
+    <select name="search_date" id="sel" type="submit" class="submitBtn">
+        {% for i in time_list %}
+        <option value="{{ i }}" {% if selected_option == i %} selected {% endif %} >{{ i }}</option>
+        {% endfor %}
+    </select>
+    <input type="submit" class="submitBtn" value="查询">
+</div>
+</form>
 <div id='map' style='width:1100px; height:440px;'></div>
 </div>
 
 <script>
-	window.onload = function() {
+	window.onpageshow = function() {
 		const map = new AMap.Map('map', {
 			pitch: 50, // 地图俯仰角度，有效范围 0 度- 83 度
 			viewMode: '3D', // 地图模式
@@ -188,22 +198,14 @@ function w3_close() {
 }
 </script>
 
-<!-- select for year -->
+<!-- select for date-->
 <!--<script type="text/javascript">-->
-<!--  onload = function ()-->
-<!--  {-->
-<!--  var sel = document.getElementById ('sel');-->
-<!--  for ( var i = 2021; i > 2015; i&#45;&#45;)-->
-<!--  {-->
-<!--  var option = document.createElement ('option');-->
-<!--  option.value = i;-->
-<!--  var txt = document.createTextNode (i);-->
-<!--  option.appendChild (txt);-->
-<!--  sel.appendChild (option);-->
-<!--  }-->
-<!--  }-->
+<!--    {% for i in time_list %}-->
+<!--        var option = $("<option/>").val('{{i}}').text('{{i}}');-->
+<!--        $('#sel').append(option);-->
+<!--    {% endfor %}-->
 <!--</script>-->
-
+<!--        document.getElementById("sel").options.add(new Option('{{i}}', '{{i}}'))-->
 </body>
 
 </html>

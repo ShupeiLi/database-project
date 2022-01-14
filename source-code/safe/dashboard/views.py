@@ -582,9 +582,16 @@ def visualiztion(request, orderid):
     delivery_id = str(orderid).rjust(6, '0')
     d_info = DeliveryInformation.objects.get(dno=delivery_id)
     dot_list = GeographicInformation.objects.filter(dno=delivery_id)
-    # sel_time = request.POST.get("search_date")
-    # province_covid = PandemicInformation.objects.filter(date__contains=datetime.date(2021, 12, 19))
-    province_covid = PandemicInformation.objects.filter(date__range=[d_info.dsetime, d_info.dretime])
+    if request.method == 'POST':
+        selected_option = request.POST.get("search_date")
+        sel_time = request.POST.get("search_date").split("-")
+        province_covid = PandemicInformation.objects.filter(date__contains=datetime.date(int(sel_time[0]), int(sel_time[1]), int(sel_time[2])))
+    else:
+        selected_option = str(d_info.dsetime)
+        default_time = str(d_info.dsetime).split("-")
+        province_covid = PandemicInformation.objects.filter(
+            date__contains=datetime.date(int(default_time[0]), int(default_time[1]), int(default_time[2])))
+    # province_covid = PandemicInformation.objects.filter(date__range=[d_info.dsetime, d_info.dretime])
     heatmapdata = []  # ('北京市','#FFFF00')
     place = []
     for x in province_covid:
@@ -606,15 +613,20 @@ def visualiztion(request, orderid):
         lon = latlon[0]
         lat = latlon[1]
         path_dot.append((float(lat), float(lon)))
-        
+
+    time_list = []
+    i = d_info.dsetime
+    while i <= d_info.dretime:
+        time_list.append(str(i))
+        i = i + datetime.timedelta(days=1)
     context = {
         "username": username,
         "usertype": usertype,
         "heatmapdata": heatmapdata,
         "path_dot": path_dot,
         "center": path_dot[-1],
-        "start_time": str(d_info.dsetime).split("-"),
-        "end_time": str(d_info.dretime).split("-"),
+        "time_list": time_list,
+        "selected_option": selected_option
         }
 
     return render(request, "visualiztion.html", context)
