@@ -195,3 +195,10 @@ class PandemicInformation(models.Model):
 
     def __str__(self):
         return self.id
+    
+
+class GeographicTransformation(models.Model):
+    dloc = models.CharField(max_length=200, primary_key=True, unique=True, null=False)
+    dpro = models.CharField(max_length=200, null=True)
+    dlat = models.DecimalField(max_digits=25, decimal_places=4)
+    dlng = models.DecimalField(max_digits=25, decimal_places=4)

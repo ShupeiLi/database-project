@@ -634,3 +634,6 @@ def logistics_risk(request, orderid):
     
     
     
+    
+    
+    
