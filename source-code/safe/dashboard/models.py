@@ -65,7 +65,7 @@ class DeliveryInformationManager(models.Manager):
 
 class DeliveryInformation(models.Model):
     objects = DeliveryInformationManager()
-    order_information = models.OneToOneField(OrderInformation, null=True, on_delete=models.CASCADE)
+    order_information = models.OneToOneField(OrderInformation, null=True, related_name='doinfo', on_delete=models.CASCADE)
     dno = models.CharField(primary_key=True, max_length=32, null=False, unique=True) # one to one
     dvalue = models.DecimalField(max_digits=25, decimal_places=2, null=True)
     dtrans = models.CharField(max_length=128)
