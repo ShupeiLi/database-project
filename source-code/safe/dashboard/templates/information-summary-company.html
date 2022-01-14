@@ -175,7 +175,7 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
 	<td>{{ delivery_order.order_information.onum }}</td>
 	<td><a href="{% url 'dashboard:view-order-distribution' delivery_order.dno|slugify %}" class="btn btn-sm btn-warning">查看</a></td>
 	<td><a href="{% url 'dashboard:visualization' delivery_order.dno %}" class="btn btn-sm btn-warning">查看</a></td>
-	<td><a href="#" class="btn btn-sm btn-warning">查看</a></td>
+	<td><a href="{% url 'dashboard:risk' delivery_order.dno %}" class="btn btn-sm btn-warning">查看</a></td>
 </tr>
 {% endfor %}
 
@@ -209,23 +209,6 @@ function w3_close() {
   mySidebar.style.display = "none";
   overlayBg.style.display = "none";
 }
-</script>
-{% load static %}
-<script src="{% static 'js/extention/choices.js' %}"></script>
-{% load static %}
-<script src="{% static 'js/extention/flatpickr.js' %}"></script>
-<script>
-  flatpickr(".datepicker",
-  {});
-
-</script>
-<script>
-  const choices = new Choices('[data-trigger]',
-  {
-	searchEnabled: false,
-	itemSelectText: '',
-  });
-
 </script>
 
 </body>

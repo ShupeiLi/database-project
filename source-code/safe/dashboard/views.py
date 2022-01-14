@@ -2,7 +2,7 @@
 from django.shortcuts import render, get_object_or_404, redirect, reverse, HttpResponseRedirect
 from django.contrib.auth import get_user_model, logout
 from django.contrib.auth.decorators import login_required
-from .models import OrderInformation, DeliveryInformation, RateSeller, RateDelivComp, HealthInformation, DistributionInformation, CompanyStaff, GeographicInformation, PandemicInformation
+from .models import OrderInformation, DeliveryInformation, RateSeller, RateDelivComp, HealthInformation, DistributionInformation, CompanyStaff, GeographicInformation, PandemicInformation, GeographicTransformation
 from django.urls import reverse_lazy
 from django.contrib import messages
 from .tools import encrypt
@@ -524,116 +524,93 @@ def visualiztion(request, orderid):
     return render(request, "visualiztion.html", context)
 
 
-# =============================================================================
-# # Logistics risk: Overall risk score
-# @login_required
-# def logistics_risk(request, orderid):
-#     """
-#     Description for overall risk score: 
-#     **district_tisk_score:
-#     1. for each delivery order we calculate the overall risk score (score is calculated by delivery order)
-#     2. for a specific delivery order, we may have several places and a specific dsetime and a dretime
-#     3. dloc_list -> the list of places on the delivery path, dloc_list = [(place1, starttime1, endtime1), ...], using zip can get this form
-#     4. starttime, endtime: the range of time which the delivery order stay in a specific place
-#     5. a delivery order can be conducted by severl staff (distinguished by 1), staff_list contains the staffs delivered this order, staff_list = [pno1, pno2, ...]
-#     6. we put more weight on staff than district risk, 0.8/0.2
-#     """
-#     district_risk_score = 0
-#     for place, starttime, endtime in dloc_list:
-#         district_risk_score += district_risk_score(place, starttime, endtime, covid19)
-# 
-#     staff_risk_score = 0
-#     for pno in staff_list:
-#         staff_risk_score += staff_risk_score(pno, startime, arrivetime, health, covid19)
-# 
-#     # !!!!!!!!!!!!!!!!!!!! final overall risk score !!!!!!!!!!!!!!!!!!!!! #
-#     risk_socre = 0.2 * district_risk_score + 0.8 * staff_risk_score
-# 
-#     ############################################################################
-# 
-#     # delivery district risk score  
-#     def district_risk_score(place, starttime, endtime, covid19):
-#         """
-#         delivery district risk score (range: .00-100.00) criteria (begin with .00):
-#         1. only care about case increaing in 14 days
-#         2. increase number in [0, 10]: += number * .1
-#         3. increase number in [11, 30]: += number * .2
-#         4. increase number in [31, 60]: += number * .5
-#         5. increase number > 60: += number * 1
-#         6. no new case in each 14 days (to now): * .2
-#         """
-#         district_score = 0
-# 
-#         start_date = covid19['date'] >= starttime - datetime.timedelta(days=14)
-#         end_date = covid19['date'] <= endtime
-#         data = covid19[start_date & end_date] # this will be a pandas data frame contains col=['date', 'place', 'number']
-#         city_data = data[data['place'] == place] # specific place in specific date range
-# 
-#         district_score = city_data['number'].apply(cal_district_score).sum()
-# 
-#         return district_score
-# 
-#     # delivery staff risk score
-#     def staff_risk_score(pno, startime, arrivetime, health, covid19):
-#         """
-#         delivery staff risk score (range: .00-100.00) criteria (begin with .00):
-#         1. body temperature in [36.3, 37.2]: -
-#         2. body temperature < 36.3: += diff * 100
-#         3. body temperature > 37.2: += diff * 150
-#         4. path district risk score in 14 days: += (district risk at that time) * (temp_diff + .1)
-#         """
-#         staff_score = 0
-# 
-#         staff_health = health[health['pno'] == pno]
-#         start_date = staff_health['pupdate'] >= startime - datetime.timedelta(days=14)
-#         end_date = staff_health['pupdate'] <= arrivetime
-#         staff_health = staff_health[start_date & end_date] # now we get a specific staff's healthy info in his delivery date range
-# 
-#         pass_by_city = staff_health['pcity'].unique()
-#         passbycity_risk_score = 0
-#         for city in pass_by_city:
-#             passbycity_risk_score += district_risk_score(city, startime, arrivetime, covid19)
-# 
-#         health_risk_score = staff_health['temp'].apply(cal_staff_score).sum()
-# 
-#         staff_score = 0.2 * passbycity_risk_score + 0.8 * health_risk_score
-# 
-#         return staff_score
-# 
-#     # criteria: district
-#     def cal_district_score(number, score=0):
-#             if number >= 0  and number <= 10:
-#                 score += number * 0.1
-#             elif number >= 11 and number <= 30:
-#                 score += number * 0.2
-#             elif number >= 31 and number <= 60:
-#                 score += number * 0.5
-#             else:
-#                 score += number * 1
-#             return score
-# 
-#     # criteria: staff
-#     def cal_staff_score(temp, score=0):
-#         if temp < 36.3:
-#             score += (36.3 - temp) * 100
-#         elif temp > 37.2:
-#             score += (temp - 37.2) * 150
-# 
-#         return score
-# 
-#     return render(request, "?")
-# =============================================================================
-
-
 # Logistics risk
 @login_required
 def logistics_risk(request, orderid):
     """
     Risk esitimation.
     """
+    username = request.COOKIES.get("username")
+    usertype = request.COOKIES.get("usertype")
     
+    # delivery district risk score
+    records = GeographicInformation.objects.filter(dno=orderid)
+    pandemic_records = PandemicInformation.objects.all()
+    district_count = 0
+    district_check = False
     
+    for record in records:
+        record_date = record.dupdate
+        record_loc = record.dloc.split(",")
+        record_lat = float(record_loc[0])
+        record_lng = float(record_loc[1])
+        
+        for pandemic_record in pandemic_records:
+            pandemic_record_date = pandemic_record.date
+            if (record_date.date() - pandemic_record_date.date()).days == 0:
+                transform_record1 = GeographicTransformation.objects.filter(dpro=pandemic_record.place)
+                transform_record2 = GeographicTransformation.objects.filter(dloc=pandemic_record.place)
+                check = False
+                if len(transform_record1) != 0:
+                    pandemic_record_lat = float(transform_record1[0].dlat)
+                    pandemic_record_lng = float(transform_record1[0].dlng)
+                    check = True
+                if len(transform_record2) != 0:
+                    pandemic_record_lat = float(transform_record2[0].dlat)
+                    pandemic_record_lng = float(transform_record2[0].dlng)                
+                    check = True
+                if check:
+                    distance = (pandemic_record_lat - record_lat) ** 2 + (pandemic_record_lng - record_lng)  ** 2
+                    if distance <= 2:
+                        district_count += 1
+    if len(records) == 0:
+        district_risk_score = 0
+        district_check = True
+    else:
+        district_risk_score = (district_count / len(records)) * 10
     
+    # delivery staff risk score
+    if DeliveryInformation.objects.filter(dno=orderid).exists():
+        staff_check = False
+        delivery_record = DeliveryInformation.objects.get(dno=orderid)
+        dsetime = delivery_record.dsetime
+        dretime = delivery_record.dretime
+        delivery_staffs = DistributionInformation.objects.filter(dno_id=orderid)
+        temp_count = 0
+        temp_total = 0
+        
+        for delivery_staff in delivery_staffs:
+            health_records = HealthInformation.objects.filter(pno_id=delivery_staff.pno_id, pupdate__range=(dsetime, dretime))
+            if len(health_records) != 0:
+                for health_record in health_records:
+                    if float(health_record.ptemp) > 37.2:
+                        temp_count += 1
+            temp_total += len(health_records)
+        
+        if temp_total != 0:        
+            staff_risk_score = (temp_count / temp_total) * 10
+        else:
+            staff_risk_score = 0
+            staff_check = True
+    else:
+        staff_risk_score = 0
+        staff_check = True
     
+    risk_score = 0.2 * district_risk_score + 0.8 * staff_risk_score
     
+    if district_check and staff_check:
+        con = "该订单暂时没有对应的物流信息"
+    else:
+        con = ""
     
+    context = {
+        "username": username,
+        "usertype": usertype,
+        "orderid": orderid,
+        "district": "{:.3f}".format(district_risk_score),
+        "staff": "{:.3f}".format(staff_risk_score),
+        "total": "{:.3f}".format(risk_score),
+        "con": con,
+        }    
+    
+    return render(request, "risk.html", context)

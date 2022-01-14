@@ -141,7 +141,7 @@ class HealthInformation(models.Model):
         unique_together = ("pno", "pupdate")
 
     def __str__(self):
-        return (self.pno, self.pupdate)
+        return self.pcity
 
 
 class COV19(models.Model):
@@ -151,7 +151,7 @@ class COV19(models.Model):
     number = models.IntegerField()
 
     def __str__(self):
-        return self.dno
+        return str(self.id)
 
     
 class DistributionInformation(models.Model):
@@ -194,7 +194,7 @@ class PandemicInformation(models.Model):
     number = models.CharField(max_length=200)
 
     def __str__(self):
-        return self.id
+        return str(self.id)
     
 
 class GeographicTransformation(models.Model):
@@ -202,3 +202,6 @@ class GeographicTransformation(models.Model):
     dpro = models.CharField(max_length=200, null=True)
     dlat = models.DecimalField(max_digits=25, decimal_places=4)
     dlng = models.DecimalField(max_digits=25, decimal_places=4)
+    
+    def __str__(self):
+        return self.dloc
