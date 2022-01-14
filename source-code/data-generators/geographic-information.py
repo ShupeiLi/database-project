@@ -18,7 +18,7 @@ class GeographicGenerator:
         self.db = mysql.connector.connect(
             host='localhost',
             user='root',
-            password='ShupeiLi',
+            password='123456',
             database='safe'
         )
 
@@ -76,10 +76,11 @@ class GeographicGenerator:
         for i in range(len(dno_info)):
             dnum = dno_info[i][0]
             start_time = dno_info[i][1]
-            x = random.randint(0, len(data))
-            y = random.randint(0,len(data))
+            x = random.randint(0, len(data)-1)
+            y = random.randint(0, len(data)-1)
+            print(x, y, len(data))
             if x == y:
-                y = y+1
+                y = (y+1) % len(data)
             start_loc = [data.iloc[x]['lat'], data.iloc[x]['lng']] # list
             end_loc = [data.iloc[y]['lat'], data.iloc[y]['lng']] # list
             one_value = (dnum, ",".join([str(x) for x in start_loc]), start_time)

@@ -579,21 +579,26 @@ def visualiztion(request, orderid):
     """
     username = request.COOKIES.get("username")
     usertype = request.COOKIES.get("usertype")
-    province_covid = PandemicInformation.objects.filter(date__contains=datetime.date(2021, 12, 19))
+    delivery_id = str(orderid).rjust(6, '0')
+    d_info = DeliveryInformation.objects.get(dno=delivery_id)
+    dot_list = GeographicInformation.objects.filter(dno=delivery_id)
+    # sel_time = request.POST.get("search_date")
+    # province_covid = PandemicInformation.objects.filter(date__contains=datetime.date(2021, 12, 19))
+    province_covid = PandemicInformation.objects.filter(date__range=[d_info.dsetime, d_info.dretime])
     heatmapdata = []  # ('北京市','#FFFF00')
+    place = []
     for x in province_covid:
         province = x.place
-        number = int(x.number)
-        # color = '#00FF00'
-        if number >= 5:
-            color = '#ff9900'
-        elif number > 0:
-            color = '#FFFF00'
-        heatmapdata.append((province, color))
-    delivery_id = str(orderid).rjust(6,'0')
-    dot_list = GeographicInformation.objects.filter(dno=delivery_id)
+        if province not in place:
+            place.append(province)
+            # number = int(x.number)
+            number = sum([int(x.number) for i in range(len(province_covid)) if province_covid[i].place == province])
+            if number >= 50:
+                color = '#ff9900'
+            elif number > 0:
+                color = '#FFFF00'
+            heatmapdata.append((province, color))
     path_dot = []
-    
     # path_dot = [("112.368904","39.913423"), ("116.382122","39.901176"), ("116.387271","39.912501"), ("118.398258","39.904600")]
     for i in range(len(dot_list)):
         loc = dot_list[i].dloc
@@ -602,12 +607,14 @@ def visualiztion(request, orderid):
         lat = latlon[1]
         path_dot.append((float(lat), float(lon)))
         
-        context = {
-            'username': username,
-            "usertype": usertype,
-            "heatmapdata": heatmapdata, 
-            "path_dot": path_dot, 
-            "center": path_dot[-1],
-            }
+    context = {
+        "username": username,
+        "usertype": usertype,
+        "heatmapdata": heatmapdata,
+        "path_dot": path_dot,
+        "center": path_dot[-1],
+        "start_time": str(d_info.dsetime).split("-"),
+        "end_time": str(d_info.dretime).split("-"),
+        }
 
     return render(request, "visualiztion.html", context)

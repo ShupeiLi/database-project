@@ -44,7 +44,7 @@ class DeliveryGenerator():
         self.db = mysql.connector.connect(
                     host = 'localhost',
                     user = 'root',
-                    password = 'ShupeiLi',
+                    password = '123456',
                     database = 'safe'
                     )
     
@@ -190,7 +190,7 @@ class DeliveryGenerator():
     
 
 if __name__ == '__main__':
-    model = DeliveryGenerator(50)
+    model = DeliveryGenerator(300)
     
     # 模拟商家提交订单
     model.simulate_order_submit()

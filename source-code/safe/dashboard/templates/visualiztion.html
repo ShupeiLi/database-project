@@ -85,7 +85,7 @@
 <br>
 <h2 style="text-align:center">路径可视化</h2> 
 <br>
-
+<!--<select id="sel" name="search_date"></select>-->
 {%if usertype == "buyer" %}
 <a href="{% url 'dashboard:information-summary-buyer' %}" class="btn btn-primary" style="float: right;">返回</a>
 {%endif%}
@@ -101,7 +101,7 @@
 {%if usertype == "platform" %}
 <a href="{% url 'dashboard:information-summary-platform' %}" class="btn btn-primary" style="float: right;">返回</a>
 {%endif%}
- 
+{{center}}
 <div id='map' style='width:1100px; height:440px;'></div>
 </div>
 
@@ -187,6 +187,22 @@ function w3_close() {
   overlayBg.style.display = "none";
 }
 </script>
+
+<!-- select for year -->
+<!--<script type="text/javascript">-->
+<!--  onload = function ()-->
+<!--  {-->
+<!--  var sel = document.getElementById ('sel');-->
+<!--  for ( var i = 2021; i > 2015; i&#45;&#45;)-->
+<!--  {-->
+<!--  var option = document.createElement ('option');-->
+<!--  option.value = i;-->
+<!--  var txt = document.createTextNode (i);-->
+<!--  option.appendChild (txt);-->
+<!--  sel.appendChild (option);-->
+<!--  }-->
+<!--  }-->
+<!--</script>-->
 
 </body>
 
