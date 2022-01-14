@@ -71,32 +71,31 @@ def register(request):
 
 # Login view function
 def login_view(request):
-    if request.method == 'POST':
-        # get content from request
-        usertype = request.POST.get("usertype")
-        username = request.POST.get("username")
-        password = request.POST.get("password")
-        # define
-        try:
-            user = User.objects.get(utype=usertype, username=username)
-        except User.DoesNotExist:
-            user = None
-        if user:
-            if user.is_active:
-                if password == user.password:  # 密码正确
-                    login(request, user)
-                    response = redirect(reverse_lazy("dashboard:board-home"))  # 跳转至新的页面
-                    response.set_cookie("username", username)  # 设置cookie
-                    response.set_cookie("usertype", usertype)
-                    return response
-                else:  # 密码错误显示提醒
-                    messages.info(request, '密码不正确!')
-            else: # 账户未激活错误
-                messages.info(request, "账户未激活，请通过邮件链接激活账户！")
-        else:  # 用户名或类别显示提醒
-            messages.info(request, "用户名或类别错误！")
+	if request.method == 'POST': # get content from request
+		usertype = request.POST.get("usertype")
+		username = request.POST.get("username")
+		password = request.POST.get("password")
+		# define
+		try:
+			user = User.objects.get(utype=usertype, username=username)
+		except User.DoesNotExist:
+			user = None
+		if user:
+			if user.is_active:
+				if password == user.password:  # 密码正确
+					login(request, user)
+					response = redirect(reverse_lazy("dashboard:board-home"))  # 跳转至新的页面
+					response.set_cookie("username", username)  # 设置cookie
+					response.set_cookie("usertype", usertype)
+					return response
+				else:  # 密码错误显示提醒
+					messages.info(request, '密码不正确!')
+			else: # 账户未激活错误
+				messages.info(request, "账户未激活，请通过邮件链接激活账户！")
+		else:  # 用户名或类别显示提醒
+			messages.info(request, "用户名或类别错误！")
 
-    return render(request=request, template_name="login.html")
+	return render(request=request, template_name="login.html")
 
 
 # Home page view function
