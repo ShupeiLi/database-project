@@ -6,7 +6,7 @@ from tqdm import tqdm
 from datetime import datetime
 from sqlalchemy import create_engine
 
-path = r"D:\复旦\大四上\数据库与企业管理\project\database-project\source-code\covid19\covid19article.xlsx"
+path = r"D:\Document\大学资料\大四上课件\数据库与企业数据管理\项目\database-project\source-code\covid19\covid19article.xlsx"
 
 # Preprocess
 df = pd.read_excel(path)
@@ -40,6 +40,6 @@ records_df = pd.DataFrame(records, columns = ["date", "place", "number"])
 #records_df.to_csv(r"D:\Document\大学资料\大四上课件\数据库与企业数据管理\项目\database-project\source-code\covid19\covid19.csv", index = False)
 
 # Save in MySQL
-connection_string = "mysql+pymysql://%s:%s@%s:%s/%s"%('root', '123456', 'localhost', 3306, "safe") #!!! Change passowrd
+connection_string = "mysql+pymysql://%s:%s@%s:%s/%s"%('root', 'ShupeiLi', 'localhost', 3306, "safe") #!!! Change passowrd
 engine = create_engine(connection_string, echo = False)
 records_df.to_sql(con = engine, name = 'dashboard_pandemicinformation', if_exists='append', index = False)

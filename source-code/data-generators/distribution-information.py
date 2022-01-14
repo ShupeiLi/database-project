@@ -124,9 +124,11 @@ class DistributionGenerator():
             for j in range(len(dno)):
                 if self.check_exist(dno[j][0]):
                     # dpno, pno_id, dno_id, is_checked
-                    one_pno = random.choice(pno)[0]
-                    one_value = (dno[j][0] + one_pno, one_pno, dno[j][0], 0)
-                    values.append(one_value)
+                    pnos = random.sample(pno, min(5, len(pno)))
+                    for k in range(len(pnos)):
+                        one_pno = pnos[k][0]
+                        one_value = (dno[j][0] + one_pno, one_pno, dno[j][0], 0)
+                        values.append(one_value)
 
         if len(values) == 0:
             print("物流订单均已分配")

@@ -18,7 +18,7 @@ class GeographicGenerator:
         self.db = mysql.connector.connect(
             host='localhost',
             user='root',
-            password='123456',
+            password='ShupeiLi', # !!! Change password
             database='safe'
         )
 
@@ -53,9 +53,6 @@ class GeographicGenerator:
         return records
 
     def get_last_position(self, val):
-        """
-                Select companys.
-                """
         cursor = self.db.cursor()
         cursor.execute("""
                        SELECT *
@@ -78,7 +75,7 @@ class GeographicGenerator:
             start_time = dno_info[i][1]
             x = random.randint(0, len(data)-1)
             y = random.randint(0, len(data)-1)
-            print(x, y, len(data))
+#            print(x, y, len(data))
             if x == y:
                 y = (y+1) % len(data)
             start_loc = [data.iloc[x]['lat'], data.iloc[x]['lng']] # list

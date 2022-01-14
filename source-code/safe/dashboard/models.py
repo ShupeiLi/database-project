@@ -28,6 +28,7 @@ class DeliveryInformationManager(models.Manager):
         dno = encrypt(ono)
         
         order_information = OrderInformation.objects.get(ono=ono)
+        buyer = order_information.username_id
         
         if not ono:
             raise ValueError('必须提供有效订单号')
@@ -37,7 +38,7 @@ class DeliveryInformationManager(models.Manager):
             raise ValueError('必须选择物流公司')
         
         deliveryinfo = self.model(
-            dno=dno, dtrans=dtrans, tno=tno, sno=sno, order_information=order_information
+            dno=dno, dtrans=dtrans, tno=tno, sno=sno, order_information=order_information, buyer=buyer
             )
 
         deliveryinfo.save(using=self._db)
@@ -74,6 +75,7 @@ class DeliveryInformation(models.Model):
     dsetime = models.DateField(max_length=128, null=True)
     dretime = models.DateField(max_length=128, null=True)
     is_checked = models.BooleanField(default=False)
+    buyer = models.ForeignKey(NewUser, related_name='DeliveryInformation_NewUser_buyer', on_delete=models.CASCADE)    # one to one
 
     objects = DeliveryInformationManager()
 

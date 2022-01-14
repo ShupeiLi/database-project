@@ -3,7 +3,6 @@
 import mysql.connector
 import random
 import datetime
-import time
 
 
 class OrderGenerator():
@@ -19,7 +18,7 @@ class OrderGenerator():
         self.db = mysql.connector.connect(
                     host = 'localhost',
                     user = 'root',
-                    password = '123456',
+                    password = 'ShupeiLi',
                     database = 'safe'
                     )
         
@@ -42,28 +41,11 @@ class OrderGenerator():
         cursor.close()
         return records
         
-    def random_date_order(self, name1, name2):
+    def random_date_order(self):
         """
         Generate otime.
         """
-        cursor = self.db.cursor()
-        cursor.execute("""
-                       SELECT registerdate
-                       FROM register_newuser
-                       WHERE username = '{}'
-                       """.format(name1))
-        date1 = cursor.fetchall()[0][0]
-        cursor.execute("""
-               SELECT registerdate
-               FROM register_newuser
-               WHERE username = '{}'
-               """.format(name2))
-        date2 = cursor.fetchall()[0][0]
-        cursor.close()
-        if date1 - date2 > datetime.timedelta(0):
-            return random.randint(int(round(datetime.datetime.fromtimestamp(time.mktime(date1.timetuple())).timestamp())), int(time.time()))
-        else:
-            return random.randint(int(round(datetime.datetime.fromtimestamp(time.mktime(date2.timetuple())).timestamp())), int(time.time()))
+        return random.randint(int(datetime.datetime(2020, 11, 3).timestamp()), int(datetime.datetime(2021, 12, 19).timestamp()))
 
     def check_valid(self, val):
         """
@@ -101,7 +83,7 @@ class OrderGenerator():
             uno = random.choice(buyers)[0]
             sno = random.choice(sellers)[0]
             platform_name = random.choice(platforms)[0]
-            otime = datetime.datetime.fromtimestamp(self.random_date_order(uno, sno)).strftime('%Y-%m-%d')
+            otime = datetime.datetime.fromtimestamp(self.random_date_order()).strftime('%Y-%m-%d')
             ovalue = round(random.uniform(0, 999), 2)
             onum = random.randint(1, 100)
             otype = random.choice(types)

@@ -115,7 +115,9 @@ class HealthGenerator:
             temperature = [round(random.random()*8, 1)+35 for x in range(num)]
             latest_date = self.get_latest_update(name)
             if not latest_date:
-                date = [datetime.datetime.now()+datetime.timedelta(days=x+1) for x in range(num)]
+                date_start = random.randint(int(datetime.datetime(2020, 11, 3).timestamp()), int(datetime.datetime(2021, 12, 5).timestamp()))
+                date_start_object = datetime.datetime.fromtimestamp(date_start)
+                date = [date_start_object + datetime.timedelta(days=x+1) for x in range(num)]
             else:
                 date = [latest_date+datetime.timedelta(days=x+1) for x in range(num)]
             for j in range(num):

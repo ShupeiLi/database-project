@@ -44,7 +44,7 @@ class DeliveryGenerator():
         self.db = mysql.connector.connect(
                     host = 'localhost',
                     user = 'root',
-                    password = '123456',
+                    password = 'ShupeiLi',
                     database = 'safe'
                     )
     
@@ -54,7 +54,7 @@ class DeliveryGenerator():
         """
         cursor = self.db.cursor()
         cursor.execute("""
-                       SELECT ono, sellername_id
+                       SELECT ono, sellername_id, username_id
                        FROM dashboard_orderinformation
                        """)
         order_index = cursor.fetchall()
@@ -137,13 +137,13 @@ class DeliveryGenerator():
                 sno = order[1]
                 dtrans = random.choice(dtrans_choices)
                 tno = random.choice(companys)[0]
-                one_value = (dno, sno, tno, dtrans, False, order[0])
+                one_value = (dno, sno, tno, dtrans, False, order[0], order[2])
                 values.append(one_value)
                 
             sql = """
                   INSERT INTO 
-                  dashboard_deliveryinformation(dno, sno_id, tno_id, dtrans, is_checked, order_information_id) 
-                  VALUES (%s, %s, %s, %s, %s, %s)
+                  dashboard_deliveryinformation(dno, sno_id, tno_id, dtrans, is_checked, order_information_id, buyer_id) 
+                  VALUES (%s, %s, %s, %s, %s, %s, %s)
                   """
                   
             cursor = self.db.cursor()
