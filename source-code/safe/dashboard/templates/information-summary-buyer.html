@@ -137,7 +137,6 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
 <th scope="col">商品订单数目</th>
 <th scope="col">卖方账户名</th>
 <th scope="col">电商平台账户名</th>
-<th scope="col">物流路线</th>
 <th scope="col">风险评估</th>
 </tr>
 <tbody>
@@ -150,7 +149,6 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
 	<td>{{ product_order.onum }}</td>
 	<td>{{ product_order.sellername_id }}</td>
 	<td>{{ product_order.platformname_id }}</td>
-	<td><a href="{% url 'dashboard:visualization' delivery_order.dno %}" %}" class="btn btn-sm btn-warning">查看</a></td>
 	<td><a href="#" %}" class="btn btn-sm btn-warning">查看</a></td>
 </tr>
 {% endfor %}
