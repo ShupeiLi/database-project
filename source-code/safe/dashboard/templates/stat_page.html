@@ -2,14 +2,18 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Statistics Page</title>
+    <title>Dashboard</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
 </head>
+{% load static %}
+<style>
 html,body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
+</style>
+
 <body class="w3-light-grey">
 {% load bootstrap5 %}
 {% bootstrap_css %}
@@ -75,10 +79,10 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
 
 <!-- !PAGE CONTENT! -->
 <div class="w3-main" style="margin-left:250px;margin-top:43px">
-
   {%if usertype == "buyer" %}
   <div class="w3-container">
     <div class="w3-container">
+	<h1></h1>
 	<h3>商品订单分类</h3>
       <canvas id="BuyerType"></canvas>
       <script>
@@ -130,6 +134,7 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
   {%if usertype == "seller" %}
   <div class="w3-container">
     <div class="w3-container">
+	<h1></h1>
 	<h3>卖家评分</h3>
       <canvas id="RateSeller"></canvas>
       <script>
@@ -188,6 +193,7 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
   {%if usertype == "company" %}
   <div class="w3-container">
     <div class="w3-container">
+	<h1></h1>
 		<h3>物流公司评分</h3>
       <canvas id="RateComp"></canvas>
       <script>
@@ -241,6 +247,7 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
   {%if usertype == "platform" %}
   <div class="w3-container">
     <div class="w3-container">
+	<h1></h1>
 	<h3>商品订单分类</h3>
       <canvas id="PlatformType"></canvas>
       <script>

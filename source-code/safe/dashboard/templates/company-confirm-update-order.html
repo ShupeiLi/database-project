@@ -1,10 +1,82 @@
-{% extends 'company-comfirm-index.html' %}
+<!DOCTYPE html>
+<html>
+<head>
+<title>Dashboard</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/siwalikm/quick-form-css@2.2.2/qfc-light.css">
+	{% load static %}
+	<style>
+	html,body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
+	
+	.qfc-container {
+	  --form-theme-color: gray;
+	  --form-bg-color   : white;
+	  --button-hover    : gray;
+	  --input-text-color: black;
+ }
+ 
+   #outPopUp {
+  position: absolute;
+  width: 600px;
+  height: 500px;
+  z-index: 15;
+  top: 28%;
+  left: 48%;
+  margin: -100px 0 0 -150px;
+  background: white;
+}
 
-{% block title %}更新订单{% endblock %}
+body {
+  background-image: url({% static 'image/abstract.jpg' %});
+  background-size: 1920px 1080px;
+}
+</style>
+</head>
 
-{% block content %}
+<body class="w3-light-grey">
+{% load bootstrap5 %}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+<!-- Top container -->
+<div class="w3-bar w3-top w3-black w3-large" style="z-index:4">
+  <button class="w3-bar-item w3-button w3-hide-large w3-hover-none w3-hover-text-light-grey" onclick="w3_open();"><i class="fa fa-bars"></i>  Menu</button>
+  <span class="w3-bar-item w3-right">Safe Logistics</span>
+</div>
 
-    <div class="w3-main qfc-container">
+<!-- Sidebar/menu -->
+<nav class="w3-sidebar w3-collapse w3-white w3-animate-left" style="z-index:3;width:250px;" id="mySidebar"><br>
+  <div class="w3-container w3-row">
+    <div class="w3-col s8 w3-bar">
+      <span>欢迎使用平安物流，</span><br><br>
+	  <span><strong>{{username}}</strong></span><br>
+    </div>
+  </div>
+  <hr>
+  <div class="w3-container">
+    <h5>控制面板</h5>
+  </div>
+  <div class="w3-bar-block">
+	<a href="{% url 'dashboard:confirm-order-homepage' %}" class="w3-bar-item w3-button w3-padding"><i class="fa fa-bell fa-fw"></i> 确认订单 </a>
+	<a href="{% url 'dashboard:information-summary-company' %}" class="w3-bar-item w3-button w3-padding"><i class="fa fa-eye fa-fw"></i> 订单总览 </a>
+    <a href="{% url 'dashboard:manage-staffs' %}" class="w3-bar-item w3-button w3-padding"><i class="fa fa-diamond fa-fw"></i>  员工信息</a>
+	<a href="{% url 'dashboard:stat_page' %}" class="w3-bar-item w3-button w3-padding"><i class="fa fa-bullseye fa-fw"></i>  统计报表</a>
+	<a href="{% url 'dashboard:profile' %}" class="w3-bar-item w3-button w3-padding"><i class="fa fa-cog fa-fw"></i>  设置</a><br><br>
+  </div>
+</nav>
+
+
+<!-- Overlay effect when opening sidebar on small screens -->
+<div class="w3-overlay w3-hide-large w3-animate-opacity" onclick="w3_close()" style="cursor:pointer" title="close side menu" id="myOverlay"></div>
+
+<!-- !PAGE CONTENT! -->
+<div class="w3-main" style="margin-left:250px;margin-top:43px;">
+	
+    <div id="outPopUp"  class="w3-main qfc-container">
         <div class="center">
             <div class="col-md-11">
 			{% if order.is_checked %}
@@ -19,16 +91,13 @@
 					<input type="number" value="" name="dvalue" />
 					
 					<br>
-					<br>
 					<label>发货时间：</label>
 					<input type="date" value="date" name="dsetime" />
 					
 					<br>
-					<br>
 					<label>收货时间：</label>
 					<input type="date" value="date" name="dretime" />
 					
-					<br>
 					<br>
 					<button type="submit" class="btn btn-primary">提交</button>
 
@@ -37,4 +106,12 @@
         </div>
     </div>
 
-{% endblock %}
+    <script type="text/javascript" src="{% static 'js/jquery-3.4.1.min.js' %}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" crossorigin="anonymous"></script>
+	
+</div>
+
+</body>
+
+</html>

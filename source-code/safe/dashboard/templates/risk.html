@@ -16,7 +16,7 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
 .bgimg-1 {
   background-position: center;
   background-size: cover;
-  background-image: url("{% static 'image/city.jpg' %}");
+  background-image: url("{% static 'image/road2.jpg' %}");
   min-height: 100%;
 }
 </style>
@@ -96,22 +96,22 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
 	<span class="w3-large"><strong>{{ con }}</strong> </span><br><br>
 	{%if usertype == "buyer" %}
 	<form action="" method="post">
-	<p><a href="{% url 'dashboard:information-summary-buyer' %}" class="w3-button w3-black w3-padding-large w3-large w3-margin-top w3-opacity w3-hover-opacity-off">返回</a>
+	<p><a href="{% url 'dashboard:information-summary-buyer' %}" class="w3-button w3-dark-grey w3-padding-large w3-large w3-margin-top">返回</a>
 	</form>
 	{%endif%}
 	{%if usertype == "seller" %}
 	<form action="" method="post">
-	<p><a href="{% url 'dashboard:information-summary-seller' %}" class="w3-button w3-black w3-padding-large w3-large w3-margin-top w3-opacity w3-hover-opacity-off">返回</a>
+	<p><a href="{% url 'dashboard:information-summary-seller' %}" class="w3-button w3-dark-grey w3-padding-large w3-large w3-margin-top">返回</a>
 	</form>
 	{%endif%}	
 	{%if usertype == "company" %}
 	<form action="" method="post">
-	<p><a href="{% url 'dashboard:information-summary-company' %}" class="w3-button w3-black w3-padding-large w3-large w3-margin-top w3-opacity w3-hover-opacity-off">返回</a>
+	<p><a href="{% url 'dashboard:information-summary-company' %}" class="w3-button w3-dark-grey w3-padding-large w3-large w3-margin-top">返回</a>
 	</form>
 	{%endif%}
 	 {%if usertype == "platform" %}
 	<form action="" method="post">
-	<p><a href="{% url 'dashboard:information-summary-platform' %}" class="w3-button w3-black w3-padding-large w3-large w3-margin-top w3-opacity w3-hover-opacity-off">返回</a>
+	<p><a href="{% url 'dashboard:information-summary-platform' %}" class="w3-button w3-dark-grey w3-padding-large w3-large w3-margin-top">返回</a>
 	</form>
 	{%endif%}	 
 	<br><br>
