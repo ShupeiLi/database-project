@@ -93,7 +93,7 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
     <span class="w3-large"><strong>该订单风险总评分：</strong> {{ total }}</span><br><br>
 	<span class="w3-large"><strong>配送路线风险评分：</strong> {{ district }}</span><br><br>
 	<span class="w3-large"><strong>配送人员风险评分：</strong> {{ staff }}</span><br><br>
-	<span class="w3-large"><strong>{{ con }}</strong> </span><br><br>
+	<span class="w3-large">{{ con }}</span><br><br>
 	{%if usertype == "buyer" %}
 	<form action="" method="post">
 	<p><a href="{% url 'dashboard:information-summary-buyer' %}" class="w3-button w3-dark-grey w3-padding-large w3-large w3-margin-top">返回</a>

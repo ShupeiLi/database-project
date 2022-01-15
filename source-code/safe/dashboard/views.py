@@ -601,7 +601,7 @@ def logistics_risk(request, orderid):
     if district_check and staff_check:
         con = "该订单暂时没有对应的物流信息"
     else:
-        con = ""
+        con = "评分取值：0-10，分值越高表示风险越高"
     
     context = {
         "username": username,

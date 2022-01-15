@@ -8,9 +8,12 @@ df = pd.read_csv(r'.\worldcities.csv')
 data = df.loc[df['country'] == 'China']
 
 
-class GeographicGenerator:
+class GeographicGenerator():
     """
     Generate Geographic information.
+    
+    Args:
+        n: n coordinates between two places.
     """
 
     def __init__(self,n):
@@ -75,7 +78,7 @@ class GeographicGenerator:
             start_time = dno_info[i][1]
             x = random.randint(0, len(data)-1)
             y = random.randint(0, len(data)-1)
-#            print(x, y, len(data))
+
             if x == y:
                 y = (y+1) % len(data)
             start_loc = [data.iloc[x]['lat'], data.iloc[x]['lng']] # list

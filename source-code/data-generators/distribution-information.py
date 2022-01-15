@@ -169,5 +169,5 @@ if __name__ == '__main__':
     # 模拟订单分配
     model.simulate_order_distribute()
 
-    # 模拟配送人员确认
+    # 模拟物流人员确认
     model.simulate_distribution_confirm()

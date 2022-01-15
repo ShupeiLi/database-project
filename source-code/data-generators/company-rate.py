@@ -2,7 +2,7 @@ import mysql.connector
 import random
 
 
-class CompRateGenerator:
+class CompRateGenerator():
     """
     Generate seller's rate scores.
     """
@@ -11,7 +11,7 @@ class CompRateGenerator:
         self.db = mysql.connector.connect(
             host='localhost',
             user='root',
-            password='ShupeiLi',
+            password='ShupeiLi', # !!! Change password
             database='safe'
         )
 

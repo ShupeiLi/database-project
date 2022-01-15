@@ -18,7 +18,7 @@ class OrderGenerator():
         self.db = mysql.connector.connect(
                     host = 'localhost',
                     user = 'root',
-                    password = 'ShupeiLi',
+                    password = 'ShupeiLi', # !!! Change password
                     database = 'safe'
                     )
         

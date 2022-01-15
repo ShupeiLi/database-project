@@ -6,9 +6,12 @@ import random
 import datetime
 
 
-class HealthGenerator:
+class HealthGenerator():
     """
     Generate delivery staff's health status.
+    
+    Args:
+        n: number of days.
     """
 
     def __init__(self, n):
@@ -16,7 +19,7 @@ class HealthGenerator:
         self.db = mysql.connector.connect(
             host='localhost',
             user='root',
-            password='ShupeiLi',
+            password='ShupeiLi', # !!! Change password
             database='safe'
         )
 
