@@ -20,6 +20,10 @@
 \usepackage[normalem]{ulem}
 \usepackage{listings}
 \usepackage{xcolor}
+\usepackage{xurl}
+\usepackage{tikz}
+
+\def\checkmark{\tikz\fill[scale=0.4](0,.35) -- (.25,0) -- (1,.7) -- (.25,.15) -- cycle;} 
 
 \definecolor{codegreen}{rgb}{0,0.6,0}
 \definecolor{codegray}{rgb}{0.5,0.5,0.5}
@@ -1051,7 +1055,7 @@
 \section{数据库实施及程序演示}
 \subsection{环境和配置}
 
-我们小组基于Python中的Django框架实现数据库管理系统。Django的backend采用MySQL，网页设计采用html + CSS + JavaScript。此外，我们小组通过Python中的Scrapy框架实现了能够定时收集疫情数据的网络爬虫。环境配置总结如下。
+我们小组基于Python中的Django框架实现数据库管理系统。Django的backend采用MySQL，网页设计采用html + CSS + JavaScript。此外，我们小组通过Python中的Scrapy框架实现了能够采集疫情数据的网络爬虫。主要的环境配置总结如下。
 
 \begin{center}
 	\begin{tabular}{lllll}
@@ -1065,113 +1069,215 @@
 
 为了提高效率，我们小组通过Git + GitHub合作编写程序。项目源代码可直接在GitHub网站上查看：\url{https://github.com/ShupeiLi/database-project} 。
 
-\section*{\textbf{Note：目前我们小组还在整合数据库方面的代码以及重新设计url，这两部分这周暂时没有更新}}
+\subsubsection{Python第三方库说明}
+为实现特定功能，我们小组使用了一些Python第三方库，详细说明汇总如下。
 
-\subsection{数据库建立}
-由于Django采用对象关系映射（Object Relational Mapping，简称 ORM ）实现面向对象编程语言里不同类型系统的数据之间的转换。本小节展示建立数据库的相关 Python 语句。
+\begin{center}
+\begin{tabular}{lll}
+\toprule
+\textbf{第三方库}  & \textbf{经测试版本} & \textbf{主要用途} \\
+\midrule
+Django & 3.2.9 & 网站框架搭建 \\
+django-bootstrap-v5 & 1.0.7 & 网页UI美化 \\
+django-filter & 21.1 & 实现各类筛选器 \\
+Faker & 10.0.0 & 生成随机姓名、地址等 \\
+mysql-connector-python & 8.0.27 & MySQL的Python接口 \\
+openpyxl & 3.0.9 & 读取 .xlsx文件 \\
+pandas & 1.3.3 & 数据框处理 \\
+phone-gen & 2.1.7 & 生成随机电话号码 \\
+Scrapy & 2.5.1 & 网络爬虫框架 \\
+selenium & 4.1.0 & 运行爬虫时模拟浏览器 \\ 
+SQLAlchemy & 1.4.28 & pandas对接MySQL \\
+tqdm & 4.62.3 & 显示循环进度条 \\
+\bottomrule
+\end{tabular}
+\end{center}		
 
-\subsubsection{账户信息}
-\begin{lstlisting}[language=Python]
-# -*- coding: utf-8 -*-
+\subsubsection{随机数据生成}
+我们小组编写了一系列数据生成器脚本来测试网站。除疫情数据生成器(preprocess.py)放在目录 /database-project/source-code/covid19/ 下，其他生成器统一放在目录 /database-project/source-code/data-generators/ 下。使用生成器需安装5.1.1中列出的第三方库，并修改脚本中的mysql.connector.connect(password)为本地计算机MySQL密码。本小节余下部分详细说明了生成器的使用步骤和方法。
 
-from django.db import models
-from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
-
-
-class MyAccountManager(BaseUserManager):
-
-	def create_user(self, username, password, utype, companyname, 
-		registerid, address, tel, email):
-
-		if not username:
-			raise ValueError('You must provide a username')
-		if not password:
-			raise ValueError('You must provide a valid password')
-		if not utype:
-			raise ValueError('You must provide a user type')
-		if not companyname:
-			raise ValueError('You must provide a companyname')
-		if not registerid:
-			raise ValueError('You must provide a registerid')
-		if not email:
-			raise ValueError('You must provide an email')
-
-		user = self.model(
-			username=username, utype=utype, companyname=companyname, registerid=registerid, 
-			address=address, tel=tel, email=self.normalize_email(email)
-		)
-
-		user.set_password(password)
-		user.save(using=self._db)
-
-		return user
-
-	def create_superuser(self, username, password, email, utype="admin",
-		 companyname="admin", registerid="admin", address="admin", 
-		 tel="admin"):
-		# create superuser here
-		user = self.create_user(
-			username, password, utype, companyname, 
-			registerid, address, tel, email
-		)
-		user.is_staff = True
-		user.is_superuser = True
-		user.save(using=self._db)
-		return user
-
-
-class NewUser(AbstractBaseUser):
-	username = models.CharField(max_length=128, unique=True)
-	password = models.CharField(max_length=255)
-	utype = models.CharField(max_length=128)
-	companyname = models.CharField(max_length=255)
-	registerid = models.CharField(max_length=25)
-	address = models.CharField(max_length=255)
-	tel = models.CharField(max_length=11)
-	email = models.EmailField(max_length=25)
-	registerdate = models.DateField(auto_now_add=True)
-	is_staff = models.BooleanField(default=False)
-	is_superuser = models.BooleanField(default=False)
-	is_active = models.BooleanField(default=True)
-
-	objects = MyAccountManager()
-
-	USERNAME_FIELD = 'username'
-	REQUIRED_FIELDS = ['password', 'utype', 'registerid', 'email']
-
-	def has_perm(self, perm, obj=None):
-		return self.is_superuser
-
-	def has_module_perms(self, app_label):
-		return self.is_superuser
-
-	def __str__(self):
-		return self.username
+\noindent \textbf{(1)} 建立数据库 \par
+使用命令行创建名为\textbf{safe}的数据库。
+\begin{lstlisting}[language=SQL]
+CREATE DATABASE safe;
 \end{lstlisting}
 
-\subsubsection{商品订单信息}
-\subsubsection{物流订单信息}
-\subsubsection{物流人员信息}
-\subsubsection{员工健康信息}
-\subsubsection{疫情信息：爬虫}
-\subsubsection{物流位置信息}
-\subsubsection{风险评估数据}
+在命令行中进入到 /database-project/source-code/safe/ 目录，运行以下命令。
+\begin{lstlisting}[language=bash]
+python manage.py makemigrations
+python manage.py migrate
+\end{lstlisting}
+
+\noindent \textbf{(2)} 生成用户数据 \par 
+运行user-information.py。有小概率会碰到Duplicate key错误，原因是Faker生成了重复的姓名，重新运行脚本即可。\par 
+class UserGenerator(n, utype) \par 
+\noindent 参数：\par 
+n: 生成的账号数目 \par 
+utype: 0为买方，1为卖方，2为物流公司，3为电商平台，4为物流人员 \par 
+\noindent 默认生成200个买方账号，40个卖方账号，10个物流公司账号，5个电商平台账号，50个物流人员账号。
+
+\noindent \textbf{(3)} 生成商品订单数据 \par 
+运行order-information.py。\par 
+class OrderGenerator(n) \par 
+\noindent 参数：\par 
+n: 生成的商品订单数目 \par 
+\noindent 默认生成400条商品订单记录。
+
+\noindent \textbf{(4)} 生成物流订单数据 \par 
+运行delivery-information.py。有小概率会遇到ValueError错误，原因是Faker生成的日期不正确，注释掉model.simulate\_order\_submit()后，重新运行model.simulate\_order\_confirm()即可。\par 
+class DeliveryGenerator(n) \par 
+\noindent 参数：\par 
+n: 生成的物流订单数目 \par 
+\noindent 默认生成300条物流订单记录(模拟商家提交订单)，并模拟公司确认所有订单。
+
+\noindent \textbf{(5)} 生成公司-员工关系数据 \par
+运行company-staff.py。\par 
+class CompanyStaffGenerator() \par 
+\noindent 生成物流公司的员工列表。
+
+\noindent \textbf{(6)} 生成员工健康数据 \par 
+运行person-health.py。\par 
+class HealthGenerator() \par 
+\noindent 参数：\par 
+n: 生成健康信息的天数 \par
+\noindent 默认生成所有物流人员2020年11月3日至2021年12月5日间的随机连续十四天健康信息填报数据。
+
+\noindent \textbf{(7)} 生成疫情数据 \par 
+运行preprocess.py。将从国家卫生健康委员会的官方网站(\url{http://www.nhc.gov.cn/xcs/yqtb/list_gzbd.shtml})抓取得到的数据进行预处理并导入数据库。covid19article.xlsx中的数据为事先抓取得到的2020年11月3日至2021年12月19日官方疫情通报公文。若需要使用最新数据，请在命令行中进入到 /database-project/source-code/covid19/ 目录下并依次启动爬虫covid19list(抓取文章链接)和covid19article(抓取文章正文)。
+
+\noindent \textbf{注意：}爬虫没有对接ip代理池，运行爬虫有一定概率会被封ip。
+
+\noindent \textbf{(8)} 生成物流订单分配数据 \par 
+运行distribution-information.py。\par 
+class DistributionGenerator() \par 
+\noindent 默认分配所有物流订单，并模拟物流人员确认订单。
+
+\noindent \textbf{(9)} 生成物流位置数据 \par 
+运行geographic-information.py。\par 
+class GeographicGenerator(n) \par 
+\noindent 参数：\par 
+n: 在起止坐标之间进行插值的个数 \par
+\noindent 默认为每个物流订单生成十二条位置信息记录，坐标限定在中国大陆。
+
+\noindent \textbf{(10)} 生成坐标与城市的对应关系 \par
+运行geographic-transformation.py。\par 
+
+\noindent \textbf{(11)} 生成物流公司评分数据 \par
+运行company-rate.py。\par 
+class CompRateGenerator() \par 
+\noindent 默认为所有物流公司生成分项评分数据。
+
+\noindent \textbf{(12)} 生成卖方评分数据 \par
+运行seller-rate.py。\par 
+class SellerRateGenerator() \par 
+\noindent 默认为所有卖方生成分项评分数据。
 
 \subsection{url 设计}
-\noindent \textbf{(1)} 登录系统 \par
-主页：\url{http://127.0.0.1:8000/safelogistics/} \par 
-注册页面：\url{http://127.0.0.1:8000/safelogistics/sign-up/} \par 
-登录页面：\url{http://127.0.0.1:8000/safelogistics/log-in/} \par 
-\noindent \textbf{(2)} 控制面板 \par
+\subsubsection{登录系统} \par
+\begin{enumerate}
+	\item 主页(游客状态)：\url{http://127.0.0.1:8000/safelogistics/}
+	\item 注册页面：\url{http://127.0.0.1:8000/safelogistics/sign-up/}
+	\item 登录页面：\url{http://127.0.0.1:8000/safelogistics/log-in/} 
+\end{enumerate}
+\subsubsection{控制面板} \par
 根据cookie显示不同类型用户所对应的控制面板界面。\par 
-控制面板主页：\url{http://127.0.0.1:8000/safelogistics/dashboard/} \par 
+\noindent \textbf{(1)} 买方 \par 
+\begin{enumerate}
+	\item 主页：\url{http://127.0.0.1:8000/safelogistics/dashboard/} 
+	\item 订单总览：\url{http://127.0.0.1:8000/safelogistics/dashboard/information-summary-buyer/}
+	\item 订单总览-物流路线分页面：\url{http://127.0.0.1:8000/safelogistics/dashboard/information-summary/visualization/<slug:orderid>/}
+	\item 订单总览-风险评估分页面：\url{http://127.0.0.1:8000/safelogistics/dashboard/information-summary/risk/<slug:orderid>/}
+	\item 评分查询(查询卖方评分)：\url{http://127.0.0.1:8000/safelogistics/dashboard/search-scores-buyer/}
+	\item 统计报表：\url{http://127.0.0.1:8000/safelogistics/dashboard/stat-page/}
+	\item 设置：\url{http://127.0.0.1:8000/safelogistics/dashboard/profile/}
+	\item 设置-修改账户信息分页面：\url{http://127.0.0.1:8000/safelogistics/dashboard/profile/update/}
+	\item 设置-切换账户选项：返回登录页面
+\end{enumerate}
+
+\noindent \textbf{(2)} 卖方 \par
+\begin{enumerate}
+	\item 主页：\url{http://127.0.0.1:8000/safelogistics/dashboard/} 
+	\item 提交订单：\url{http://127.0.0.1:8000/safelogistics/dashboard/submit-order/}
+	\item 订单总览：\url{http://127.0.0.1:8000/safelogistics/dashboard/information-summary-seller/}
+	\item 订单总览-物流路线分页面：\url{http://127.0.0.1:8000/safelogistics/dashboard/information-summary/visualization/<slug:orderid>/}
+	\item 订单总览-风险评估分页面：\url{http://127.0.0.1:8000/safelogistics/dashboard/information-summary/risk/<slug:orderid>/}
+	\item 评分查询(查询物流公司评分)：\url{http://127.0.0.1:8000/safelogistics/dashboard/search-scores-seller/}
+	\item 统计报表：\url{http://127.0.0.1:8000/safelogistics/dashboard/stat-page/}
+	\item 设置：\url{http://127.0.0.1:8000/safelogistics/dashboard/profile/}
+	\item 设置-修改账户信息分页面：\url{http://127.0.0.1:8000/safelogistics/dashboard/profile/update/}
+	\item 设置-切换账户选项：返回登录页面
+\end{enumerate} 
+
+\noindent \textbf{(3)} 物流公司 \par
+\begin{enumerate}
+	\item 确认订单：\url{http://127.0.0.1:8000/safelogistics/dashboard/confirm-order/}
+	\item 确认订单-确认/更新订单分页面：\url{http://127.0.0.1:8000/safelogistics/dashboard/confirm-order/update/<slug:dno>/}
+	\item 确认订单-删除选项：删除指定物流订单记录
+	\item 订单总览：\url{http://127.0.0.1:8000/safelogistics/dashboard/information-summary-company/}
+	\item 订单总览-物流分配分页面：\url{http://127.0.0.1:8000/safelogistics/dashboard/information-summary-company/distribution/<slug:dno>/}
+	\item 订单总览-物流路线分页面：\url{http://127.0.0.1:8000/safelogistics/dashboard/information-summary/visualization/<slug:orderid>/}
+	\item 订单总览-风险评估分页面：\url{http://127.0.0.1:8000/safelogistics/dashboard/information-summary/risk/<slug:orderid>/}
+	\item 员工信息：\url{http://127.0.0.1:8000/safelogistics/dashboard/manage-staffs}
+	\item 员工信息-填报历史分页面：\url{http://127.0.0.1:8000/safelogistics/dashboard/manage-staffs/history/<slug:pno>/}
+	\item 统计报表：\url{http://127.0.0.1:8000/safelogistics/dashboard/stat-page/}
+	\item 设置：\url{http://127.0.0.1:8000/safelogistics/dashboard/profile/}
+	\item 设置-修改账户信息分页面：\url{http://127.0.0.1:8000/safelogistics/dashboard/profile/update/}
+	\item 设置-切换账户选项：返回登录页面
+\end{enumerate}
+
+\noindent \textbf{(4)} 电商平台 \par
+\begin{enumerate}
+	\item 主页：\url{http://127.0.0.1:8000/safelogistics/dashboard/} 
+	\item 订单总览：\url{http://127.0.0.1:8000/safelogistics/dashboard/information-summary-platform/}
+	\item 订单总览-物流路线分页面：\url{http://127.0.0.1:8000/safelogistics/dashboard/information-summary/visualization/<slug:orderid>/}
+	\item 订单总览-风险评估分页面：\url{http://127.0.0.1:8000/safelogistics/dashboard/information-summary/risk/<slug:orderid>/}
+	\item 评分查询(查询卖方评分)：\url{http://127.0.0.1:8000/safelogistics/dashboard/search-scores-platform/}
+	\item 统计报表：\url{http://127.0.0.1:8000/safelogistics/dashboard/stat-page/}
+	\item 设置：\url{http://127.0.0.1:8000/safelogistics/dashboard/profile/}
+	\item 设置-修改账户信息分页面：\url{http://127.0.0.1:8000/safelogistics/dashboard/profile/update/}
+	\item 设置-切换账户选项：返回登录页面
+\end{enumerate}
+
+\noindent \textbf{(5)} 物流人员 \par
+\begin{enumerate}
+	\item 主页：\url{http://127.0.0.1:8000/safelogistics/dashboard/} 
+	\item 确认订单分配：\url{http://127.0.0.1:8000/safelogistics/dashboard/delivery-distribution/}
+	\item 每日填报：\url{http://127.0.0.1:8000/safelogistics/dashboard/delivery-health-update/}
+	\item 填报历史：\url{http://127.0.0.1:8000/safelogistics/dashboard/delivery-health-view/}
+	\item 填报历史-每日填报选项：重定向到每日填报界面
+	\item 设置：\url{http://127.0.0.1:8000/safelogistics/dashboard/profile/}
+	\item 设置-修改账户信息分页面：\url{http://127.0.0.1:8000/safelogistics/dashboard/profile/update/}
+	\item 设置-切换账户选项：返回登录页面	
+\end{enumerate}
+\subsubsection{用户功能汇总}
+\begin{center}
+\begin{tabular}{lccccc}
+\toprule
+\textbf{功能} & \textbf{买家} & \textbf{卖家} & \textbf{物流公司} & \textbf{电商平台} & \textbf{物流人员} \\
+\midrule
+账户设置 & \checkmark & \checkmark & \checkmark & \checkmark & \checkmark \\
+订单总览 & \checkmark & \checkmark & \checkmark & \checkmark & \\
+路径可视化 & \checkmark & \checkmark & \checkmark & \checkmark & \\
+风险评估 & \checkmark & \checkmark & \checkmark & \checkmark & \\ 
+统计报表 & \checkmark & \checkmark & \checkmark & \checkmark & \\
+评分查询 & \checkmark & \checkmark &  & \checkmark & \\
+填报历史 &  &  & \checkmark  &  & \checkmark \\
+提交订单 &  & \checkmark &  &  & \\
+确认订单 &  &  & \checkmark  &  & \\
+物流分配 &  &  & \checkmark  &  & \\
+员工信息 &  &  & \checkmark  &  & \\
+确认订单分配 &  &  &  &  & \checkmark \\
+每日填报 &  &  &  &  & \checkmark \\
+\bottomrule
+\end{tabular}
+\end{center}
 
 
 \newpage
 \subsection{功能展示}
 
 \subsubsection{登录系统}
-\noindent \textbf{(1)} 主页（未登录状态）
+\noindent \textbf{(1)} 主页(游客状态)
 
 \begin{center}
 	\includegraphics[width = 13.5cm]{home.png}
@@ -1189,122 +1295,176 @@ class NewUser(AbstractBaseUser):
 	\includegraphics[width = 13.5cm]{login.png}
 \end{center}
 
-\subsubsection{控制面板：通用界面}
-\noindent \textbf{(1)} 设置
-\begin{center}
-	\includegraphics[width = 13.5cm]{buyer-setting.png}
-\end{center}
+\subsubsection{控制面板}
 
-\noindent \textbf{(2)} 修改账户信息
-\begin{center}
-	\includegraphics[width = 13.5cm]{modify-profile.png}
-\end{center}
-
-\section*{Note：控制面板主页还在设计中，暂时没有更新}
-
-\subsubsection{控制面板：买方}
 \noindent \textbf{(1)} 主页
+
 \begin{center}
 	\includegraphics[width = 13.5cm]{buyer-main.png}
 \end{center}
 
-\noindent \textbf{(2)} 订单总览
+\noindent \textbf{(2)} 账户设置
+
 \begin{center}
-	\includegraphics[width = 13.5cm]{buyer-info-sum.png}
+	\includegraphics[width = 13.5cm]{buyer-setting.png}
 \end{center}
 
-\noindent \textbf{(3)} 评分查询 (卖方评分)
+\noindent \textbf{(3)} 账户设置：修改账户信息分页面
+
 \begin{center}
-	\includegraphics[width = 13.5cm]{buyer-score-sum.png}
+	\includegraphics[width = 13.5cm]{modify-profile.png}
 \end{center}
 
-\noindent \textbf{(4)} 统计报表
-\begin{center}
-	\includegraphics[width = 13.5cm]{buyer-stat.png}
-\end{center}
+\noindent \textbf{(4)} 订单总览
 
-\subsubsection{控制面板：卖方}
-\noindent \textbf{(1)} 主页
-\begin{center}
-	\includegraphics[width = 13.5cm]{seller-main.png}
-\end{center}
-
-\noindent \textbf{(2)} 提交订单
-\begin{center}
-	\includegraphics[width = 13.5cm]{seller-submit.png}
-\end{center}
-
-\noindent \textbf{(3)} 订单总览
-\begin{center}
-	\includegraphics[width = 13.5cm]{seller-info-sum.png}
-\end{center}
-
-\noindent \textbf{(4)} 评分查询 (物流公司评分)
-\begin{center}
-	\includegraphics[width = 13.5cm]{seller-score-sum.png}
-\end{center}
-
-\noindent \textbf{(5)} 统计报表
-\begin{center}
-	\includegraphics[width = 13.5cm]{seller-stat.png}
-\end{center}
-
-\subsubsection{控制面板：物流公司}
-\noindent \textbf{(1)} 主页
-\begin{center}
-	\includegraphics[width = 13.5cm]{company-main.png}
-\end{center}
-
-\noindent \textbf{(2)} 确认订单
-\begin{center}
-	\includegraphics[width = 13.5cm]{company-confirm.png}
-\end{center}
-
-\noindent \textbf{(3)} 订单总览
 \begin{center}
 	\includegraphics[width = 13.5cm]{company-info-sum.png}
 \end{center}
 
-\noindent \textbf{(4)} 评分查询 (卖方评分)
+\noindent \textbf{(5)} 路径可视化
 
-同 5.4.3 (3)
-
-\subsubsection{控制面板：电商平台}
-\noindent \textbf{(1)} 主页
 \begin{center}
-	\includegraphics[width = 13.5cm]{platform-main.png}
+	\includegraphics[width = 13.5cm]{buyer-visulization.png}
 \end{center}
 
-\noindent \textbf{(2)} 订单总览
+\noindent \textbf{(6)} 风险评估
+
 \begin{center}
-	\includegraphics[width = 13.5cm]{platform-info-sum.png}
+	\includegraphics[width = 13.5cm]{buyer-risk.png}
 \end{center}
 
-\noindent \textbf{(3)} 评分查询 (卖方评分)
+\noindent \textbf{(7)} 统计报表(公司)
 
-同 5.4.3 (3)
+\begin{center}
+	\includegraphics[width = 13.5cm]{company-stat.png}
+\end{center}
 
-\noindent \textbf{(4)} 统计报表
+\noindent \textbf{(8)} 统计报表(买方)
+
+\begin{center}
+	\includegraphics[width = 13.5cm]{buyer-stat.png}
+\end{center}
+
+\newpage
+\noindent \textbf{(9)} 统计报表(卖方)
+
+\begin{center}
+	\includegraphics[width = 13.5cm]{seller-stat.png}
+\end{center}
+
+\newpage
+\noindent \textbf{(10)} 统计报表(电商平台)
+
 \begin{center}
 	\includegraphics[width = 13.5cm]{platform-stat.png}
 \end{center}
 
-\subsubsection{控制面板：物流人员}
-\noindent \textbf{(1)} 主页
+\newpage
+\noindent \textbf{(11)} 评分查询(查询卖家评分)
+
 \begin{center}
-	\includegraphics[width = 13.5cm]{delivery-main.png}
+	\includegraphics[width = 13.5cm]{buyer-score-sum.png}
 \end{center}
 
-\noindent \textbf{(2)} 每日填报
+\noindent \textbf{(12)} 评分查询(查询物流公司评分)
+
 \begin{center}
-	\includegraphics[width = 13.5cm]{delivery-submit.png}
+	\includegraphics[width = 13.5cm]{seller-score-sum.png}
 \end{center}
 
-\noindent \textbf{(3)} 填报历史
+\noindent \textbf{(13)} 填报历史(物流公司版)
+
+\begin{center}
+	\includegraphics[width = 13.5cm]{company-staff-history.png}
+\end{center}
+
+\noindent \textbf{(14)} 填报历史(物流人员版)
+
 \begin{center}
 	\includegraphics[width = 13.5cm]{delivery-history.png}
 \end{center}
 
+\noindent \textbf{(15)} 提交订单
+
+\begin{center}
+	\includegraphics[width = 13.5cm]{seller-submit.png}
+\end{center}
+
+\noindent \textbf{(16)} 确认订单
+
+\begin{center}
+	\includegraphics[width = 13.5cm]{company-confirm.png}
+\end{center}
+
+\noindent \textbf{(17)} 确认订单：确认/更新订单分界面
+
+\begin{center}
+	\includegraphics[width = 13.5cm]{company-update.png}
+\end{center}
+
+\noindent \textbf{(18)} 物流分配
+
+\begin{center}
+	\includegraphics[width = 13.5cm]{company-distribution.png}
+\end{center}
+
+\noindent \textbf{(19)} 员工信息
+
+\begin{center}
+	\includegraphics[width = 13.5cm]{company-staff.png}
+\end{center}
+
+\noindent \textbf{(20)} 确认订单分配
+
+\begin{center}
+	\includegraphics[width = 13.5cm]{delivery-confirm.png}
+\end{center}
+
+\noindent \textbf{(21)} 每日填报
+
+\begin{center}
+	\includegraphics[width = 13.5cm]{delivery-submit.png}
+\end{center}
+
 \section{总结}
+个人体会及收获，按姓名首字母排序。\par
+\vspace{0.3cm}
+\noindent\textbf{丁语欣：}\par 
+数据库开发设计的这个小项目总体做下来感觉很有趣，也收获满满。做项目的过程让我认识到，课堂学习时举的一些例子都非常经典，经过了简化提炼，但实际生活中，如果我们要进行数据库的设计，需要周全细致的前期工作铺垫以及工作经验辅佐。
+
+以我们小组项目举例，前期按照步骤先完成了ER图、关系模式等设计，但是到了需要构筑数据库，写django的model，实现设想的功能时，又会发现先前设计的模型有这样那样的问题。这个从理论到应用、从纸面到书面的过程还是充满困难和考验的。后期我们就设想的内容，对模式重新进行了梳理和调整，才解决了之前遇到的一些问题。
+
+当然，我们小组所设想的场景仍然是一个非常简化的情况，实际业务中数据之间的关系要复杂得多，在这种情况下前期的调研就格外重要了，我们要从用户、客户以及实际编写代码者等多种角度出发来思考数据库的设计，避免后期搭建过程中对数据关系模式以及依赖关系的频繁改动。
+总体而言，这样的项目对我们日后的工作和实践都提供了许多的经验，引导我们进行思考，这个学习思考的过程非常珍贵。
+
+\vspace{0.3cm}
+\noindent\textbf{高畅：}\par 
+数据库这个project是我在本科生涯中做过的较大的程序设计项目project之一。由于项目涉及到了很多课程之外的内容，比如HTML，CSS和JavaScript等，为了画出更美观的网页，实现更好的用户体验效果，我去学习并更深入的了解了这些语言的语法和应用方式，整个实现我们小组网页和数据库设计的过程中，这些新的知识让我受益匪浅。
+
+同时，也非常感谢我所在的小组所有人都积极参与活动，互相弥补不足，共同努力以设计出让我们满意的程序界面和数据库功能的实现。这次project也让我意识到了，近年来不断改进、不断美化的网页界面的背后是相关程序员的不断努力。为了实现仍和一个小的、看似寻常的改变，程序员可能需要修改或添加数十行乃至上百行代码。虽然这次的数据库project实现情况相较于我们组之前的设想还有很多不足，但我们小组能够齐心协力设计并制作出功能完整的数据库，也彰显着我们在代码上的进步。希望之后如果有闲暇时间，能够进一步完善这个数据库project，使功能更完善，界面更美观。
+
+\vspace{0.3cm}
+\noindent\textbf{李舒沛：}\par
+实践是检验真理的唯一标准，我觉得这句话在计算机相关的课程上特别适用。理论知识是计算机科学的基础。只有打好了基础，才能最终在技术方面有所成就，而不是满足于会写一两行代码。但是空有理论，没有实践经验在大多数情况下也是不够的（少数情况的例子：做纯理论研究）。对我而言，数据库小组项目是一次很好的实践机会。
+
+老师在课堂上讲解的数据库知识是一套经过时间考验的理论体系，是理解数据库这一计算机重要领域的基础。我觉得系统性理论学习反映了计算机科学静态的一面。能留在课堂和教材上的知识都是经过大浪淘沙后沉淀下来的这门学科的精华。而在项目实践中边做边学则体现了计算机科学动态的一面。目前，计算机科学领域发展迅速，掌握动态学习、快速迭代的技能变得尤为重要。本次项目很好地锻炼了我快速迭代的能力。例如，我通过阅读官方文档和教材，在较短时间内掌握了Git和Django的基本使用方法，进而能够更好地把握项目进度。此外，在整合项目报告的过程中，我也学习到了很多LaTex的有趣功能。本科生涯接近尾声，而这门课是我在四年学习过程中收获最多的课之一。
+
+做小组项目的经过很辛苦，也很快乐。刚开始，我们小组的构想是建立一个完整的疫情风险监控物流系统。做到设计数据库这一步时，我们发现模拟一个真实的物流系统远比想象中要复杂。在老师的耐心指导下，我们定义清楚了小组项目需要实现的核心业务，删除或简化了与数据库不太相关的功能。在项目的编程实践中，我们又根据Django框架的自身特性对部分功能的实现方式进行了调整，如：用django-filter代替复杂的原生SQL查询。我很荣幸能同四位认真负责的同学一起合作，在为期两个多月的项目中不断克服各种困难，见证了我们的项目从几张抽象的草图到一个能够流畅运行的网站。在此，我对她们表示真诚的感谢。
+
+\vspace{0.3cm}
+\noindent\textbf{张高阳：}\par
+在本学期的数据库课程中，我第一次参与到了小组合作的编程项目中，也是第一次接触网页设计相关内容。作为一个编程新手，这个小组项目对我来说是一个非常大的挑战，因此在项目之初，我不免抱有惴惴不安的心情。在组员的推荐和指导下，我通过各种教程和官方文档主动学习了一些Python、Django以及Git的基础知识，让我对小组项目的具体实施有了更清晰的理解。
+
+在项目实施过程中，我主要负责了有关物流订单、健康信息的确认、提交等相关代码和页面设计。由于我们选择涉及的物流平台数据库涉及多方主体，所以整体设计逻辑会比较复杂，我在项目中边学边做，学习如何根据概念结构设计、逻辑结构设计明确各个模型之间的联系、如何设计网页并实现跳转与链接、如何保证网页的美观性等。这也让我不断克服自己原先对于编程的畏难心理，在看到实际网页呈现时获得了小小的成就感。
+
+其次，我要感谢小组成员们对我的帮助，尤其是组长李舒沛同学在整个项目里统筹安排，对整个小组项目的顺利推进起了非常大的作用。由于我之前的编程经验较少，所以在项目过程中遇到了许多问题，感谢小组成员们能够耐心为我解答。而我们小组前期对数据库的设想比较复杂，这也导致我们在实施过程中遇到很多困难，但是在组员的相互配合下，我们最终还是努力呈现出了相对理想的结果。
+
+总之，这次数据库小组项目让我们把课堂中学到的理论知识更好地消化、吸收，并在实际中进行运用，这让我对数据库设计以及SQL有了更深的认识，也鼓励了我在未来的学习、生活中更多地运用数据库相关知识去解决实际问题。
+
+\vspace{0.3cm}
+\noindent\textbf{张秋岑：}\par
+在这次小组作业中，我学会了如何设计一个简单的数据库系统。我与组员们一起研究现有系统的构造，确定选题，分析不同用户的功能需求，并将整个流程抽象为一个完整的数据流图。在项目逐步推进的过程中，我们进行了许多次长时间的讨论，不断地对之前已经确定的信息进行修改，我也意识到了在现实工作当中，要设计出一个完整的数据库系统需要考虑许许多多的因素，并且要在一次次讨论中发现问题，并不断优化。比如，在进行用户需求分析时，我需要站在不同用户的视角去思考，在疫情下的物流新场景，每个用户需要哪些信息来作出他们必要的决策。然后再反过来站在数据库系统设计者的视角，探索最高效实现这个功能的方式。最后再回到用户视角，完成界面交互的设计和搭建。
+
+这个站在多个角度思考和设计的过程，让我不仅对数据库有了全面的认知，更是对数据时代信息的流动和意义有了更深刻的理解。
 
 \end{document}
